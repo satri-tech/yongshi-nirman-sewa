@@ -25,28 +25,28 @@ Welcome to the official repository for **Yonghsi Construction**, a modern and el
 
 ## 📂 Folder Structure
 
-📁 yongshi-nirman-sewa/
-├── 📁 app/                 # Next.js app directory (routing & layouts)
-├── 📁 components/          # Reusable UI components
-├── 📁 data/                # Static data, constants
-├── 📁 helpers/             # Utility functions and logic
-├── 📁 hooks/               # Custom React hooks
-├── 📁 lib/                 # Libraries, services, API clients
-├── 📁 prisma/              # Prisma schema and migrations
-├── 📁 public/              # Public assets (images, favicon, etc.)
-├── 📁 scripts/             # Seeding scripts
-├── 📄 .env                 # Environment variables (local)
-├── 📄 .env.example         # Example environment file
-├── 📄 .gitignore           # Git ignore config
-├── 📄 components.json      # Optional (UI config or builder-specific)
-├── 📄 eslint.config.mjs    # ESLint configuration
-├── 📄 middleware.ts        # Next.js middleware (auth, redirects)
-├── 📄 next-auth.d.ts       # Type definitions for NextAuth
-├── 📄 next-env.d.ts        # Type declarations for Next.js
-├── 📄 next.config.ts       # Next.js configuration
-├── 📄 package.json         # Project metadata and dependencies
-├── 📄 package-lock.json    # Lock file for npm installs
-├── 📄 postcss.config.mjs   # PostCSS configuration
-├── 📄 README.md            # Project readme
-└── 📄 tsconfig.json        # TypeScript configuration
+yongshi-nirman-sewa/
+├── app/ # Next.js app directory (routing & layouts)
+├── components/ # Reusable UI components
+├── data/ # Static data, constants
+├── helpers/ # Utility functions and logic
+├── hooks/ # Custom React hooks
+├── lib/ # Libraries, services, API clients
+├── prisma/ # Prisma schema and migrations
+├── public/ # Public assets (images, favicon, etc.)
+├── scripts/ # Seeding or automation scripts
 
+├── .env # Local environment variables
+├── .env.example # Example environment file
+├── .gitignore # Git ignored files and folders
+├── components.json # Optional UI config or builder-specific setup
+├── eslint.config.mjs # ESLint configuration
+├── middleware.ts # Next.js middleware (auth, redirects, etc.)
+├── next-auth.d.ts # Type definitions for NextAuth
+├── next-env.d.ts # Type declarations for Next.js
+├── next.config.ts # Next.js configuration
+├── package.json # Project metadata and dependencies
+├── package-lock.json # Lock file for reproducible npm installs
+├── postcss.config.mjs # PostCSS configuration
+├── README.md # Project readme
+└── tsconfig.json # TypeScript configuration
