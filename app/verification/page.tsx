@@ -34,9 +34,9 @@ export default function VerificationPage() {
                     <Alert>
                         <Shield className="h-4 w-4" />
                         <AlertDescription>
-                            Please contact your administrator to complete the verification
+                           {` Please contact your administrator to complete the verification
                             process. You'll receive an email notification once your account
-                            has been approved.
+                            has been approved.`}
                         </AlertDescription>
                     </Alert>
 

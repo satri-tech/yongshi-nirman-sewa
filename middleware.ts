@@ -9,7 +9,10 @@ export async function middleware(request: NextRequest) {
   });
 
   // Redirect unauthenticated users away from protected routes
-  if (!token && pathname.startsWith("/admin")) {
+  if (
+    !token &&
+    (pathname.startsWith("/admin") || pathname.startsWith("/verification"))
+  ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

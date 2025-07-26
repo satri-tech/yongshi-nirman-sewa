@@ -9,19 +9,18 @@ import {
     Autoplay,
 } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/navigation"; // Add this import
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import Image, { StaticImageData } from "next/image";
 
 interface IImageSwiper {
-    swiperImages: StaticImageData[],
-    imageClass: string
+    swiperImages: (string | StaticImageData)[]; // Accept both string URLs and StaticImageData
+    imageClass: string;
 }
 
-export default function ImageSwiper({ swiperImages, imageClass }: IImageSwiper) {
+const ImageSwiper = ({ swiperImages, imageClass }: IImageSwiper) => {
     return (
-        <div style={{ position: 'relative' }}>
+        <>
             <Swiper
                 modules={[Autoplay, Navigation, Pagination, Scrollbar, A11y]}
                 spaceBetween={0}
@@ -30,24 +29,21 @@ export default function ImageSwiper({ swiperImages, imageClass }: IImageSwiper) 
                     delay: 2000,
                     disableOnInteraction: false,
                 }}
-                navigation={true} // Enable navigation arrows
                 pagination={{ clickable: true }}
                 loop={true}
             >
-                {swiperImages.map((images, index) => {
+                {swiperImages.map((image, index) => {
+                    const imageSrc = typeof image === 'string' ? image : image.src;
+
                     return (
                         <SwiperSlide key={index}>
-                            <Image
-                                src={images.src}
-                                alt=""
-                                width={2000}
-                                height={600}
-                                className={`w-full h-auto object-cover ${imageClass}`}
-                            />
+                            <Image width={1600} height={900} src={imageSrc} alt="sliderImages" className={imageClass} />
                         </SwiperSlide>
                     );
                 })}
             </Swiper>
-        </div>
+        </>
     );
 };
+
+export default ImageSwiper;

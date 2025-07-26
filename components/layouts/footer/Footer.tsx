@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Footer() {
     return (
-        <div className="w-full flex flex-col items-center bg-gray-100 text-gray-800 py-10 border-t border-gray-300">
+        <div className="w-full flex flex-col items-center bg-gray-100 text-gray-800 py-10 border-t border-gray-300" id="footer">
             <div className="w-10/12 flex flex-col gap-10">
 
                 {/* Logo and Tagline Placeholder */}
