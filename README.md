@@ -25,7 +25,7 @@ Welcome to the official repository for **Yonghsi Construction**, a modern and el
 
 ## 📂 Folder Structure
 
-yongshi-nirman-sewa/
+```yongshi-nirman-sewa/
 ├── app/ # Next.js app directory (routing & layouts)
 ├── components/ # Reusable UI components
 ├── data/ # Static data, constants
@@ -35,7 +35,6 @@ yongshi-nirman-sewa/
 ├── prisma/ # Prisma schema and migrations
 ├── public/ # Public assets (images, favicon, etc.)
 ├── scripts/ # Seeding or automation scripts
-
 ├── .env # Local environment variables
 ├── .env.example # Example environment file
 ├── .gitignore # Git ignored files and folders
@@ -49,4 +48,4 @@ yongshi-nirman-sewa/
 ├── package-lock.json # Lock file for reproducible npm installs
 ├── postcss.config.mjs # PostCSS configuration
 ├── README.md # Project readme
-└── tsconfig.json # TypeScript configuration
+└── tsconfig.json # TypeScript configuration```
