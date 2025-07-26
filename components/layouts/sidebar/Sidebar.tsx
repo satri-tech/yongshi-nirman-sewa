@@ -4,56 +4,12 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { BsInstagram } from "react-icons/bs";
 import { ISidebarProps } from "./types";
-
+import { links } from "./constants";
+import { useSidebar } from "./useSidebar";
 const Sidebar = ({ sidebar, handleToggleMenu }: ISidebarProps) => {
-    const links = [
-        {
-            linkName: "Home",
-            id: "home",
-        },
-        {
-            linkName: "About Us",
-            id: "about",
-        },
-        {
-            linkName: "Services",
-            id: "services",
-        },
-        {
-            linkName: "Portfolio",
-            id: "portfolio",
-        },
-        {
-            linkName: "Team",
-            id: "team",
-        },
-        {
-            linkName: "Contact",
-            id: "contact",
-        },
-    ];
-    const [menuList, setMenuList] = useState(false);
-    useEffect(() => {
-        if (sidebar) {
-            setTimeout(() => {
-                setMenuList(true);
-            }, 500);
-        } else {
-            setMenuList(false);
-        }
-    }, [sidebar]);
-    const navigateToLink = (id: string) => {
-        if (id === "home") {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            handleToggleMenu(false);
-        }
-        const element = document.getElementById(id);
+    const { menuList, navigateToLink } = useSidebar({ sidebar, handleToggleMenu })
 
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-            handleToggleMenu(false);
-        }
-    };
+
     return (
         <div
             className={`  font-Poppins min-h-screen overflow-hidden flex sm:flex-row flex-col-reverse fixed z-50 top-0 right-0 bg-black duration-500   ${sidebar ? "w-[100%]" : "w-0"
@@ -153,9 +109,9 @@ const Sidebar = ({ sidebar, handleToggleMenu }: ISidebarProps) => {
                 className={`text-white  mb-auto pt-6 font-semibold text-2xl flex flex-col  sm:hidden sm:pl-0 pl-6 duration-100 opacity-0 ${menuList && "opacity-100"
                     }`}
             >
-                <div>Mantra Architects</div>
+                <div>Yongshi Construction</div>
                 <div className="text-xs font-medium text-secondary-text">
-                    देश बनाउने सिलसिला जारी छ।{" "}
+                    देश बनाउने सिलसिला जारी छ।
                 </div>
             </div>
         </div>

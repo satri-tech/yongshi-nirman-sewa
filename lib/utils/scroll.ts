@@ -1,5 +1,5 @@
 // lib/utils/scroll.ts
-export const scrollToElement = (id: string, offset = 100) => {
+export const scrollToElement = (id: string, offset = 80) => {
   const element = document.getElementById(id);
   if (element) {
     const elementPosition = element.getBoundingClientRect().top;
@@ -9,6 +9,5 @@ export const scrollToElement = (id: string, offset = 100) => {
       top: offsetPosition,
       behavior: "smooth",
     });
-
   }
 };
