@@ -15,7 +15,7 @@ const Portfolio = () => {
                     <HeaderTitle header={"Portfolio"} />
                     <div className="w-full flex">
                         <div className="w-full sm:text-5xl text-3xl font-medium leading-[4.4rem] tracking-tight">
-                            Let's dive into our Journey!
+                            {`Let's dive into our Journey!`}
                         </div>
                     </div>
                     {/* Updated Grid */}

@@ -15,7 +15,9 @@ export const useSidebar = ({ sidebar, handleToggleMenu }: ISidebarProps) => {
   }, [sidebar]);
   const navigateToLink = (id: string) => {
     if (id === "home") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
       handleToggleMenu(false);
     }
 

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { CiMail } from "react-icons/ci";
 import { BsTelephone } from "react-icons/bs";
 
@@ -16,7 +15,9 @@ const Footer = () => {
 
     const handleMenuClick = (id: string) => {
         if (id === "home") {
-            window.scrollTo({ behavior: "smooth", top: 0 });
+            if (typeof window !== "undefined") {
+                window.scrollTo({ behavior: "smooth", top: 0 });
+            }
             return;
         }
         scrollToElement(id);
