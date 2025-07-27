@@ -1,8 +1,8 @@
 import Image1 from "@/public/slider/image1.jpg";
 export const SwiperImages = [
   Image1.src,
-  "https://cdn.dribbble.com/userupload/15849259/file/original-620c94b5ed3e6ad0ca42ced4c8958d34.png?resize=1200x675",
-  "https://cdn.dribbble.com/userupload/15848959/file/original-32169b8a147da6b9b6ddc66e6c9f3a20.png?resize=1200x675",
+  "https://i.pinimg.com/1200x/63/6d/21/636d2186977214fa3800d4a5604a2255.jpg",
+  "https://i.pinimg.com/1200x/51/0d/ef/510defdeaaab6e2b4b6237fac3ad8c49.jpg",
 ];
 
 export const data = {

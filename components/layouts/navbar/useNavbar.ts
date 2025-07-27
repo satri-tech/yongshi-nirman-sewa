@@ -13,8 +13,9 @@ export const useNavbar = (onMenuToggle: (state: boolean) => void) => {
   };
 
   const toInitial = () => {
-    window.scrollTo({ behavior: "smooth", top: 0 });
-    window.history.replaceState(null, "", window.location.pathname);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ behavior: "smooth", top: 0 });
+    }
   };
 
   useEffect(() => {
