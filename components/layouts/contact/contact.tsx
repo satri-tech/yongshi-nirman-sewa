@@ -67,21 +67,21 @@ export default function Contact() {
 
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-3">
-                                        <MapPin className="text-blue-600 w-5 h-5" />
+                                        <MapPin className="text-gray-600 w-5 h-5" />
                                         <div>
                                             <p className="font-medium">Address</p>
                                             <p className="text-sm text-gray-600 dark:text-gray-300">Shishuwa, Pokhara, Nepal</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <Phone className="text-green-600 w-5 h-5" />
+                                        <Phone className="text-gray-600 w-5 h-5" />
                                         <div>
                                             <p className="font-medium">Phone</p>
                                             <p className="text-sm text-gray-600 dark:text-gray-300">+977 123 456 7890</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <Mail className="text-red-600 w-5 h-5" />
+                                        <Mail className="text-gray-600 w-5 h-5" />
                                         <div>
                                             <p className="font-medium">Email</p>
                                             <p className="text-sm text-gray-600 dark:text-gray-300">info@yongshi-nirman.com</p>

@@ -9,8 +9,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Milan Educare",
-  description: "Entrance Preparation Classes",
+  title: "Yongshi Nirman Sewa",
+  description: "Construction Company",
 };
 
 export default function RootLayout({
