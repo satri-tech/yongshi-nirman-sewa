@@ -18,7 +18,6 @@ export default function Testimonials() {
                         {`Trusted by clients who value quality and results.`}
                     </div>
                 </div>
-                {/* Testimonials Grid */}
                 <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {testimonials.map((testimonial) => (
                         <Card key={testimonial.content} className="h-full py-2">
