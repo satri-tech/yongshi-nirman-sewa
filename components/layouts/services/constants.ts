@@ -2,44 +2,44 @@ import { ServiceData } from "./types";
 
 export const servicesData: ServiceData[] = [
   {
-    title: "Architectural Design",
+    title: "Architectural Planning",
     description:
-      "Conceptualization, schematics, construction documents—crafting plans to realize clients' visions for their residential or commercial spaces.",
+      "Detailed site planning, drawings, and blueprints—laying the groundwork for efficient and regulation-compliant construction.",
     image:
       "https://cdn.dribbble.com/userupload/15849259/file/original-620c94b5ed3e6ad0ca42ced4c8958d34.png?resize=1200x675",
   },
   {
-    title: "Interior Design",
+    title: "Structural Engineering",
     description:
-      "Space planning, material selection, furniture design—creating cohesive and functional interiors tailored to clients' preferences.",
+      "Designing safe and durable structures with precise load calculations, ensuring long-term stability and integrity.",
     image:
       "https://cdn.dribbble.com/userupload/15848959/file/original-32169b8a147da6b9b6ddc66e6c9f3a20.png?resize=1200x675",
   },
   {
-    title: "Project Management",
+    title: "Project Execution",
     description:
-      "Coordinating timelines, budgets, and resources—ensuring smooth execution and timely completion of architectural and interior design projects.",
+      "End-to-end execution including manpower management, material procurement, and site supervision for timely delivery.",
     image:
       "https://cdn.dribbble.com/userupload/15849305/file/original-51b489182440b5a6419d8639edc487bf.png?resize=1024x576",
   },
   {
-    title: "3D Visualization",
+    title: "3D Visualization & Site Mockups",
     description:
-      "Transforming architectural plans into lifelike renderings—providing clients with immersive previews of their future spaces.",
+      "Realistic renders and walkthroughs to help clients visualize finished projects before construction begins.",
     image:
       "https://cdn.dribbble.com/userupload/15849259/file/original-620c94b5ed3e6ad0ca42ced4c8958d34.png?resize=1200x675",
   },
   {
-    title: "Supervision",
+    title: "Site Supervision",
     description:
-      "Overseeing construction progress, ensuring adherence to design specifications, quality standards, and client expectations.",
+      "Regular monitoring to ensure quality control, adherence to safety norms, and execution as per the approved plans.",
     image:
       "https://cdn.dribbble.com/userupload/15848959/file/original-32169b8a147da6b9b6ddc66e6c9f3a20.png?resize=1200x675",
   },
   {
-    title: "Renovation and Remodeling",
+    title: "Renovation & Retrofitting",
     description:
-      "Enhancing existing spaces through redesign, structural modifications, and aesthetic upgrades—breathing new life into old environments.",
+      "Upgrading existing buildings with modern standards, structural reinforcements, and energy-efficient solutions.",
     image:
       "https://cdn.dribbble.com/userupload/15849305/file/original-51b489182440b5a6419d8639edc487bf.png?resize=1024x576",
   },

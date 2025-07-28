@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { IProject } from "./types";
+import Link from "next/link";
 
 const EachProjectCard = ({ project }: { project: IProject }) => {
     return (
-        <div className="flex gap-1 flex-col w-full font-Poppins cursor-pointer opacity-95 hover:opacity-100 hover:scale-[1.01] transition-all">
+        <Link href={`/portfolio/1`} className="flex gap-1 flex-col w-full font-Poppins cursor-pointer opacity-95 hover:opacity-100 hover:scale-[1.01] transition-all">
             <Image
                 height={1500}
                 width={1500}
@@ -17,7 +18,7 @@ const EachProjectCard = ({ project }: { project: IProject }) => {
             <div className="text-sm font-normal tracking-wide text-[#3b3b3b]">
                 {project.location}
             </div>
-        </div>
+        </Link>
     );
 };
 
