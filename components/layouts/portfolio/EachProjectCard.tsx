@@ -2,7 +2,7 @@ import Image from "next/image";
 import { IProject } from "./types";
 import Link from "next/link";
 import { AnimatedImageContainer } from "@/components/animations/animated-component";
-import { fadeInDown, staggerItem } from "@/hooks/use-scroll-animation";
+import { staggerItem } from "@/hooks/use-scroll-animation";
 
 const EachProjectCard = ({ project }: { project: IProject }) => {
     return (

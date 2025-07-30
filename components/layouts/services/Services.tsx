@@ -6,7 +6,7 @@ import HeaderTitle from "@/components/ui/HeaderTitle";
 import { servicesData } from "./constants";
 import { useServices } from "./useServices";
 import { AnimatedButton, AnimatedDescription, AnimatedImageContainer, AnimatedTitle } from "@/components/animations/animated-component";
-import { staggerItem, fadeInUp, fadeInDown } from "@/hooks/use-scroll-animation";
+import { fadeInDown } from "@/hooks/use-scroll-animation";
 
 const Services = () => {
     const { activeImage, activeService, handleServiceClick } = useServices();

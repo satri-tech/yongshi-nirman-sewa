@@ -1,9 +1,9 @@
 'use client'
 import HeaderTitle from "@/components/ui/HeaderTitle";
-import { testimonials } from "./constants";
-import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
-import Image from "next/image";
+// import { testimonials } from "./constants";
+// import { Card, CardContent } from "@/components/ui/card";
+// import { Star } from "lucide-react";
+// import Image from "next/image";
 
 
 export default function Testimonials() {
@@ -18,12 +18,14 @@ export default function Testimonials() {
                         {`Trusted by clients who value quality and results.`}
                     </div>
                 </div>
-                <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="h-screen flex justify-center items-center text-3xl">
+                    Coming Soon
+                </div>
+                {/* <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {testimonials.map((testimonial) => (
                         <Card key={testimonial.content} className="h-full py-2">
                             <CardContent className="p-6">
                                 <div className="flex flex-col h-full">
-                                    {/* Rating Stars */}
                                     <div className="flex mb-4">
                                         {[...Array(5)].map((_, i) => (
                                             <Star
@@ -36,12 +38,10 @@ export default function Testimonials() {
                                         ))}
                                     </div>
 
-                                    {/* Testimonial Content */}
                                     <blockquote className="text-sm text-muted-foreground mb-6 flex-grow">
                                         {` "${testimonial.content}"`}
                                     </blockquote>
 
-                                    {/* Author Info */}
                                     <div className="flex items-center gap-3 mt-auto">
                                         <Image
                                             height={48}
@@ -50,7 +50,6 @@ export default function Testimonials() {
                                             alt={"image"}
                                             className="h-12 w-12 object-cover rounded-full border"
                                             onError={(e) => {
-                                                // Fallback to a default image if the API fails
                                                 e.currentTarget.src = '/images/default-avatar.png';
                                             }}
                                         />
@@ -64,7 +63,7 @@ export default function Testimonials() {
                             </CardContent>
                         </Card>
                     ))}
-                </div>
+                </div> */}
             </div>
         </div>
     </div >

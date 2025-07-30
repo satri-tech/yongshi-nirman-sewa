@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button'
+// import { Button } from '@/components/ui/button'
 import HeaderTitle from '@/components/ui/HeaderTitle'
-import Map from '@/components/ui/Map'
-import { SendHorizontal, MapPin, Phone, Mail } from 'lucide-react'
-import { BsGithub, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
-import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
+// import Map from '@/components/ui/Map'
+// import { SendHorizontal, MapPin, Phone, Mail } from 'lucide-react'
+// import { BsGithub, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
+// import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 
 export default function Contact() {
     return (
@@ -18,8 +18,10 @@ export default function Contact() {
                             Any question? We would be happy to help you!
                         </div>
                     </div>
-                    <div className='flex pt-10 flex-col lg:flex-row gap-8'>
-                        {/* Contact Form */}
+                    <div className='h-screen flex justify-center items-center text-3xl'>
+                        Coming Soon
+                    </div>
+                    {/* <div className='flex pt-10 flex-col lg:flex-row gap-8'>
                         <div className="flex flex-col p-6 border rounded-lg gap-2 w-full lg:w-8/12 font-Poppins">
                             <h3 className="text-xl  font-semibold mb-4 border-b pb-4">Get in Touch</h3>
                             <div className="flex flex-col md:flex-row text-xs justify-between gap-4 ">
@@ -58,9 +60,7 @@ export default function Contact() {
                             <Button className='py-5 ml-auto rounded-sm px-8'>Send <SendHorizontal /></Button>
                         </div>
 
-                        {/* Contact Information and Map */}
                         <div className="w-full lg:w-1/2 space-y-6">
-                            {/* Contact Info */}
 
                             <div className="dark:bg-gray-800 rounded-lg p-4 border">
                                 <h3 className="text-xl font-semibold mb-6 border-b pb-2">Contact Information</h3>
@@ -95,7 +95,6 @@ export default function Contact() {
                                 <h3 className="text-xl font-semibold mb-6 border-b pb-2">Follow Us</h3>
 
                                 <div className="flex flex-wrap gap-4">
-                                    {/* Facebook */}
                                     <Button
                                         size={'icon'}
                                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
@@ -103,7 +102,6 @@ export default function Contact() {
                                         <FaFacebookF size={20} />
                                     </Button>
 
-                                    {/* Twitter/X */}
                                     <Button
                                         size={'icon'}
                                         className="flex items-center gap-2 px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-lg transition-colors duration-200"
@@ -111,7 +109,6 @@ export default function Contact() {
                                         <BsTwitter size={20} />
                                     </Button>
 
-                                    {/* Instagram */}
                                     <Button
                                         size={'icon'}
                                         className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg transition-all duration-200"
@@ -119,7 +116,6 @@ export default function Contact() {
                                         <BsInstagram size={20} />
                                     </Button>
 
-                                    {/* YouTube */}
                                     <Button
                                         size={'icon'}
                                         className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white transition-colors duration-200"
@@ -127,7 +123,6 @@ export default function Contact() {
                                         <BsYoutube size={20} />
                                     </Button>
 
-                                    {/* LinkedIn */}
                                     <Button
                                         size={'icon'}
                                         className="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white transition-colors duration-200"
@@ -135,7 +130,6 @@ export default function Contact() {
                                         <FaLinkedinIn size={20} />
                                     </Button>
 
-                                    {/* GitHub */}
                                     <Button
                                         size={'icon'}
                                     >
@@ -147,11 +141,11 @@ export default function Contact() {
 
                         </div>
 
-                    </div>
-                    <div>
+                    </div> */}
+                    {/* <div>
                         <h3 className="text-xl font-semibold mb-4">Find Us Here</h3>
                         <Map className="w-full" />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

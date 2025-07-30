@@ -1,34 +1,34 @@
 import HeaderTitle from '@/components/ui/HeaderTitle'
-import Image from 'next/image'
-import Link from 'next/link'
-import Member1 from '@/public/team/member1.jpg'
-const members = [
-    {
-        name: 'Liam Brown',
-        role: 'Founder - CEO',
-        avatar: Member1,
-        link: '#',
-    },
-    {
-        name: 'Elijah Jones',
-        role: 'Co-Founder - CTO',
-        avatar: Member1,
-        link: '#',
-    },
-    {
-        name: 'Isabella Garcia',
-        role: 'Sales Manager',
-        avatar: Member1,
-        link: '#',
-    },
-    {
-        name: 'Henry Lee',
-        role: 'UX Engeneer',
-        avatar: Member1,
-        link: '#',
-    },
+// import Image from 'next/image'
+// import Link from 'next/link'
+// import Member1 from '@/public/team/member1.jpg'
+// const members = [
+//     {
+//         name: 'Liam Brown',
+//         role: 'Founder - CEO',
+//         avatar: Member1,
+//         link: '#',
+//     },
+//     {
+//         name: 'Elijah Jones',
+//         role: 'Co-Founder - CTO',
+//         avatar: Member1,
+//         link: '#',
+//     },
+//     {
+//         name: 'Isabella Garcia',
+//         role: 'Sales Manager',
+//         avatar: Member1,
+//         link: '#',
+//     },
+//     {
+//         name: 'Henry Lee',
+//         role: 'UX Engeneer',
+//         avatar: Member1,
+//         link: '#',
+//     },
 
-]
+// ]
 
 export default function Team() {
     return (
@@ -43,8 +43,9 @@ export default function Team() {
                             Bringing passion and Expertise together!
                         </div>
                     </div>
-                    <div className="mt-6 md:mt-8">
-                        <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="mt-6 md:mt-8 h-screen text-3xl flex justify-center items-center">
+                        Coming Soon
+                        {/* <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
                             {members.map((member, index) => (
                                 <div key={index} className="group overflow-hidden cursor-pointer">
                                     <Image className="h-80 w-full rounded-md object-cover object-top grayscale transition-all duration-500 hover:grayscale-0 group-hover:h-72 group-hover:rounded-xl" src={member.avatar} alt="team member" width="826" height="1239" />
@@ -63,7 +64,7 @@ export default function Team() {
                                     </div>
                                 </div>
                             ))}
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
