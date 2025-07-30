@@ -50,46 +50,4 @@ export const dummyData: IProject[] = [
     location: "Sarangkot",
     image: ProjectDummyImage,
   },
-  {
-    id: "09",
-    name: "Youth Innovation Center",
-    location: "Butwal",
-    image: ProjectDummyImage,
-  },
-  {
-    id: "10",
-    name: "Artisan Craft Studio",
-    location: "Bhaktapur Durbar Square",
-    image: ProjectDummyImage,
-  },
-  {
-    id: "11",
-    name: "The Coding Yard",
-    location: "Pokhara, Chipledhunga",
-    image: ProjectDummyImage,
-  },
-  {
-    id: "12",
-    name: "Urban Roots Farm",
-    location: "Kathmandu, Kirtipur",
-    image: ProjectDummyImage,
-  },
-  {
-    id: "13",
-    name: "The Heritage Hostel",
-    location: "Patan, Mangal Bazar",
-    image: ProjectDummyImage,
-  },
-  {
-    id: "14",
-    name: "Sustainable Living Initiative",
-    location: "Dhading",
-    image: ProjectDummyImage,
-  },
-  {
-    id: "15",
-    name: "Remote Work Cabin",
-    location: "Rara Lake",
-    image: ProjectDummyImage,
-  },
 ];
