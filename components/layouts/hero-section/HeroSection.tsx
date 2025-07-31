@@ -9,6 +9,7 @@ import {
     AnimatedArrow,
     AnimatedImageContainer
 } from '@/components/animations/animated-component';
+import AnimatedCursor from "@/components/animations/cursor/AnimatedCursor";
 
 export default function HeroSection() {
     return (
@@ -24,11 +25,12 @@ export default function HeroSection() {
                     </AnimatedDescription>
 
                     <AnimatedButton>
-                        <div className="h-12 w-44 text-sm flex justify-center items-center bg-black text-white rounded-full cursor-pointer px-1 gap-2 hover:scale-105 transition-transform duration-500" >
+                        <div className=" relative h-12 w-44 text-sm flex justify-center items-center bg-black text-white rounded-full cursor-pointer px-1 gap-2 hover:scale-105 transition-transform duration-500" >
                             <div>Learn More</div>
                             <AnimatedArrow className="text-2xl">
                                 <ArrowRight size={17} />
                             </AnimatedArrow>
+                            <AnimatedCursor />
                         </div>
                     </AnimatedButton>
                 </div>
