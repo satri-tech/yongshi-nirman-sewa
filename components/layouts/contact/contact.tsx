@@ -1,5 +1,6 @@
 import { AnimatedButton, AnimatedTitle, AnimationWrapper } from '@/components/animations/animated-component';
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card';
 import HeaderTitle from '@/components/ui/HeaderTitle'
 import Map from '@/components/ui/Map'
 import { fadeInDown, fadeInLeft, staggerItem } from '@/hooks/use-scroll-animation';
@@ -27,7 +28,7 @@ export default function Contact() {
                     <div className='flex pt-10 flex-col lg:flex-row gap-8'>
                         {/* Contact Form */}
                         <AnimationWrapper className='w-full lg:w-8/12' variants={staggerItem}>
-                            <div className="flex flex-col p-6 border rounded-lg gap-2 w-full  font-Poppins">
+                            <Card className="flex flex-col p-6  rounded-lg gap-2 w-full  font-Poppins">
                                 <h3 className="text-xl  font-semibold mb-4 border-b pb-4">Get in Touch</h3>
                                 <div className="flex flex-col md:flex-row text-xs justify-between gap-4 ">
                                     <div className="flex flex-col gap-1 w-full">
@@ -63,7 +64,7 @@ export default function Contact() {
                                     />
                                 </div>
                                 <Button className='py-5 ml-auto rounded-sm px-8'>Send <SendHorizontal /></Button>
-                            </div>
+                            </Card>
                         </AnimationWrapper>
 
 

@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { ISidebarProps } from "./types";
 import { scrollToElement } from "@/lib/utils/scroll";
+import { usePathname, useRouter } from "next/navigation";
 
 export const useSidebar = ({ sidebar, handleToggleMenu }: ISidebarProps) => {
+  const pathname = usePathname();
+  const router = useRouter();
   const [menuList, setMenuList] = useState(false);
+
   useEffect(() => {
     if (sidebar) {
       setTimeout(() => {
@@ -13,16 +17,29 @@ export const useSidebar = ({ sidebar, handleToggleMenu }: ISidebarProps) => {
       setMenuList(false);
     }
   }, [sidebar]);
+
   const navigateToLink = (id: string) => {
-    if (id === "home") {
-      if (typeof window !== "undefined") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+    if (pathname !== "/") {
       handleToggleMenu(false);
+
+      router.push("/"); // ✅ Use router.push instead of redirect()
+
+      setTimeout(() => {
+        scrollToElement(id);
+      }, 500);
+
+      return;
+    }
+
+    if (id === "portfolio") {
+      handleToggleMenu(false);
+      router.push("/portfolio");
+      return;
     }
 
     scrollToElement(id);
     handleToggleMenu(false);
   };
+
   return { menuList, navigateToLink };
 };

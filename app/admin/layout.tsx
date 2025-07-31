@@ -40,7 +40,7 @@ export default function AdminLayout({
 
     const headerData = {
         team: {
-            name: "Client Name",
+            name: "Yongshi Nirman Sewa",
             logo: Building,
             plan: "Admin Panel",
         },
@@ -61,13 +61,11 @@ export default function AdminLayout({
         ],
     };
     const dummyData: IDummyData = {
-        // Changed from array to single object
         name: "",
         email: "",
         id: "",
     };
 
-    // Transform session?.user into IUserData format
     const userData = session?.user
         ? {
             name: session.user.name || "",

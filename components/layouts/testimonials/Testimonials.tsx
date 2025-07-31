@@ -32,7 +32,7 @@ export default function Testimonials() {
                 {/* First slider with first half of testimonials */}
                 <InfiniteSlider speedOnHover={30} speed={70} gap={16} >
                     {firstHalf.map((testimonial, index) => (
-                        <Card key={`${testimonial.content}-${index}`} className="w-[28rem] h-60 flex-shrink-0 py-2 cursor-pointer bg-[#f8fafb]">
+                        <Card key={`${testimonial.content}-${index}`} className="w-[28rem] h-60 flex-shrink-0 py-2 cursor-pointer ">
                             <CardContent className="p-6 h-full ">
                                 <div className="flex flex-col h-full gap-4">
                                     {/* Rating Stars */}
