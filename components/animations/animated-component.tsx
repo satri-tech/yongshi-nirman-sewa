@@ -15,6 +15,24 @@ interface AnimatedWrapperProps {
     className?: string;
     variants?: Variants;
 }
+export function AnimationWrapper({ children, className, variants }: AnimatedWrapperProps) {
+    const animation = useScrollAnimation(0.1, true);
+
+    return (
+        <motion.div
+            ref={animation.ref}
+            variants={staggerContainer}
+            initial="hidden"
+            animate={animation.controls}
+            className={className}
+        >
+            <motion.div variants={variants || staggerItem}>
+                {children}
+            </motion.div>
+        </motion.div>
+    );
+}
+
 
 export function AnimatedTitle({ children, className, variants }: AnimatedWrapperProps) {
     const animation = useScrollAnimation(0.1, true);

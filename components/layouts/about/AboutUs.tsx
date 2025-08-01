@@ -2,21 +2,14 @@
 import HeaderTitle from "@/components/ui/HeaderTitle";
 import { StatsSection } from "../stats";
 import { data } from "./constants"
-import { motion } from 'framer-motion';
 import {
-    useScrollAnimation,
-    fadeInUp,
     fadeInLeft,
-    fadeInRight,
-    staggerContainer,
     staggerItem
 } from '@/hooks/use-scroll-animation';
 import {
     AnimatedTitle,
     AnimatedDescription,
     AnimatedButton,
-    AnimatedArrow,
-    AnimatedImageContainer
 } from '@/components/animations/animated-component';
 export default function AboutUs() {
 

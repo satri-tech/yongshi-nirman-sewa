@@ -14,7 +14,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Building, Settings, User } from "lucide-react";
+import { Building, LayoutDashboard, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Outfit } from "next/font/google";
@@ -40,7 +40,7 @@ export default function AdminLayout({
 
     const headerData = {
         team: {
-            name: "Client Name",
+            name: "Yongshi Nirman Sewa",
             logo: Building,
             plan: "Admin Panel",
         },
@@ -49,9 +49,14 @@ export default function AdminLayout({
     const navMainData = {
         items: [
             {
-                title: "Users",
+                title: "Dashboard",
                 url: "/admin",
-                icon: User,
+                icon: LayoutDashboard,
+            },
+            {
+                title: "Slides",
+                url: "/admin/slides",
+                icon: LayoutDashboard,
             },
             {
                 title: "Settings",
@@ -61,13 +66,11 @@ export default function AdminLayout({
         ],
     };
     const dummyData: IDummyData = {
-        // Changed from array to single object
         name: "",
         email: "",
         id: "",
     };
 
-    // Transform session?.user into IUserData format
     const userData = session?.user
         ? {
             name: session.user.name || "",
