@@ -52,8 +52,8 @@ export default function Team() {
                     <div className="mt-6 md:mt-8">
                         <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
                             {members.map((member, index) => (
-                                <AnimatedImageContainer variants={staggerItem}>
-                                    <div key={index} className="group overflow-hidden cursor-pointer">
+                                <AnimatedImageContainer variants={staggerItem} key={index}>
+                                    <div className="group overflow-hidden cursor-pointer">
                                         <Image className="h-80 w-full rounded-md object-cover object-top grayscale transition-all duration-500 hover:grayscale-0 group-hover:h-72 group-hover:rounded-xl" src={member.avatar} alt="team member" width="826" height="1239" />
                                         <div className="px-2 pt-2 sm:pb-0 sm:pt-4">
                                             <div className="flex justify-between">

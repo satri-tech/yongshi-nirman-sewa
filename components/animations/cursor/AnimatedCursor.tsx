@@ -13,8 +13,8 @@ type CursorProps = {
 
 export default function AnimatedCursor({
     cursorIcon: Icon = MousePointer2,
-    iconColor = "#4960f5",
-    iconFill = "#364ee6",
+    iconColor = "#1b1a1a",
+    iconFill = "#000",
     tooltipText = "Click Me!",
     showTooltip = true,
     tooltipClassName = "",
@@ -40,7 +40,7 @@ export default function AnimatedCursor({
 
                 {showTooltip && (
                     <div
-                        className={`absolute left-[24px] top-[24px] bg-[#364ee6] text-white px-2 py-1 rounded text-xs whitespace-nowrap shadow-lg ${tooltipClassName}`}
+                        className={`absolute left-[24px] top-[24px] bg-[#1b1a1a]  text-white px-2 py-1 rounded text-xs whitespace-nowrap shadow-lg ${tooltipClassName}`}
                     >
                         {tooltipText}
                     </div>
