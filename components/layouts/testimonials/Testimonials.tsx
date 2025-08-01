@@ -6,7 +6,6 @@ import { InfiniteSlider } from "@/components/animations/infinite-slider";
 import { BiSolidQuoteAltLeft } from "react-icons/bi";
 import { AnimatedButton, AnimatedTitle } from "@/components/animations/animated-component";
 import { fadeInDown, fadeInLeft } from "@/hooks/use-scroll-animation";
-
 export default function Testimonials() {
     // Split testimonials into two halves
     const midpoint = Math.ceil(testimonials.length / 2);
@@ -27,6 +26,7 @@ export default function Testimonials() {
                             {`Trusted by clients who value quality and results.`}
                         </div>
                     </div>
+
                 </AnimatedTitle>
 
                 {/* First slider with first half of testimonials */}
@@ -95,6 +95,7 @@ export default function Testimonials() {
                             </CardContent>
                         </Card>
                     ))}
+
                 </InfiniteSlider>
             </div>
         </div>

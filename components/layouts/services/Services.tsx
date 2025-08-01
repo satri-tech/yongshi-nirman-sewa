@@ -7,6 +7,7 @@ import { servicesData } from "./constants";
 import { useServices } from "./useServices";
 import { AnimatedButton, AnimatedDescription, AnimatedImageContainer, AnimatedTitle } from "@/components/animations/animated-component";
 import { fadeInDown } from "@/hooks/use-scroll-animation";
+
 import AnimatedCursor from "@/components/animations/cursor/AnimatedCursor";
 
 const Services = () => {

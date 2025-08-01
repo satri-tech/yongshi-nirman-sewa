@@ -30,7 +30,7 @@ const members = [
         link: '#',
     },
 
-]
+// ]
 
 export default function Team() {
     return (
@@ -48,6 +48,7 @@ export default function Team() {
                                 Bringing passion and Expertise together!
                             </div>
                         </div>
+
                     </AnimatedTitle>
                     <div className="mt-6 md:mt-8">
                         <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -70,7 +71,7 @@ export default function Team() {
                                     </div>
                                 </AnimatedImageContainer>
                             ))}
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

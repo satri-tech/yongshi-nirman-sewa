@@ -1,3 +1,4 @@
+
 import { AnimatedButton, AnimatedTitle, AnimationWrapper } from '@/components/animations/animated-component';
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card';
@@ -7,7 +8,6 @@ import { fadeInDown, fadeInLeft, staggerItem } from '@/hooks/use-scroll-animatio
 import { SendHorizontal, MapPin, Phone, Mail } from 'lucide-react'
 import { BsGithub, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
 import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
-
 export default function Contact() {
     return (
         <div id="contact"
@@ -24,6 +24,7 @@ export default function Contact() {
                                 Any question? We would be happy to help you!
                             </div>
                         </div>
+
                     </AnimatedTitle>
                     <div className='flex pt-10 flex-col lg:flex-row gap-8'>
                         {/* Contact Form */}
@@ -68,9 +69,7 @@ export default function Contact() {
                         </AnimationWrapper>
 
 
-                        {/* Contact Information and Map */}
                         <div className="w-full lg:w-1/2 space-y-6">
-                            {/* Contact Info */}
 
                             <AnimationWrapper >
                                 <div className="dark:bg-gray-800 rounded-lg p-4 border">
@@ -157,7 +156,6 @@ export default function Contact() {
                             </AnimationWrapper>
 
 
-                        </div>
 
                     </div>
                     <AnimatedTitle>
@@ -166,7 +164,6 @@ export default function Contact() {
                             <Map className="w-full" />
                         </div>
                     </AnimatedTitle>
-
                 </div>
             </div>
         </div>

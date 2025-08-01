@@ -3,6 +3,7 @@ import { IProject } from "./types";
 import Link from "next/link";
 import { AnimatedImageContainer } from "@/components/animations/animated-component";
 import { staggerItem } from "@/hooks/use-scroll-animation";
+
 import AnimatedCursor from "@/components/animations/cursor/AnimatedCursor";
 
 const EachProjectCard = ({ project }: { project: IProject }) => {
