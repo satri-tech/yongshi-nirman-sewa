@@ -64,7 +64,7 @@ export function AppSidebar({
       <SidebarFooter>
         <NavUser
           user={{
-            name: userData.name || "Anonymous User",
+            name: userData.name || "",
             email: userData.email,
             avatar: DefaultImage.src, // fallback avatar
           }}

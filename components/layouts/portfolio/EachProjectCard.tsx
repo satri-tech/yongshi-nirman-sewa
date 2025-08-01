@@ -4,10 +4,13 @@ import Link from "next/link";
 import { AnimatedImageContainer } from "@/components/animations/animated-component";
 import { staggerItem } from "@/hooks/use-scroll-animation";
 
+import AnimatedCursor from "@/components/animations/cursor/AnimatedCursor";
+
 const EachProjectCard = ({ project }: { project: IProject }) => {
     return (
         <AnimatedImageContainer variants={staggerItem}>
-            <Link href={`/portfolio/1`} className="group overflow-hidden cursor-pointer">
+            <Link href={`/portfolio/1`} className="relative group overflow-hidden cursor-pointer">
+                <AnimatedCursor />
                 <Image className="h-[19rem] w-full rounded-md object-cover object-top  transition-all duration-500  group-hover:h-72 group-hover:rounded-xl" src={project.image}
                     alt="team member" width="826" height="1239" />
                 <div className="px-2 pt-2 sm:pb-0 sm:pt-4">

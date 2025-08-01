@@ -8,6 +8,8 @@ import { useServices } from "./useServices";
 import { AnimatedButton, AnimatedDescription, AnimatedImageContainer, AnimatedTitle } from "@/components/animations/animated-component";
 import { fadeInDown } from "@/hooks/use-scroll-animation";
 
+import AnimatedCursor from "@/components/animations/cursor/AnimatedCursor";
+
 const Services = () => {
     const { activeImage, activeService, handleServiceClick } = useServices();
 
@@ -48,7 +50,7 @@ const Services = () => {
                                         whileHover={{ scale: 1.01 }}
                                     >
                                         <div
-                                            className="flex w-full justify-between items-center cursor-pointer h-20"
+                                            className="relative flex w-full justify-between items-center cursor-pointer h-20"
                                             onClick={() => handleServiceClick(index)}
                                         >
                                             <div className="sm:text-4xl text-3xl font-medium">
@@ -61,6 +63,7 @@ const Services = () => {
                                                     <BsPlusLg />
                                                 )}
                                             </div>
+                                            <AnimatedCursor iconFill="#000" iconColor="#1b1a1a" />
                                         </div>
                                         <AnimatePresence>
                                             {activeService === index && (

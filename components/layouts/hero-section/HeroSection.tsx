@@ -1,16 +1,16 @@
 import ImageSwiper from "@/components/ui/ImageSwiper";
 import { SwiperImages } from './constants'
-import { ArrowRight } from "lucide-react";
 import { data } from './constants'
 import {
     AnimatedTitle,
     AnimatedDescription,
     AnimatedButton,
-    AnimatedArrow,
     AnimatedImageContainer
 } from '@/components/animations/animated-component';
+import InteractiveButton from "./InteractiveButton";
 
 export default function HeroSection() {
+
     return (
         <section className="h-max l:w-[92%] w-[90%] flex flex-col gap-10 z-49">
             <div className="flex md:flex-row flex-col md:justify-between w-full md:gap-2 gap-4">
@@ -24,12 +24,7 @@ export default function HeroSection() {
                     </AnimatedDescription>
 
                     <AnimatedButton>
-                        <div className="h-12 w-44 text-sm flex justify-center items-center bg-black text-white rounded-full cursor-pointer px-1 gap-2 hover:scale-105 transition-transform duration-500" >
-                            <div>Learn More</div>
-                            <AnimatedArrow className="text-2xl">
-                                <ArrowRight size={17} />
-                            </AnimatedArrow>
-                        </div>
+                        <InteractiveButton />
                     </AnimatedButton>
                 </div>
 
