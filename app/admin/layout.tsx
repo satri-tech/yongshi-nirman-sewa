@@ -54,8 +54,8 @@ export default function AdminLayout({
                 icon: LayoutDashboard,
             },
             {
-                title: "Slides",
-                url: "/admin/slides",
+                title: "Portfolio",
+                url: "/admin/portfolio",
                 icon: LayoutDashboard,
             },
             {
