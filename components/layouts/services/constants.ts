@@ -4,7 +4,7 @@ export const servicesData: ServiceData[] = [
   {
     title: "Architectural Planning",
     description:
-      "Detailed site planning, drawings, and blueprints—laying the groundwork for efficient and regulation-compliant construction.",
+      "Detailed site planning, and blueprints—laying the groundwork for efficient and regulation-compliant construction.",
     image:
       "https://cdn.dribbble.com/userupload/15849259/file/original-620c94b5ed3e6ad0ca42ced4c8958d34.png?resize=1200x675",
   },
