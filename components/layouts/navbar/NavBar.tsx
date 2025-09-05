@@ -5,6 +5,9 @@ import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { useNavbar } from "./useNavbar";
 import { NavbarProps } from "./types";
 import { NAV_LINKS } from "./constants";
+import { Button } from "@/components/ui/button";
+import { AnimatedArrow } from "@/components/animations/animated-component";
+import { ArrowRight } from "lucide-react";
 
 export const Navbar = ({ onMenuToggle }: NavbarProps) => {
     const { handleMenuClick, toInitial } = useNavbar(onMenuToggle);
@@ -35,6 +38,12 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                     >
                         <HiOutlineMenuAlt4 />
                     </button>
+                    {/* <Button className="h-10 w-32 text-sm flex justify-center items-center bg-black text-white rounded-full cursor-pointer px-1 gap-2 hover:scale-105 transition-transform duration-500" >
+                        <div>Book Us</div>
+                        <AnimatedArrow className="text-2xl">
+                            <ArrowRight size={17} />
+                        </AnimatedArrow>
+                    </Button> */}
                 </div>
 
                 <button
