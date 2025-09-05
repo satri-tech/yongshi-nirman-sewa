@@ -157,13 +157,14 @@ export default function Contact() {
 
 
 
-                    </div>
-                    <AnimatedTitle>
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">Find Us Here</h3>
-                            <Map className="w-full" />
                         </div>
-                    </AnimatedTitle>
+                        <AnimatedTitle>
+                            <div>
+                                <h3 className="text-xl font-semibold mb-4">Find Us Here</h3>
+                                <Map className="w-full" />
+                            </div>
+                        </AnimatedTitle>
+                    </div>
                 </div>
             </div>
         </div>

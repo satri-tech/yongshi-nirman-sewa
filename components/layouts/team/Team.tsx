@@ -29,8 +29,7 @@ const members = [
         avatar: Member1,
         link: '#',
     },
-
-// ]
+]
 
 export default function Team() {
     return (
@@ -71,10 +70,11 @@ export default function Team() {
                                     </div>
                                 </AnimatedImageContainer>
                             ))}
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     )
 }
