@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import CreatePortfolio from './CreatePortfolio'
+import CreatePortfolio from '../CreatePortfolio'
 const ActionsComponent = () => {
     return (
         <div className=" rounded-lg shadow-sm border p-3 mb-6">

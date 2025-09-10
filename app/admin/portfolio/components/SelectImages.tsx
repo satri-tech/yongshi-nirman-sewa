@@ -2,7 +2,7 @@ import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/f
 import { Input } from "@/components/ui/input";
 import { Eye, ImageIcon, Paperclip, X } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
-import { formSchema, IFiles } from "./CreatePortfolio";
+import { formSchema, IFiles } from "../CreatePortfolio";
 import z from "zod";
 import { toast } from "sonner";
 import { useRef, useState } from "react";

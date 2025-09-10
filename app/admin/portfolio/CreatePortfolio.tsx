@@ -1,5 +1,4 @@
-// Updated form component with API integration
-
+'use client'
 import { Button } from "@/components/ui/button"
 import { Plus, Paperclip } from "lucide-react"
 import { z } from "zod"
@@ -18,11 +17,10 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
-import SelectStartDate from "./StartDate"
-import SelectEndDate from "./SelectEndDate"
+import SelectStartDate from "./components/StartDate"
+import SelectEndDate from "./components/SelectEndDate"
 import { useState } from "react"
-import SelectImages from "./SelectImages"
-import { useRouter } from "next/navigation"
+import SelectImages from "./components/SelectImages"
 
 export interface IFiles {
     url: string;
@@ -98,7 +96,6 @@ async function createProjectAPI(formData: FormData) {
 export default function CreatePortfolio() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
-    const router = useRouter();
 
     // 1. Define your form
     const form = useForm<z.infer<typeof formSchema>>({

@@ -1,4 +1,3 @@
-
 import {
     FormControl,
     FormField,
@@ -19,7 +18,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { formSchema } from "./CreatePortfolio";
+import { formSchema } from "../CreatePortfolio";
 
 type FormSchema = z.infer<typeof formSchema>;
 
@@ -27,17 +26,17 @@ interface SelectDeadlineProps {
     form: UseFormReturn<FormSchema>;
 }
 
-export default function SelectStartDate({ form }: SelectDeadlineProps) {
+export default function SelectEndDate({ form }: SelectDeadlineProps) {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
     return (
         <FormField
             control={form.control}
-            name="startDate"
+            name="endDate"
             render={({ field }) => (
-                <FormItem className="flex flex-col w-full ">
+                <FormItem className="flex flex-col  w-full ">
                     <FormLabel className="text-base font-medium">
-                        Start Date
+                        End Date
                         <span className="text-red-500">*</span>
                     </FormLabel>
                     <div className="flex flex-col gap-1 w-full">
@@ -51,7 +50,7 @@ export default function SelectStartDate({ form }: SelectDeadlineProps) {
                                     <Button
                                         variant={"outline"}
                                         className={cn(
-                                            "w-full justify-start text-left py-5 font-normal dark:bg-neutral-950",
+                                            "w-full justify-start py-5 text-left font-normal dark:bg-neutral-950",
                                             !field.value && "text-muted-foreground"
                                         )}
                                     >
@@ -71,7 +70,6 @@ export default function SelectStartDate({ form }: SelectDeadlineProps) {
                                             field.onChange(date || null);
                                             setIsCalendarOpen(false); // Close the calendar after selection
                                         }}
-
                                         initialFocus
                                     />
                                 </PopoverContent>

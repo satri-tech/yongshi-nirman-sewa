@@ -1,5 +1,6 @@
 "use client"
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
 // Image Gallery Component
@@ -18,10 +19,12 @@ export default function ImageGallery({ images, projectTitle }) {
         <div className="relative">
             {/* Main Image */}
             <div className="relative cursor-pointer" >
-                <img
-                    src={images[currentImage]?.url || "/placeholder.svg"}
+                <Image
+                    src={images[currentImage] || "/placeholder.svg"}
                     alt={`${projectTitle} - Image ${currentImage + 1}`}
                     className="w-full h-48 object-cover rounded-t-xl"
+                    width={100}
+                    height={100}
                 />
 
                 {/* Dark gradient overlay */}
