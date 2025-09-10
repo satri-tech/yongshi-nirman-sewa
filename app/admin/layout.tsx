@@ -14,13 +14,13 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Building, LayoutDashboard, Settings } from "lucide-react";
+import { Building, LayoutDashboard, Settings, FolderKanban } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Outfit } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 
-const outfit = Outfit({
+export const outfit = Outfit({
     variable: "--font-outfit",
     subsets: ["latin"],
 });
@@ -56,7 +56,7 @@ export default function AdminLayout({
             {
                 title: "Portfolio",
                 url: "/admin/portfolio",
-                icon: LayoutDashboard,
+                icon: FolderKanban,
             },
             {
                 title: "Settings",
@@ -86,6 +86,7 @@ export default function AdminLayout({
             enableSystem
             disableTransitionOnChange
         >
+
             <SidebarProvider className={outfit.className}>
                 <AppSidebar
                     headerData={headerData}

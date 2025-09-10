@@ -108,12 +108,12 @@ export default function PortfolioPage() {
 
     return (
         <div className="min-h-screen py-2">
-            <div className="w-full">
-                <div className="px-6 py-8 mb-8">
+            <div className="w-full px-2">
+                <div className=" mb-4">
                     {/* Header */}
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h1 className="text-3xl font-bold">Portfolio Management</h1>
+                             <h1 className="text-3xl font-bold">Portfolio Management</h1>
                             <p className="mt-2">
                                 Create and manage your construction projects portfolio
                             </p>
@@ -158,11 +158,6 @@ export default function PortfolioPage() {
                                         <Calendar className="w-4 h-4" />
                                         <span>{project.completionDate}</span>
                                     </div>
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <RiMoneyRupeeCircleFill className="w-4 h-4" />
-                                        <span>{project.budget}</span>
-                                    </div>
-
                                 </div>
 
                                 {/* Action Buttons */}

@@ -7,8 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import CreatePortfolio from './CreatePortfolio'
 const ActionsComponent = () => {
     return (
         <div className=" rounded-lg shadow-sm border p-3 mb-6">
@@ -40,11 +39,9 @@ const ActionsComponent = () => {
                             <SelectItem value="pending">Pending</SelectItem>
                         </SelectContent>
                     </Select>
+                    <CreatePortfolio />
 
-                    <Button>
-                        <Plus className="w-5 h-5" />
-                        Add New Project
-                    </Button>
+
                 </div>
             </div >
         </div >

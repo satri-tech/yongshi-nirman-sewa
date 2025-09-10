@@ -4,7 +4,7 @@ import { RiMoneyRupeeCircleFill } from 'react-icons/ri'
 
 const StatsCard = ({ projects }: any) => {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             <div className=" border rounded-lg p-4">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
