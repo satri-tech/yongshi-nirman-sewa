@@ -5,9 +5,6 @@ import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { useNavbar } from "./useNavbar";
 import { NavbarProps } from "./types";
 import { NAV_LINKS } from "./constants";
-import { Button } from "@/components/ui/button";
-import { AnimatedArrow } from "@/components/animations/animated-component";
-import { ArrowRight } from "lucide-react";
 
 export const Navbar = ({ onMenuToggle }: NavbarProps) => {
     const { handleMenuClick, toInitial } = useNavbar(onMenuToggle);

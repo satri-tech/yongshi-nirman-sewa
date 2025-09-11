@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export interface IProject {
   id: string;
@@ -40,6 +41,28 @@ export interface IProjectsResponse {
   error?: string;
 }
 
+// Define the where clause type based on Prisma schema
+type ProjectWhereInput = Prisma.PortfolioWhereInput;
+
+// Define the order by type
+type ProjectOrderByInput = Prisma.PortfolioOrderByWithRelationInput;
+
+// Define possible Prisma error codes
+interface PrismaError extends Error {
+  code: string;
+  meta?: Record<string, unknown>;
+}
+
+// Type guard to check if error is a Prisma error
+function isPrismaError(error: unknown): error is PrismaError {
+  return (
+    error !== null &&
+    typeof error === "object" &&
+    "code" in error &&
+    typeof (error as PrismaError).code === "string"
+  );
+}
+
 // Main function to fetch all projects with pagination and filtering
 export async function fetchProjects(
   params: IPaginationParams = {}
@@ -60,7 +83,7 @@ export async function fetchProjects(
     const skip = (validatedPage - 1) * validatedLimit;
 
     // Build where clause for filtering
-    const whereClause: any = {};
+    const whereClause: ProjectWhereInput = {};
 
     // Search functionality
     if (search && search.trim()) {
@@ -98,8 +121,9 @@ export async function fetchProjects(
     }
 
     // Build orderBy clause
-    const orderBy: any = {};
-    orderBy[sortBy] = sortOrder;
+    const orderBy: ProjectOrderByInput = {
+      [sortBy]: sortOrder,
+    };
 
     console.log("Fetching projects with params:", {
       page: validatedPage,
@@ -147,8 +171,8 @@ export async function fetchProjects(
     console.error("Error fetching projects:", error);
 
     // Handle specific Prisma errors
-    if (error && typeof error === "object" && "code" in error) {
-      switch ((error as any).code) {
+    if (isPrismaError(error)) {
+      switch (error.code) {
         case "P1001":
           return {
             success: false,

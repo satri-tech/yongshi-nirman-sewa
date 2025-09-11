@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import StatsCard from "./components/StatsCard";
 import ActionsComponent from "./components/ActionsComponent";
 import Projects from "./Projects";

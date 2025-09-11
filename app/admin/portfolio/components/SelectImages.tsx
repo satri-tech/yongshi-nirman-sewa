@@ -1,8 +1,8 @@
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Eye, ImageIcon, Paperclip, X } from "lucide-react";
+import { ImageIcon, X } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
-import { formSchema, IFiles } from "../CreatePortfolio";
+import { formSchema } from "../CreatePortfolio";
 import z from "zod";
 import { toast } from "sonner";
 import { useRef, useState } from "react";
@@ -17,7 +17,6 @@ interface SelectImageProps {
 export default function SelectImages({ form, selectedAttachments = [] }: SelectImageProps) {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [selectedFiles, setSelectedFiles] = useState<File[]>(selectedAttachments);
-    const [removedAttachments, setRemovedAttachments] = useState<IFiles[]>([]);
 
     // Updated handleFileChange function - images only
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,21 +86,6 @@ export default function SelectImages({ form, selectedAttachments = [] }: SelectI
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
         }
-    };
-
-    // Function to mark an existing attachment for removal
-    const handleRemoveExistingAttachment = (attachment: IFiles) => {
-        // Add to removed attachments list if not already present
-        if (!removedAttachments.some((a) => a.url === attachment.url)) {
-            setRemovedAttachments((prev) => [...prev, attachment]);
-        }
-    };
-
-    // Function to cancel the removal of an existing attachment
-    const handleCancelRemoveExistingAttachment = (attachment: IFiles) => {
-        setRemovedAttachments((prev) =>
-            prev.filter((a) => a.url !== attachment.url)
-        );
     };
 
     const handleRemoveSelectedFile = (index: number) => {

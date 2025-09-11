@@ -1,28 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Badge, Calendar, Edit, Eye, Grid, MapPin, MoreHorizontal, Square, SquareArrowOutUpRight, Trash2, User } from "lucide-react";
-import Image from "next/image";
+import { Calendar, Grid, MapPin, SquareArrowOutUpRight, } from "lucide-react";
 import ImageGallery from "./ImageGallery";
 import StatusBadge from "./StatusBadge";
-import CategoryBadge from "./CategoryBadge";
+import DeleteProject from "./DeleteProject";
+import EditProject from "./EditProject";
+import { IProject } from "@/app/actions/fetchProjects";
+interface IProjectCard {
+    project: IProject
+}
 
-export default function ProjectCard({ project }) {
-    // Get status color
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case "Completed":
-                return "bg-green-100 text-green-800 hover:bg-green-200";
-            case "InProgress":
-                return "bg-blue-100 text-blue-800 hover:bg-blue-200";
-            case "Pending":
-                return "bg-yellow-100 text-yellow-800 hover:bg-yellow-200";
-            case "OnHold":
-                return "bg-red-100 text-red-800 hover:bg-red-200";
-            default:
-                return "bg-gray-100 text-gray-800 hover:bg-gray-200";
-        }
-    };
+export default function ProjectCard({ project }: IProjectCard) {
 
     // Format date
     const formatDate = (date: Date | null) => {
@@ -80,12 +67,8 @@ export default function ProjectCard({ project }) {
                     <SquareArrowOutUpRight className="w-4 h-4 mr-2" />
                     View Details
                 </Button>
-                <Button variant={'outline'} size={'icon'}>
-                    <Edit className="w-4 h-4" />
-                </Button>
-                <Button variant={'secondary'} size={'icon'}>
-                    <Trash2 className="w-4 h-4" />
-                </Button>
+                <EditProject project={project} />
+                <DeleteProject variant="both" project={project} />
             </div>
 
         </div>

@@ -1,7 +1,6 @@
 export const dynamic = "force-dynamic"
 import { fetchProjectStats } from '@/app/actions/fetchProjects'
 import { Building, CheckCircle2, Grid, Loader2 } from 'lucide-react'
-import { RiMoneyRupeeCircleFill } from 'react-icons/ri'
 export default async function StatsCard() {
     const response = await fetchProjectStats();
 
