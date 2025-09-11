@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Calendar, Grid, MapPin, SquareArrowOutUpRight, } from "lucide-react";
+import { Calendar, Grid, MapPin } from "lucide-react";
 import ImageGallery from "./ImageGallery";
 import StatusBadge from "./StatusBadge";
 import DeleteProject from "./DeleteProject";
