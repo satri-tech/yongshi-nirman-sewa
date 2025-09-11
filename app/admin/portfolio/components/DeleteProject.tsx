@@ -107,12 +107,7 @@ export default function DeleteProject({
         );
       case "both":
         return (
-          <Button
-            variant="outline"
-            size="default"
-            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-            disabled={isDeleting}
-          >
+          <Button className="flex-1 cursor-pointer" variant={'destructive'}>
             <Trash2 className="w-4 h-4 mr-2" />
             Delete
           </Button>
@@ -123,7 +118,7 @@ export default function DeleteProject({
           <Button
             variant="outline"
             size="icon"
-            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+            className="text-red-600 hover:text-red-700 cursor-pointer hover:bg-red-50 border-red-200"
             aria-label="Delete Project"
             disabled={isDeleting}
           >
@@ -140,7 +135,7 @@ export default function DeleteProject({
       <AlertDialogTrigger asChild>
         {renderTrigger()}
       </AlertDialogTrigger>
-      <AlertDialogContent className="sm:max-w-[425px]">
+      <AlertDialogContent className="sm:max-w-base">
         <AlertDialogHeader>
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
@@ -162,8 +157,8 @@ export default function DeleteProject({
             </p>
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter className="gap-2 sm:gap-0">
-          <AlertDialogCancel disabled={isDeleting}>
+        <AlertDialogFooter className="gap-2 ">
+          <AlertDialogCancel disabled={isDeleting} className="cursor-pointer">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
@@ -172,7 +167,7 @@ export default function DeleteProject({
               handleDelete();
             }}
             disabled={isDeleting}
-            className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            className="bg-red-600 hover:bg-red-700 focus:ring-red-600 cursor-pointer"
           >
             {isDeleting ? (
               <>

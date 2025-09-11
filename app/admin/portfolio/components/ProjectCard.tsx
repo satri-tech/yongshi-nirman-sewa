@@ -63,10 +63,6 @@ export default function ProjectCard({ project }: IProjectCard) {
 
             {/* Action Buttons */}
             <div className="flex gap-2 p-2 rounded border w-full">
-                <Button className="flex-1">
-                    <SquareArrowOutUpRight className="w-4 h-4 mr-2" />
-                    View Details
-                </Button>
                 <EditProject project={project} />
                 <DeleteProject variant="both" project={project} />
             </div>

@@ -197,8 +197,9 @@ export default function EditProject({ project }: EditProjectProps) {
   return (
     <Sheet open={isSheetOpen} onOpenChange={handleSheetOpenChange}>
       <SheetTrigger asChild>
-        <Button variant={'outline'} size={'icon'} aria-label="Edit Project">
+        <Button className="flex-1 cursor-pointer">
           <Edit className="w-4 h-4" />
+          Edit
         </Button>
       </SheetTrigger>
       <SheetContent className="sm:max-w-xl gap-0 pb-2 p-6 md:max-w-2xl lg:max-w-3xl font-medium dark:bg-neutral-950 text-black dark:text-white overflow-y-auto">
@@ -357,7 +358,7 @@ export default function EditProject({ project }: EditProjectProps) {
                     return (
                       <div key={url} className="relative group">
                         <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700">
-                          <Image src={url} alt="project image" width={100} height={100} className="w-full h-full object-cover" />
+                          <Image src={`/api/images/projects/${url}`} alt="project image" width={100} height={100} className="w-full h-full object-cover" />
                         </div>
                         {marked && (
                           <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">

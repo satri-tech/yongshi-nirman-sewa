@@ -21,6 +21,7 @@ import SelectStartDate from "./components/StartDate"
 import SelectEndDate from "./components/SelectEndDate"
 import { useState } from "react"
 import SelectImages from "./components/SelectImages"
+import { useRouter } from "next/navigation"
 
 export interface IFiles {
     url: string;
@@ -94,6 +95,8 @@ async function createProjectAPI(formData: FormData) {
 }
 
 export default function CreatePortfolio() {
+    const router = useRouter();
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -182,6 +185,9 @@ export default function CreatePortfolio() {
 
                 // Close the sheet
                 setIsSheetOpen(false);
+                router.refresh();
+
+
             } else {
                 console.error("API error:", result.error);
                 toast.error("Failed to Create Project ❌", {
