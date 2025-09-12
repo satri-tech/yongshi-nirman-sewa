@@ -22,8 +22,8 @@ export const useNavbar = (onMenuToggle: (state: boolean) => void) => {
       return;
     }
 
-    if (id === "portfolio") {
-      router.push("/portfolio");
+    if (id === "projects") {
+      router.push("/projects");
       return;
     }
 

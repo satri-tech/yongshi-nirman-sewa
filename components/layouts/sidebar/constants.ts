@@ -12,8 +12,8 @@ export const links = [
     id: "services",
   },
   {
-    linkName: "Portfolio",
-    id: "portfolio",
+    linkName: "Projects",
+    id: "projects",
   },
   {
     linkName: "Team",

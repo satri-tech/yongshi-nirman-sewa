@@ -37,8 +37,8 @@ const Footer = () => {
             id: "services",
         },
         {
-            title: "Portfolio",
-            id: "portfolio",
+            title: "Projects",
+            id: "projects",
         },
         {
             title: "Team",
