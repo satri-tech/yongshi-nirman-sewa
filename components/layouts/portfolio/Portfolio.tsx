@@ -1,22 +1,23 @@
 "use client";
 import EachProjectCard from "./EachProjectCard";
 import HeaderTitle from "@/components/ui/HeaderTitle";
-import { usePortfolio } from "./usePortfolio";
 import { AnimatedArrow, AnimatedButton } from "@/components/animations/animated-component";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { fadeInDown, fadeInLeft } from "@/hooks/use-scroll-animation";
+import { IProject } from "@/app/actions/fetchProjects";
 
 interface PortfolioComponentProps {
+    projectsdata?: IProject[]
     showExploreMoreButton?: boolean;
     showTopBorder?: boolean;
 }
 
 const PortfolioComponent = ({
+    projectsdata,
     showExploreMoreButton = true,
     showTopBorder = true,
 }: PortfolioComponentProps) => {
-    const { projectsdata } = usePortfolio();
 
     return (
         <div
@@ -39,7 +40,7 @@ const PortfolioComponent = ({
                     </AnimatedButton>
 
                     <div className="w-full grid grid-cols-1 lg:grid-cols-4 sm:grid-cols-2 gap-x-8 sm:gap-y-16 gap-y-12 justify-items-center">
-                        {projectsdata.map((data) => (
+                        {projectsdata?.map((data) => (
                             <EachProjectCard key={data.id} project={data} />
                         ))}
                     </div>

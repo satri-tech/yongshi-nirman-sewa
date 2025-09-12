@@ -1,9 +1,14 @@
 "use client"
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
+interface IImageGalleryProps {
+    images: string[];
+    projectTitle: string
+}
 // Image Gallery Component
-export default function ImageGallery({ images, projectTitle }) {
+export default function ImageGallery({ images, projectTitle }: IImageGalleryProps) {
     const [currentImage, setCurrentImage] = useState(0);
 
     const nextImage = () => {
@@ -18,10 +23,12 @@ export default function ImageGallery({ images, projectTitle }) {
         <div className="relative">
             {/* Main Image */}
             <div className="relative cursor-pointer" >
-                <img
-                    src={images[currentImage]?.url || "/placeholder.svg"}
+                <Image
+                    src={`/api/images/projects/${images[currentImage]}` || "/placeholder.svg"}
                     alt={`${projectTitle} - Image ${currentImage + 1}`}
                     className="w-full h-48 object-cover rounded-t-xl"
+                    width={700}
+                    height={1600}
                 />
 
                 {/* Dark gradient overlay */}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import SessionProviderWrapper from "@/lib/session-provider";
+import { Toaster } from "sonner";
 
 const poppins = Poppins({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
@@ -19,11 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${poppins.className}  antialiased`}
       >
         <SessionProviderWrapper>
+          <Toaster />
           {children}
         </SessionProviderWrapper>
       </body>
