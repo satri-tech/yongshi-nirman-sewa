@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button"
-import { Plus, Paperclip } from "lucide-react"
+import { Plus, Paperclip, Loader2 } from "lucide-react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -437,12 +437,12 @@ export default function CreatePortfolio() {
                             >
                                 {isSubmitting ? (
                                     <>
-                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                        <Loader2 className="h-4 w-4 animate-spin" />
                                         Creating...
                                     </>
                                 ) : (
                                     <>
-                                        Save Project <Plus className="ml-2" />
+                                        Save Project <Plus />
                                     </>
                                 )}
                             </Button>

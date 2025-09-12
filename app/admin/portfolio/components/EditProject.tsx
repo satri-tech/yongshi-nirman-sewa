@@ -33,7 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Edit, ImageIcon, X } from "lucide-react";
+import { Edit, ImageIcon, Loader2, X } from "lucide-react";
 import Image from "next/image";
 
 import SelectStartDate from "./StartDate";
@@ -408,7 +408,7 @@ export default function EditProject({ project }: EditProjectProps) {
               <Button type="submit" className="py-5" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     Saving...
                   </>
                 ) : (

@@ -1,7 +1,6 @@
 export const dynamic = 'force-dynamic'
 
 import StatsCard from "./components/StatsCard";
-import ActionsComponent from "./components/ActionsComponent";
 import Projects from "./Projects";
 
 export default function PortfolioPage() {
@@ -21,9 +20,7 @@ export default function PortfolioPage() {
                     {/* Stats */}
                     <StatsCard />
                 </div>
-
-                {/* Filters */}
-                <ActionsComponent />
+                {/* Projects showcase with search and filtering */}
                 <Projects />
             </div>
         </div>
