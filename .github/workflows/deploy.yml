@@ -8,16 +8,16 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-        
+
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
-          
+
       - name: Deploy to VPS
         run: |
           ssh -t -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
@@ -26,20 +26,24 @@ jobs:
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-          # Go to project or clone if not exists
+          # Navigate to project or clone if it doesn't exist
           cd ~/web/yongshi-nirman-sewa || (cd ~/web && git clone git@github.com:satri-tech/yongshi-nirman-sewa.git && cd yongshi-nirman-sewa)
 
-          # Pull latest code
+          # Pull latest code from master
           git pull origin master
 
           # Install dependencies
           npm install --legacy-peer-deps
 
-          # Prisma generate
+          # Generate Prisma client
           npx prisma generate
 
-          # Build Next.js
+          # Build Next.js project
           npm run build
 
-          # Restart PM2 app
+          # Restart PM2 app using ecosystem config
           pm2 stop yongshi-app || true
+          pm2 delete yongshi-app || true
+          pm2 start ~/web/yongshi-nirman-sewa/ecosystem.config.js
+          pm2 save
+          EOF
