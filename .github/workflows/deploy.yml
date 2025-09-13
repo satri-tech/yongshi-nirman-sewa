@@ -22,7 +22,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
           cd ~/web/yongshi-nirman-sewa || (cd ~/web && git clone https://github.com/satri-tech/yongshi-nirman-sewa.git && cd yongshi-nirman-sewa)
-          git pull origin main
+          git pull origin master
           npm install --legacy-peer-deps
           npx prisma generate
           npm run build
