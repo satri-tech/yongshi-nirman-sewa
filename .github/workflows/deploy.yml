@@ -26,24 +26,21 @@ jobs:
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-          # Navigate to project or clone if it doesn't exist
+          # Go to project or clone if not exists
           cd ~/web/yongshi-nirman-sewa || (cd ~/web && git clone git@github.com:satri-tech/yongshi-nirman-sewa.git && cd yongshi-nirman-sewa)
 
-          # Pull latest code from master
+          # Pull latest code
           git pull origin master
 
           # Install dependencies
           npm install --legacy-peer-deps
 
-          # Generate Prisma client
+          # Prisma generate
           npx prisma generate
 
-          # Build Next.js project
+          # Build Next.js
           npm run build
 
-          # Restart PM2 app using ecosystem config
+          # Restart PM2 app
           pm2 stop yongshi-app || true
-          pm2 delete yongshi-app || true
-          pm2 start ~/web/yongshi-nirman-sewa/ecosystem.config.js
-          pm2 save
           EOF
