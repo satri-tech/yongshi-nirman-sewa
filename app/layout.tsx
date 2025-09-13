@@ -26,6 +26,7 @@ export default function RootLayout({
       >
         <SessionProviderWrapper>
           <Toaster />
+          hello guys
           {children}
         </SessionProviderWrapper>
       </body>
