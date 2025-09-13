@@ -28,6 +28,7 @@ export const authOptions: NextAuthOptions = {
           name: user.username,
           email: user.email,
           isVerified: user.isVerified,
+          role: user.role,
         };
       },
     }),
@@ -46,6 +47,7 @@ export const authOptions: NextAuthOptions = {
         if (dbUser) {
           token.userId = dbUser.id.toString();
           token.isVerified = dbUser.isVerified;
+          token.role = dbUser.role;
         }
       }
       return token;

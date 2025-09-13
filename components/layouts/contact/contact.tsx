@@ -1,3 +1,4 @@
+'use client';
 
 import { AnimatedButton, AnimatedTitle, AnimationWrapper } from '@/components/animations/animated-component';
 import { Button } from '@/components/ui/button'
@@ -5,10 +6,110 @@ import { Card } from '@/components/ui/card';
 import HeaderTitle from '@/components/ui/HeaderTitle'
 import Map from '@/components/ui/Map'
 import { fadeInDown, fadeInLeft, staggerItem } from '@/hooks/use-scroll-animation';
-import { SendHorizontal, MapPin, Phone, Mail } from 'lucide-react'
+import { SendHorizontal, MapPin, Phone, Mail, Loader2 } from 'lucide-react'
 import { BsGithub, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
 import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
+import { useState } from 'react';
+import { createContact } from '@/app/actions/contact';
+import { toast } from 'sonner';
+
+interface FormData {
+    fullName: string;
+    email: string;
+    phone: string;
+    message: string;
+}
+
+interface FormErrors {
+    fullName?: string;
+    email?: string;
+    phone?: string;
+    message?: string;
+    general?: string;
+}
+
 export default function Contact() {
+    const [formData, setFormData] = useState<FormData>({
+        fullName: '',
+        email: '',
+        phone: '',
+        message: ''
+    });
+
+    const [errors, setErrors] = useState<FormErrors>({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const validateForm = (): boolean => {
+        const newErrors: FormErrors = {};
+
+        if (!formData.fullName.trim()) {
+            newErrors.fullName = 'Full name is required';
+        }
+
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+
+        if (!formData.message.trim()) {
+            newErrors.message = 'Message is required';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+
+        // Clear error for this field when user starts typing
+        if (errors[name as keyof FormErrors]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: undefined
+            }));
+        }
+    };
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        try {
+            // Use createContactDirect and pass the form data object directly
+            const result = await createContact(formData);
+
+            if (result.success) {
+                toast.success("Thank you for your message! We'll get back to you soon.")
+                setFormData({
+                    fullName: '',
+                    email: '',
+                    phone: '',
+                    message: ''
+                });
+                setErrors({});
+            } else {
+                setErrors({
+                    general: result.message || 'Something went wrong. Please try again.'
+                });
+            }
+        } catch {
+            setErrors({
+                general: 'Something went wrong. Please try again.'
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
     return (
         <div id="contact"
             className={`flex lg:flex-row flex-col justify-center items-center w-full mt-24 h-max border-t-[0.1px] font-Poppins sm:pt-16 pt-8`}
@@ -24,55 +125,107 @@ export default function Contact() {
                                 Any question? We would be happy to help you!
                             </div>
                         </div>
-
                     </AnimatedTitle>
+
                     <div className='flex pt-10 flex-col lg:flex-col gap-8'>
                         {/* Contact Form */}
                         <div className='flex gap-8'>
-
                             <AnimationWrapper className='w-full lg:w-8/12' variants={staggerItem}>
                                 <Card className="flex flex-col p-6  rounded-lg gap-2 w-full  font-Poppins">
                                     <h3 className="text-xl  font-semibold mb-4 border-b pb-4">Get in Touch</h3>
-                                    <div className="flex flex-col md:flex-row text-xs justify-between gap-4 ">
-                                        <div className="flex flex-col gap-1 w-full">
-                                            <label htmlFor="">Full Name</label>
+                                    {/* Error Message */}
+                                    {errors.general && (
+                                        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md mb-4">
+                                            {errors.general}
+                                        </div>
+                                    )}
+
+                                    <form onSubmit={handleSubmit} className="space-y-4">
+                                        <div className="flex flex-col md:flex-row text-xs justify-between gap-4 ">
+                                            <div className="flex flex-col gap-1 w-full">
+                                                <label htmlFor="fullName">Full Name</label>
+                                                <input
+                                                    type="text"
+                                                    id="fullName"
+                                                    name="fullName"
+                                                    value={formData.fullName}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Enter your name"
+                                                    className={`placeholder:text-xs text-xs w-full border-2 h-12 rounded-md focus:outline-none pl-4 font-Poppins font-normal tracking-wide ${errors.fullName ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'
+                                                        }`}
+                                                />
+                                                {errors.fullName && (
+                                                    <span className="text-red-500 text-xs mt-1">{errors.fullName}</span>
+                                                )}
+                                            </div>
+                                            <div className="flex flex-col gap-1 w-full">
+                                                <label htmlFor="email">Your Email</label>
+                                                <input
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Enter your email"
+                                                    className={`placeholder:text-xs w-full border-2 h-12 rounded-md focus:outline-none pl-4 text-xs font-Poppins font-normal tracking-wide ${errors.email ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'
+                                                        }`}
+                                                />
+                                                {errors.email && (
+                                                    <span className="text-red-500 text-xs mt-1">{errors.email}</span>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col gap-1 w-full text-xs">
+                                            <label htmlFor="phone">Phone Number</label>
                                             <input
-                                                type="text"
-                                                placeholder="Enter your name"
-                                                className="placeholder:text-xs text-xs w-full border-2 h-12 rounded-md focus:outline-none pl-4 font-Poppins font-normal tracking-wide"
+                                                type="tel"
+                                                id="phone"
+                                                name="phone"
+                                                value={formData.phone}
+                                                onChange={handleInputChange}
+                                                placeholder="Your Phone Number"
+                                                className="placeholder:text-xs w-full border-2 h-12 rounded-md focus:outline-none pl-4 text-xs font-Poppins font-normal tracking-wide border-gray-300 focus:border-blue-500"
                                             />
                                         </div>
-                                        <div className="flex flex-col gap-1 w-full">
-                                            <label htmlFor="">Your Email</label>
-                                            <input
-                                                type="email"
-                                                placeholder="Enter your email"
-                                                className="placeholder:text-xs w-full border-2 h-12 rounded-md focus:outline-none pl-4 text-xs font-Poppins font-normal tracking-wide"
+
+                                        <div className="flex flex-col gap-1 w-full text-xs">
+                                            <label htmlFor="message">MESSAGE</label>
+                                            <textarea
+                                                id="message"
+                                                name="message"
+                                                value={formData.message}
+                                                onChange={handleInputChange}
+                                                placeholder="Write some message for us"
+                                                className={`placeholder:text-xs w-full border-2 focus:outline-none p-4 text-xs font-Poppins tracking-wide font-normal rounded-md h-32 ${errors.message ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'
+                                                    }`}
                                             />
+                                            {errors.message && (
+                                                <span className="text-red-500 text-xs mt-1">{errors.message}</span>
+                                            )}
                                         </div>
-                                    </div>
-                                    <div className="flex flex-col gap-1 w-full text-xs">
-                                        <label htmlFor="">Phone Number</label>
-                                        <input
-                                            type="tel"
-                                            placeholder="Your Phone Number"
-                                            className="placeholder:text-xs w-full border-2 h-12 rounded-md focus:outline-none pl-4 text-xs font-Poppins font-normal tracking-wide"
-                                        />
-                                    </div>
-                                    <div className="flex flex-col gap-1 w-full text-xs">
-                                        <label htmlFor="">MESSAGE</label>
-                                        <textarea
-                                            placeholder="Write some message for us"
-                                            className="placeholder:text-xs w-full border-2 focus:outline-none p-4 text-xs font-Poppins tracking-wide font-normal rounded-md h-32"
-                                        />
-                                    </div>
-                                    <Button className='py-5 ml-auto rounded-sm px-8'>Send <SendHorizontal /></Button>
+
+                                        <Button
+                                            type="submit"
+                                            disabled={isSubmitting}
+                                            className='py-5 ml-auto rounded-sm px-8 disabled:opacity-50'
+                                        >
+                                            {isSubmitting ? (
+                                                <>
+                                                    <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                                                    Sending...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    Send <SendHorizontal className="ml-2 h-4 w-4" />
+                                                </>
+                                            )}
+                                        </Button>
+                                    </form>
                                 </Card>
                             </AnimationWrapper>
 
-
                             <div className="w-full lg:w-1/2 space-y-6">
-
                                 <AnimationWrapper >
                                     <div className="dark:bg-gray-800 rounded-lg p-4 border">
                                         <h3 className="text-xl font-semibold mb-6 border-b pb-2">Contact Information</h3>
@@ -156,9 +309,6 @@ export default function Contact() {
                                         </div>
                                     </div>
                                 </AnimationWrapper>
-
-
-
                             </div>
                         </div>
 

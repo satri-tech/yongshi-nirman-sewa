@@ -14,7 +14,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Building, LayoutDashboard, Settings, FolderKanban } from "lucide-react";
+import { Building, LayoutDashboard, Settings, FolderKanban, MessageSquare } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Outfit } from "next/font/google";
@@ -54,15 +54,21 @@ export default function AdminLayout({
                 icon: LayoutDashboard,
             },
             {
-                title: "Portfolio",
-                url: "/admin/portfolio",
+                title: "Projects",
+                url: "/admin/projects",
                 icon: FolderKanban,
+            },
+            {
+                title: "Contact Us",
+                url: "/admin/contact",
+                icon: MessageSquare,
             },
             {
                 title: "Settings",
                 url: "/admin/settings",
                 icon: Settings,
             },
+
         ],
     };
     const dummyData: IDummyData = {
