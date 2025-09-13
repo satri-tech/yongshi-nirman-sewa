@@ -5,12 +5,18 @@ import bcrypt from "bcryptjs";
 async function seedAdmin() {
   try {
     console.log("🌱 Seeding admin users...");
-    
+
     // Debug: Log environment variables to verify they're loaded
     console.log("Debug - ADMIN_EMAIL_1:", process.env.ADMIN_EMAIL_1);
-    console.log("Debug - ADMIN_PASSWORD_1:", process.env.ADMIN_PASSWORD_1 ? "******" : undefined);
-    console.log("Debug - All env keys:", Object.keys(process.env).filter(key => key.startsWith('ADMIN_')));
-    
+    console.log(
+      "Debug - ADMIN_PASSWORD_1:",
+      process.env.ADMIN_PASSWORD_1 ? "******" : undefined
+    );
+    console.log(
+      "Debug - All env keys:",
+      Object.keys(process.env).filter((key) => key.startsWith("ADMIN_"))
+    );
+
     const admins = [];
     let i = 1;
 
@@ -45,6 +51,7 @@ async function seedAdmin() {
           email: admin.email,
           password: hashedPassword,
           username,
+          role: "admin",
         },
       });
 
