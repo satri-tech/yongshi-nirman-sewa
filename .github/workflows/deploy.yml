@@ -10,37 +10,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout the latest code
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # 2️⃣ Setup SSH access to VPS
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
 
+      # 3️⃣ Deploy to VPS
       - name: Deploy to VPS
         run: |
           ssh -t -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          # Load NVM and Node environment
+          # Load NVM and Node
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-          # Go to project or clone if not exists
+          # Navigate to project or clone if missing
           cd ~/web/yongshi-nirman-sewa || (cd ~/web && git clone git@github.com:satri-tech/yongshi-nirman-sewa.git && cd yongshi-nirman-sewa)
 
           # Pull latest code
-          git pull origin master
+          git fetch --all
+          git reset --hard origin/master
 
-          # Install dependencies
+          # Install dependencies (legacy peer deps if needed)
           npm install --legacy-peer-deps
 
-          # Prisma generate
+          # Generate Prisma client (safe)
           npx prisma generate
 
-          # Build Next.js
+          # Apply migrations safely (does NOT wipe data)
+          npx prisma migrate deploy
+
+          # Build Next.js project
           npm run build
 
-          # Restart PM2 app
-          pm2 stop yongshi-app || true
+          # Restart app with PM2
+          pm2 restart yongshi-app || pm2 start npm --name "yongshi-app" -- start
+
           EOF
