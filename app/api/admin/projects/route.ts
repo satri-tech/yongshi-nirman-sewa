@@ -1,121 +1,14 @@
 // app/api/projects/route.ts
 import { prisma } from "@/lib/prisma";
-import { writeFile, mkdir, access } from "fs/promises";
-import { join } from "path";
-import { v4 as uuidv4 } from "uuid";
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-
-// Allowed file types and their extensions
-const ALLOWED_FILE_TYPES = {
-  // Images
-  "image/jpeg": [".jpg", ".jpeg"],
-  "image/png": [".png"],
-  "image/webp": [".webp"],
-  "image/gif": [".gif"],
-  // Documents
-  "application/pdf": [".pdf"],
-  "application/msword": [".doc"],
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [
-    ".docx",
-  ],
-  "application/vnd.ms-excel": [".xls"],
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
-    ".xlsx",
-  ],
-  "application/vnd.ms-powerpoint": [".ppt"],
-  "application/vnd.openxmlformats-officedocument.presentationml.presentation": [
-    ".pptx",
-  ],
-};
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-
-// Helper function to validate file type
-function isValidFileType(file: File): boolean {
-  const allowedTypes = Object.keys(ALLOWED_FILE_TYPES);
-  return allowedTypes.includes(file.type);
-}
-
-// Helper function to get file extension from MIME type
-function getFileExtension(file: File): string {
-  const extensions =
-    ALLOWED_FILE_TYPES[file.type as keyof typeof ALLOWED_FILE_TYPES];
-  if (extensions && extensions.length > 0) {
-    return extensions[0];
-  }
-  // Fallback to original file extension
-  const originalExtension = file.name.split(".").pop();
-  return originalExtension ? `.${originalExtension}` : ".bin";
-}
-
-// Helper function to ensure directory exists
-async function ensureDirectoryExists(dirPath: string): Promise<void> {
-  try {
-    await access(dirPath);
-  } catch {
-    // Directory doesn't exist, create it
-    await mkdir(dirPath, { recursive: true });
-    console.log(`Created directory: ${dirPath}`);
-  }
-}
-
-// Helper function to save uploaded files to public/projects
-async function saveFilesToPublic(files: File[]): Promise<string[]> {
-  const uploadDir = join(process.cwd(), "public", "projects");
-
-  // Ensure the projects directory exists
-  await ensureDirectoryExists(uploadDir);
-
-  const savedFiles: string[] = [];
-
-  for (const file of files) {
-    try {
-      // Validate file size
-      if (file.size > MAX_FILE_SIZE) {
-        throw new Error(`File ${file.name} exceeds maximum size of 5MB`);
-      }
-
-      // Validate file type
-      if (!isValidFileType(file)) {
-        throw new Error(
-          `File type ${file.type} is not allowed for ${file.name}`
-        );
-      }
-
-      // Generate unique filename
-      const fileExtension = getFileExtension(file);
-      const uniqueFilename = `${uuidv4()}${fileExtension}`;
-      const filePath = join(uploadDir, uniqueFilename);
-
-      // Convert file to buffer
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      // Write file to disk
-      await writeFile(filePath, buffer);
-      console.log(`Successfully saved file: ${uniqueFilename}`);
-
-      // Store the public URL path (accessible via web)
-      const publicUrl = `${uniqueFilename}`;
-      savedFiles.push(publicUrl);
-    } catch (error) {
-      console.error(`Error saving file ${file.name}:`, error);
-      throw new Error(
-        `Failed to save file ${file.name}: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`
-      );
-    }
-  }
-
-  return savedFiles;
-}
-
-// Helper function to clean up file name for logging
-function sanitizeFileName(filename: string): string {
-  return filename.replace(/[^a-zA-Z0-9.-]/g, "_");
-}
+import {
+  uploadFiles,
+  deleteFiles,
+  extractFilesFromFormData,
+  PROJECTS_CONFIG,
+  UploadResult,
+} from "@/lib/upload/fileUpload";
 
 // POST API route handler
 export async function POST(request: NextRequest) {
@@ -140,61 +33,44 @@ export async function POST(request: NextRequest) {
     const endDate = formData.get("endDate") as string;
 
     // Validate required fields
-    if (!title?.trim()) {
-      return NextResponse.json(
-        { success: false, error: "Project title is required" },
-        { status: 400 }
-      );
-    }
-    if (!description?.trim()) {
-      return NextResponse.json(
-        { success: false, error: "Project description is required" },
-        { status: 400 }
-      );
-    }
-    if (!location?.trim()) {
-      return NextResponse.json(
-        { success: false, error: "Location is required" },
-        { status: 400 }
-      );
-    }
-    if (!area?.trim()) {
-      return NextResponse.json(
-        { success: false, error: "Area is required" },
-        { status: 400 }
-      );
-    }
-    if (!status) {
-      return NextResponse.json(
-        { success: false, error: "Status is required" },
-        { status: 400 }
-      );
+    const requiredFields = [
+      { field: title, name: "Project title" },
+      { field: description, name: "Project description" },
+      { field: location, name: "Location" },
+      { field: area, name: "Area" },
+      { field: status, name: "Status" },
+    ];
+
+    for (const { field, name } of requiredFields) {
+      if (!field?.trim()) {
+        return NextResponse.json(
+          { success: false, error: `${name} is required` },
+          { status: 400 }
+        );
+      }
     }
 
-    // Extract and process files
-    const attachments = formData.getAll("attachments") as File[];
-    let imageUrls: string[] = [];
+    // Extract and process files using the utility
+    const attachments = extractFilesFromFormData(formData, "attachments");
+    let uploadResult: UploadResult = { success: true, files: [], errors: [] };
 
-    if (attachments && attachments.length > 0) {
-      // Filter out empty files and log file info
-      const validFiles = attachments.filter((file) => {
-        const isValid = file && file.size > 0 && file.name !== "undefined";
-        if (isValid) {
-          console.log(
-            `Processing file: ${sanitizeFileName(file.name)}, Size: ${
-              file.size
-            } bytes, Type: ${file.type}`
-          );
-        }
-        return isValid;
-      });
+    if (attachments.length > 0) {
+      console.log(`Processing ${attachments.length} files...`);
+      uploadResult = await uploadFiles(attachments, PROJECTS_CONFIG);
 
-      if (validFiles.length > 0) {
-        console.log(`Uploading ${validFiles.length} files...`);
-        imageUrls = await saveFilesToPublic(validFiles);
-        console.log(`Successfully uploaded ${imageUrls.length} files`);
-      } else {
-        console.log("No valid files to upload");
+      if (!uploadResult.success && uploadResult.files.length === 0) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "File upload failed",
+            details: uploadResult.errors,
+          },
+          { status: 400 }
+        );
+      }
+
+      if (uploadResult.errors.length > 0) {
+        console.warn("Some files failed to upload:", uploadResult.errors);
       }
     }
 
@@ -222,7 +98,7 @@ export async function POST(request: NextRequest) {
         endDate: parsedEndDate,
         area: area.trim(),
         status,
-        images: imageUrls, // Array of uploaded file URLs
+        images: uploadResult.files, // Array of uploaded file URLs
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -231,18 +107,20 @@ export async function POST(request: NextRequest) {
     console.log(`Project created successfully with ID: ${portfolio.id}`);
 
     // Revalidate any cached pages that might show this data
-    revalidatePath("/projects"); // Adjust path as needed
-    revalidatePath("/portfolio"); // Adjust path as needed
+    revalidatePath("/projects");
+    revalidatePath("/portfolio");
 
     return NextResponse.json({
       success: true,
       data: {
         id: portfolio.id,
         title: portfolio.title,
-        imageCount: imageUrls.length,
-        images: imageUrls,
+        imageCount: uploadResult.files.length,
+        images: uploadResult.files,
       },
-      message: `Project "${title}" created successfully with ${imageUrls.length} files uploaded`,
+      message: `Project "${title}" created successfully with ${uploadResult.files.length} files uploaded`,
+      uploadErrors:
+        uploadResult.errors.length > 0 ? uploadResult.errors : undefined,
     });
   } catch (error) {
     console.error("Error in API route:", error);
@@ -284,7 +162,6 @@ export async function PUT(request: NextRequest) {
   try {
     console.log("Starting project update via API...");
 
-    // Parse the form data
     const formData = await request.formData();
 
     // Extract project ID
@@ -312,35 +189,21 @@ export async function PUT(request: NextRequest) {
     const existingImages = formData.get("existingImages") as string;
 
     // Validate required fields
-    if (!title?.trim()) {
-      return NextResponse.json(
-        { success: false, error: "Project title is required" },
-        { status: 400 }
-      );
-    }
-    if (!description?.trim()) {
-      return NextResponse.json(
-        { success: false, error: "Project description is required" },
-        { status: 400 }
-      );
-    }
-    if (!location?.trim()) {
-      return NextResponse.json(
-        { success: false, error: "Location is required" },
-        { status: 400 }
-      );
-    }
-    if (!area?.trim()) {
-      return NextResponse.json(
-        { success: false, error: "Area is required" },
-        { status: 400 }
-      );
-    }
-    if (!status) {
-      return NextResponse.json(
-        { success: false, error: "Status is required" },
-        { status: 400 }
-      );
+    const requiredFields = [
+      { field: title, name: "Project title" },
+      { field: description, name: "Project description" },
+      { field: location, name: "Location" },
+      { field: area, name: "Area" },
+      { field: status, name: "Status" },
+    ];
+
+    for (const { field, name } of requiredFields) {
+      if (!field?.trim()) {
+        return NextResponse.json(
+          { success: false, error: `${name} is required` },
+          { status: 400 }
+        );
+      }
     }
 
     // Check if project exists
@@ -365,35 +228,21 @@ export async function PUT(request: NextRequest) {
       }
     }
 
-    // Extract and process new files
-    const newAttachments = formData.getAll("attachments") as File[];
-    let newImageUrls: string[] = [];
+    // Extract and process new files using the utility
+    const newAttachments = extractFilesFromFormData(formData, "attachments");
+    let uploadResult: UploadResult = { success: true, files: [], errors: [] };
 
-    if (newAttachments && newAttachments.length > 0) {
-      // Filter out empty files and log file info
-      const validFiles = newAttachments.filter((file) => {
-        const isValid = file && file.size > 0 && file.name !== "undefined";
-        if (isValid) {
-          console.log(
-            `Processing file: ${sanitizeFileName(file.name)}, Size: ${
-              file.size
-            } bytes, Type: ${file.type}`
-          );
-        }
-        return isValid;
-      });
+    if (newAttachments.length > 0) {
+      console.log(`Processing ${newAttachments.length} new files...`);
+      uploadResult = await uploadFiles(newAttachments, PROJECTS_CONFIG);
 
-      if (validFiles.length > 0) {
-        console.log(`Uploading ${validFiles.length} new files...`);
-        newImageUrls = await saveFilesToPublic(validFiles);
-        console.log(`Successfully uploaded ${newImageUrls.length} files`);
-      } else {
-        console.log("No valid new files to upload");
+      if (uploadResult.errors.length > 0) {
+        console.warn("Some new files failed to upload:", uploadResult.errors);
       }
     }
 
     // Combine existing and new images
-    const allImages = [...keepImages, ...newImageUrls];
+    const allImages = [...keepImages, ...uploadResult.files];
 
     // Parse dates
     const parsedStartDate = startDate ? new Date(startDate) : null;
@@ -428,9 +277,9 @@ export async function PUT(request: NextRequest) {
     console.log(`Project updated successfully with ID: ${updatedPortfolio.id}`);
 
     // Revalidate any cached pages that might show this data
-    revalidatePath("/projects"); // Adjust path as needed
-    revalidatePath("/portfolio"); // Adjust path as needed
-    revalidatePath("/admin/portfolio"); // Admin page
+    revalidatePath("/projects");
+    revalidatePath("/portfolio");
+    revalidatePath("/admin/portfolio");
 
     return NextResponse.json({
       success: true,
@@ -441,6 +290,8 @@ export async function PUT(request: NextRequest) {
         images: allImages,
       },
       message: `Project "${title}" updated successfully`,
+      uploadErrors:
+        uploadResult.errors.length > 0 ? uploadResult.errors : undefined,
     });
   } catch (error) {
     console.error("Error in API route:", error);
@@ -477,56 +328,11 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-// Helper function to delete files from public/projects
-async function deleteFilesFromPublic(imageUrls: string[]): Promise<{
-  deleted: string[];
-  failed: string[];
-}> {
-  const deleted: string[] = [];
-  const failed: string[] = [];
-
-  for (const imageUrl of imageUrls) {
-    try {
-      // Extract filename from URL (e.g., "/projects/uuid.jpg" -> "uuid.jpg")
-      const filename = imageUrl.replace(/^\/projects\//, "");
-
-      if (!filename) {
-        console.warn(`Invalid image URL format: ${imageUrl}`);
-        failed.push(imageUrl);
-        continue;
-      }
-
-      // Construct full file path
-      const filePath = join(process.cwd(), "public", "projects", filename);
-
-      // Check if file exists before attempting to delete
-      try {
-        await access(filePath);
-        // File exists, delete it
-        const { unlink } = await import("fs/promises");
-        await unlink(filePath);
-        console.log(`Deleted file: ${filename}`);
-        deleted.push(imageUrl);
-      } catch (error) {
-        // File doesn't exist or can't be accessed
-        console.warn(`File not found or inaccessible: ${filename}`, error);
-        failed.push(imageUrl);
-      }
-    } catch (error) {
-      console.error(`Error deleting file ${imageUrl}:`, error);
-      failed.push(imageUrl);
-    }
-  }
-
-  return { deleted, failed };
-}
-
 // DELETE handler to delete a project
 export async function DELETE(request: NextRequest) {
   try {
     console.log("Starting project deletion via API...");
 
-    // Parse the request body
     const body = await request.json();
     const projectId = body.id;
 
@@ -554,7 +360,7 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Delete associated image files from disk
+    // Delete associated image files from disk using the utility
     let fileCleanupResult = { deleted: [], failed: [] } as {
       deleted: string[];
       failed: string[];
@@ -562,7 +368,10 @@ export async function DELETE(request: NextRequest) {
 
     if (existingProject.images && existingProject.images.length > 0) {
       console.log(`Deleting ${existingProject.images.length} image files...`);
-      fileCleanupResult = await deleteFilesFromPublic(existingProject.images);
+      fileCleanupResult = await deleteFiles(
+        existingProject.images,
+        PROJECTS_CONFIG.uploadPath
+      );
 
       if (fileCleanupResult.deleted.length > 0) {
         console.log(
