@@ -7,13 +7,15 @@ import Testimonials from "@/components/layouts/testimonials/Testimonials";
 import PortfolioComponent from "@/components/layouts/portfolio/Portfolio";
 import { fetchProjects } from "../actions/fetchProjects";
 import { fetchTestimonials } from "../actions/testimonials";
+import { fetchTeamMembers } from "../actions/teamMembers";
 
 export const revalidate = 3600;
 
 export default async function Home() {
-    const [projectResponse, testimonialsResponse] = await Promise.all([
+    const [projectResponse, testimonialsResponse, teamMembersResponse] = await Promise.all([
         fetchProjects(),
-        fetchTestimonials()
+        fetchTestimonials(),
+        fetchTeamMembers()
     ])
 
     return (
@@ -23,7 +25,7 @@ export default async function Home() {
             <Services />
             <PortfolioComponent projectsdata={projectResponse.data} />
             <Testimonials testimonials={testimonialsResponse.data} />
-            <Team />
+            <Team teamMembers={teamMembersResponse.data} />
             <Contact />
         </div>
     );
