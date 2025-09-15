@@ -3,7 +3,7 @@ name: Deploy Next.js to VPS
 on:
   push:
     branches:
-      - master  # deploy when pushing to master branch
+      - master # deploy when pushing to master branch
 
 jobs:
   deploy:
@@ -39,11 +39,11 @@ jobs:
           # Install dependencies (legacy peer deps if needed)
           npm install --legacy-peer-deps
 
-          # Generate Prisma client (safe)
-          npx prisma generate
-
           # Apply migrations safely (does NOT wipe data)
           npx prisma migrate deploy
+
+          # Generate Prisma client (safe)
+          npx prisma generate
 
           # Build Next.js project
           npm run build
