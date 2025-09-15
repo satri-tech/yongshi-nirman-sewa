@@ -23,32 +23,41 @@ jobs:
       # 3️⃣ Deploy to VPS
       - name: Deploy to VPS
         run: |
-          ssh -t -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          # Load NVM and Node
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          
+          echo "🚀 Starting deployment on VPS..."
 
-          # Navigate to project or clone if missing
-          cd ~/web/yongshi-nirman-sewa || (cd ~/web && git clone git@github.com:satri-tech/yongshi-nirman-sewa.git && cd yongshi-nirman-sewa)
+          # Ensure NVM/Node is available
+          export NVM_DIR="\$HOME/.nvm"
+          [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
+          [ -s "\$NVM_DIR/bash_completion" ] && . "\$NVM_DIR/bash_completion"
 
-          # Pull latest code
+          # Navigate to project folder (clone if missing)
+          if [ ! -d ~/web/yongshi-nirman-sewa ]; then
+            mkdir -p ~/web && cd ~/web
+            git clone git@github.com:satri-tech/yongshi-nirman-sewa.git
+          fi
+
+          cd ~/web/yongshi-nirman-sewa
+
+          echo "📥 Pulling latest code..."
           git fetch --all
           git reset --hard origin/master
 
-          # Install dependencies (legacy peer deps if needed)
-          npm install --legacy-peer-deps
+          echo "📦 Installing dependencies..."
+          npm ci --legacy-peer-deps
 
-          # Apply migrations safely (does NOT wipe data)
+          echo "🗄️ Applying database migrations..."
           npx prisma migrate deploy
 
-          # Generate Prisma client (safe)
+          echo "⚡ Generating Prisma client..."
           npx prisma generate
 
-          # Build Next.js project
+          echo "🏗️ Building Next.js app..."
           npm run build
 
-          # Restart app with PM2
-          pm2 restart yongshi-app || pm2 start npm --name "yongshi-app" -- start
+          echo "🔄 Restarting PM2 process..."
+          pm2 describe yongshi-app > /dev/null 2>&1 && pm2 restart yongshi-app || pm2 start npm --name "yongshi-app" -- start
 
+          echo "✅ Deployment complete!"
           EOF
