@@ -6,21 +6,23 @@ import Contact from "@/components/layouts/contact/contact";
 import Testimonials from "@/components/layouts/testimonials/Testimonials";
 import PortfolioComponent from "@/components/layouts/portfolio/Portfolio";
 import { fetchProjects } from "../actions/fetchProjects";
-
+import { fetchTestimonials } from "../actions/testimonials";
 
 export const revalidate = 3600;
 
 export default async function Home() {
-    const response = await fetchProjects(); // fetch server-side
-    const projectsdata = response.data;
+    const [projectResponse, testimonialsResponse] = await Promise.all([
+        fetchProjects(),
+        fetchTestimonials()
+    ])
 
     return (
         <div className=" flex flex-col gap-2 items-center">
             <HeroSection />
             <AboutUs />
             <Services />
-            <PortfolioComponent projectsdata={projectsdata} />
-            <Testimonials />
+            <PortfolioComponent projectsdata={projectResponse.data} />
+            <Testimonials testimonials={testimonialsResponse.data} />
             <Team />
             <Contact />
         </div>
