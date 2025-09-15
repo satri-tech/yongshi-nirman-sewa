@@ -42,3 +42,5 @@ next-env.d.ts
 
 # folders
 /public/projects
+/public/testimonials
+/public/teamMembers
