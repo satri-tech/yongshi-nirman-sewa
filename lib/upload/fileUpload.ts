@@ -56,6 +56,17 @@ export const TESTIMONIALS_CONFIG: UploadConfig = {
   maxFiles: 1,
 };
 
+export const TEAM_NEW_MEMBER_CONFIG: UploadConfig = {
+  ...DEFAULT_CONFIG,
+  uploadPath: "public/teamMembers",
+  allowedTypes: {
+    "image/jpeg": [".jpg", ".jpeg"],
+    "image/png": [".png"],
+    "image/webp": [".webp"],
+  },
+  maxFiles: 1,
+};
+
 // Upload result interface
 export interface UploadResult {
   success: boolean;
