@@ -57,7 +57,7 @@ export default function TeamMembersTable({ teamMembers }: ITeamMembersTableProps
                                 {teamMember.displayOrder}
                             </TableCell>
                             <TableCell className=" flex gap-2 justify-end">
-                                <EditTeamMember />
+                                <EditTeamMember teamMember={teamMember} />
                                 <DeleteTeamMember teamMember={teamMember} />
                             </TableCell>
                         </TableRow>

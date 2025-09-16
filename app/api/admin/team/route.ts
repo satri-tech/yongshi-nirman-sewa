@@ -9,6 +9,107 @@ import {
 } from "@/lib/upload/fileUpload";
 import { NextRequest, NextResponse } from "next/server";
 
+// PUT handler for updating a team member
+export async function PUT(request: NextRequest) {
+  try {
+    console.log("Starting team member update via API...");
+
+    const formData = await request.formData();
+    const id = request.nextUrl.searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: "Team member ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const name = formData.get("name") as string;
+    const role = formData.get("role") as string;
+    const facebookUrl = formData.get("facebookUrl") as string;
+
+    const existingTeamMember = await prisma.team.findUnique({
+      where: { id },
+      select: { image: true },
+    });
+
+    if (!existingTeamMember) {
+      return NextResponse.json(
+        { success: false, error: "Team member not found" },
+        { status: 404 }
+      );
+    }
+
+    let newImageFilename: string | undefined = undefined;
+    const imageFiles = extractFilesFromFormData(formData, "image");
+
+    if (imageFiles.length > 0) {
+      // A new image is being uploaded
+      if (existingTeamMember.image) {
+        // Delete the old image
+        await deleteFiles(
+          [existingTeamMember.image],
+          TEAM_NEW_MEMBER_CONFIG.uploadPath
+        );
+      }
+
+      const uploadResult = await uploadSingleFile(
+        imageFiles[0],
+        TEAM_NEW_MEMBER_CONFIG
+      );
+      if (!uploadResult.success) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Image upload failed",
+            details: uploadResult.errors,
+          },
+          { status: 400 }
+        );
+      }
+      newImageFilename = uploadResult.files[0];
+    } else if (!formData.has("image") && existingTeamMember.image) {
+      // The image is being removed
+      await deleteFiles(
+        [existingTeamMember.image],
+        TEAM_NEW_MEMBER_CONFIG.uploadPath
+      );
+      newImageFilename = undefined; // Explicitly set to undefined
+    }
+
+    const updatedTeamMember = await prisma.team.update({
+        where: { id },
+        data: {
+            name: name.trim(),
+            position: role.trim(),
+            facebookurl: facebookUrl,
+            image: newImageFilename !== undefined ? newImageFilename : existingTeamMember.image,
+            updatedAt: new Date(),
+        },
+    });
+
+    console.log(`Team member updated successfully: ${updatedTeamMember.id}`);
+
+    return NextResponse.json({
+      success: true,
+      data: updatedTeamMember,
+      message: `Team member "${updatedTeamMember.name}" updated successfully`,
+    });
+  } catch (error) {
+    console.error("Error in team member PUT API route:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to update team member",
+      },
+      { status: 500 }
+    );
+  }
+}
+
 // POST API route handler for creating testimonials
 export async function POST(request: NextRequest) {
   try {

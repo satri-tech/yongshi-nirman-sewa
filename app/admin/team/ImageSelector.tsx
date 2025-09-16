@@ -2,18 +2,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ImageIcon } from "lucide-react";
 import { useRef } from "react";
-import z from "zod";
 import { UseFormReturn } from "react-hook-form";
-import { teamMemberFormSchema } from "./AddTeamMember";
 import Image from "next/image";
-type FormSchema = z.infer<typeof teamMemberFormSchema>;
 
 interface ImageSelectorProps {
-    form: UseFormReturn<FormSchema>;
+    form: UseFormReturn<any>;
     selectedImage: File | null;
+    existingImageUrl?: string | null;
+
 }
 
-export default function ImageSelector({ form, selectedImage }: ImageSelectorProps) {
+export default function ImageSelector({ form, selectedImage, existingImageUrl }: ImageSelectorProps) {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -65,7 +64,7 @@ export default function ImageSelector({ form, selectedImage }: ImageSelectorProp
             </div>
 
 
-            {selectedImage && (
+            {selectedImage ? (
                 <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
@@ -82,6 +81,32 @@ export default function ImageSelector({ form, selectedImage }: ImageSelectorProp
                             <p className="text-xs text-muted-foreground">
                                 {(selectedImage.size / 1024 / 1024).toFixed(2)} MB
                             </p>
+                        </div>
+                    </div>
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={removeImage}
+                        className="text-red-500 hover:text-red-400 hover:bg-red-50"
+                    >
+                        Remove
+                    </Button>
+                </div>
+            ) : existingImageUrl && (
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
+                            <Image
+                                height={100}
+                                width={100}
+                                src={existingImageUrl}
+                                alt="Existing Image"
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                        <div>
+                            <p className="text-sm font-medium">Existing Image</p>
                         </div>
                     </div>
                     <Button
