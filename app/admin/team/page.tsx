@@ -6,7 +6,7 @@ import { fetchTeamMembers } from "@/app/actions/teamMembers";
 
 export default async function TeamPage() {
     const response = await fetchTeamMembers();
-    const teamMembers = response.data
+    const teamMembers = response.data || []; // Provide empty array fallback
 
     return (
         <div className="min-h-screen py-2">
@@ -27,7 +27,7 @@ export default async function TeamPage() {
                     <CardContent>
                         <div className="mb-4 flex items-center justify-between">
                             <Badge variant="outline" className="text-sm">
-                                Total Members: {teamMembers?.length}
+                                Total Members: {teamMembers.length}
                             </Badge>
                             <div className="flex items-center gap-2">
                                 <AddTeamMember />

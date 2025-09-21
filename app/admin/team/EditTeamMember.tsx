@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button"
-import { Plus, Loader2, Star, Edit } from "lucide-react"
+import { Plus, Loader2, Edit } from "lucide-react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import ImageSelector from "./ImageSelector"
+import ProfileImageUploader from "./ProfileImageUploader"
 import { ITeamMember } from "@/app/actions/teamMembers";
 
 
@@ -34,18 +34,14 @@ export const teamMemberFormSchema = z.object({
     role: z.string().min(2, "Role must be at least 2 characters").max(100, "Role must be less than 100 characters"),
     facebookUrl: z.string(),
     image: z
-        .instanceof(File)
-        .refine(
-            (file) => file.size <= 5 * 1024 * 1024, // 5MB limit
-            { message: "Image must be under 5MB" }
-    
-        .refine(
-            (file) => {
-                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-                return allowedTypes.includes(file.type);
-            },
-            { message: "Only JPEG, PNG, and WebP images are allowed" }
-        )
+        .union([
+            z.instanceof(File).refine(
+                (file) => file.size <= 5 * 1024 * 1024, // 5MB limit
+                { message: "Image must be under 5MB" }
+            ),
+            z.null(), // Allow null for image removal
+            z.undefined() // Allow undefined for no change
+        ])
         .optional(), // Make image optional for editing
 });
 
@@ -84,7 +80,7 @@ export default function EditTeamMember({ teamMember }: EditTeamMemberProps) {
         },
     });
 
-    // Submit handler with API integration
+    // Submit handler with API integration - FIXED VERSION
     async function onSubmit(values: z.infer<typeof teamMemberFormSchema>) {
         if (isSubmitting) return;
 
@@ -98,9 +94,13 @@ export default function EditTeamMember({ teamMember }: EditTeamMemberProps) {
             formData.append("role", values.role);
             formData.append("facebookUrl", values.facebookUrl);
 
-            // Append image file if it exists
-            if (values.image) {
+            // Handle image upload/removal/no-change
+            if (values.image instanceof File) {
+                // New image file being uploaded
                 formData.append("image", values.image);
+            } else if (values.image === null) {
+                // Image is being explicitly removed
+                formData.append("removeImage", "true"); // Signal to API to remove image
             }
 
             // Call API endpoint
@@ -138,7 +138,6 @@ export default function EditTeamMember({ teamMember }: EditTeamMemberProps) {
             setIsSubmitting(false);
         }
     }
-
     // Handle form cancellation
     function handleCancel() {
         form.reset({
@@ -167,6 +166,31 @@ export default function EditTeamMember({ teamMember }: EditTeamMemberProps) {
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
+
+                        {/* Profile Image Section */}
+                        <div className="flex flex-col space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="image"
+                                render={() => (
+                                    <FormItem>
+                                        <FormLabel className="text-base font-medium">
+                                            Profile Image
+                                        </FormLabel>
+                                        <FormControl>
+                                            <ProfileImageUploader
+                                                form={form}
+                                                selectedImage={selectedImage || null}
+                                                existingImageUrl={teamMember.image ? `/api/images/teamMembers/${teamMember.image}` : null}
+                                                disabled={isSubmitting}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
                         {/* Client Information Section */}
                         <div className="flex flex-col space-y-4 border-b pb-6">
                             <div className="flex gap-4">
@@ -214,7 +238,7 @@ export default function EditTeamMember({ teamMember }: EditTeamMemberProps) {
                         </div>
 
                         {/* Testimonial Content Section */}
-                        <div className="flex flex-col space-y-4 border-b pb-6">
+                        <div className="flex flex-col space-y-4  pb-6">
                             <FormField
                                 control={form.control}
                                 name="facebookUrl"
@@ -239,31 +263,6 @@ export default function EditTeamMember({ teamMember }: EditTeamMemberProps) {
                             />
                         </div>
 
-                        {/* Profile Image Section */}
-                        <div className="flex flex-col space-y-4">
-                            <FormField
-                                control={form.control}
-                                name="image"
-                                render={() => (
-                                    <FormItem>
-                                        <FormLabel className="text-base font-medium">
-                                            Profile Image
-                                        </FormLabel>
-                                        <FormControl>
-                                            <ImageSelector
-                                                form={form}
-                                                selectedImage={selectedImage || null}
-                                                existingImageUrl={teamMember.image ? `/api/images/teamMembers/${teamMember.image}` : null}
-                                            />
-                                        </FormControl>
-                                        <p className="text-sm text-muted-foreground">
-                                            Supported formats: JPEG, PNG, WebP. Max 5MB.
-                                        </p>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
 
                         {/* Action Buttons */}
                         <div className="flex justify-end gap-4 pt-6">

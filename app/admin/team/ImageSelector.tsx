@@ -4,9 +4,12 @@ import { ImageIcon } from "lucide-react";
 import { useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import Image from "next/image";
+import z from "zod";
+import { testimonialFormSchema } from "../testimonials/CreateTestimonial";
+type FormSchema = z.infer<typeof testimonialFormSchema>;
 
 interface ImageSelectorProps {
-    form: UseFormReturn<any>;
+    form: UseFormReturn<FormSchema>;
     selectedImage: File | null;
     existingImageUrl?: string | null;
 

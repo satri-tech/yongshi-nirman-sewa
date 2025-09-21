@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button"
-import { Plus, Loader2, Star } from "lucide-react"
+import { Plus, Loader2 } from "lucide-react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -12,21 +12,25 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { Textarea } from "@/components/ui/textarea"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import ImageSelector from "./ImageSelector"
+import ProfileImageUploader from "./ProfileImageUploader"
 
 export const teamMemberFormSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
     role: z.string().min(2, "Role must be at least 2 characters").max(100, "Role must be less than 100 characters"),
     facebookUrl: z.string(),
     image: z
-        .instanceof(File)
+        .instanceof(File, { message: "Profile image is required" })
+        .refine(
+            (file) => file.size > 0, // This ensures a file is selected
+            {
+                message: "Profile image is required",
+            }
+        )
         .refine(
             (file) => {
                 return file.size <= 5 * 1024 * 1024; // 5MB limit
@@ -48,31 +52,6 @@ export const teamMemberFormSchema = z.object({
 
 
 
-// Rating display component
-interface RatingDisplayProps {
-    rating: string;
-}
-
-function RatingDisplay({ rating }: RatingDisplayProps) {
-    const ratingNum = parseInt(rating);
-
-    return (
-        <div className="flex items-center gap-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                    key={star}
-                    className={`w-4 h-4 ${star <= ratingNum
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-gray-300'
-                        }`}
-                />
-            ))}
-            <span className="text-sm text-muted-foreground ml-2">
-                ({rating} out of 5)
-            </span>
-        </div>
-    );
-}
 
 // API service function
 async function addNewTeamMember(formData: FormData) {
@@ -213,6 +192,29 @@ export default function AddTeamMember() {
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
+                        {/* Profile Image Section */}
+                        <div className="flex flex-col space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="image"
+                                render={() => (
+                                    <FormItem>
+                                        <FormLabel className="text-base font-medium">
+                                            Profile Image
+                                        </FormLabel>
+                                        <FormControl>
+                                            <ProfileImageUploader
+                                                form={form}
+                                                selectedImage={selectedImage || null}
+                                                disabled={isSubmitting}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
                         {/* Client Information Section */}
                         <div className="flex flex-col space-y-4 border-b pb-6">
                             <div className="flex gap-4">
@@ -288,31 +290,6 @@ export default function AddTeamMember() {
                             />
                         </div>
 
-                        {/* Profile Image Section */}
-                        <div className="flex flex-col space-y-4">
-
-                            <FormField
-                                control={form.control}
-                                name="image"
-                                render={() => (
-                                    <FormItem>
-                                        <FormLabel className="text-base font-medium">
-                                            Profile Image <span className="text-red-500">*</span>
-                                        </FormLabel>
-                                        <FormControl>
-                                            <ImageSelector
-                                                form={form}
-                                                selectedImage={selectedImage || null}
-                                            />
-                                        </FormControl>
-                                        <p className="text-sm text-muted-foreground">
-                                            Supported formats: JPEG, PNG, WebP. Max 5MB.
-                                        </p>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
 
                         {/* Action Buttons */}
                         <div className="flex justify-end gap-4 pt-6">
