@@ -11,7 +11,7 @@ interface IDeleteTeammMemberProps {
 }
 // API service function for delete
 async function deleteTestimonialAPI(teamMemberId: string) {
-    const response = await fetch('/api/admin/teamMember', {
+    const response = await fetch('/api/admin/team', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
