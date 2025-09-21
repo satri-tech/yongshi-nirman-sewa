@@ -2,21 +2,33 @@ import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/f
 import { Input } from "@/components/ui/input";
 import { ImageIcon, X } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
-import { formSchema } from "../CreatePortfolio";
-import z from "zod";
+import { formSchema as createFormSchema } from "../components/AddProject"; // Import create schema
+import { formSchema as editFormSchema } from "../components/EditProject"; // Import edit schema
 import { toast } from "sonner";
 import { useRef, useState } from "react";
 import Image from "next/image";
-type FormSchema = z.infer<typeof formSchema>;
+import { z } from "zod";
+
+// Union type for both schemas
+type CreateFormSchema = z.infer<typeof createFormSchema>;
+type EditFormSchema = z.infer<typeof editFormSchema>;
 
 interface SelectImageProps {
-    form: UseFormReturn<FormSchema>;
-    selectedAttachments?: File[];  // Add this prop to receive attachments from parent
+    form: UseFormReturn<CreateFormSchema | EditFormSchema>;
+    selectedAttachments?: File[];
+    mode: 'create' | 'edit'; // Required prop to determine which schema validation to use
 }
 
-export default function SelectImages({ form, selectedAttachments = [] }: SelectImageProps) {
+export default function SelectImages({
+    form,
+    selectedAttachments = [],
+    mode
+}: SelectImageProps) {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [selectedFiles, setSelectedFiles] = useState<File[]>(selectedAttachments);
+
+    // Conditionally determine if attachments are required based on mode
+    const isRequired = mode === 'create';
 
     // Updated handleFileChange function - images only
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,11 +87,13 @@ export default function SelectImages({ form, selectedAttachments = [] }: SelectI
                     file.size <= 5 * 1024 * 1024
             );
 
-            form.setValue("attachments", [...selectedFiles, ...validFiles]);
-            setSelectedFiles((prev) => [...prev, ...validFiles]);
+            const newFiles = [...selectedFiles, ...validFiles];
+            form.setValue("attachments", newFiles);
+            setSelectedFiles(newFiles);
         } else {
-            form.setValue("attachments", [...selectedFiles, ...files]);
-            setSelectedFiles((prev) => [...prev, ...files]);
+            const newFiles = [...selectedFiles, ...files];
+            form.setValue("attachments", newFiles);
+            setSelectedFiles(newFiles);
         }
 
         // Clear the input value
@@ -121,14 +135,18 @@ export default function SelectImages({ form, selectedAttachments = [] }: SelectI
                                     </div>
                                     <div className="flex flex-col w-full">
                                         <div className="text-base font-semibold text-gray-800 dark:text-neutral-200 mb-1">
-                                            Upload Images
+                                            Upload Images {isRequired && <span className="text-red-500">*</span>}
                                         </div>
                                         {selectedFiles.length <= 0 && (
                                             <div className="text-sm text-gray-500 dark:text-neutral-400">
-                                                Drag and drop images here or click to browse
+                                                {mode === 'create'
+                                                    ? "Drag and drop images here or click to browse"
+                                                    : "Add more images or click to browse"
+                                                }
                                                 <br />
                                                 <span className="text-xs">
                                                     Supported formats: PNG, JPG, JPEG, GIF, WEBP (max 5MB each)
+                                                    {mode === 'edit' && " - Optional"}
                                                 </span>
                                             </div>
                                         )}
@@ -138,7 +156,7 @@ export default function SelectImages({ form, selectedAttachments = [] }: SelectI
                                 {selectedFiles.length > 0 && (
                                     <div className="mt-4 space-y-2 border-t pt-4 dark:border-neutral-700">
                                         <div className="text-sm font-medium mb-2">
-                                            Selected images ({selectedFiles.length}):
+                                            {mode === 'create' ? 'Selected' : 'Adding'} images ({selectedFiles.length}):
                                         </div>
 
                                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
@@ -195,62 +213,6 @@ export default function SelectImages({ form, selectedAttachments = [] }: SelectI
                             </div>
                         </div>
                     </FormControl>
-
-                    {/* Uncomment and update this section if you need to show existing attachments */}
-                    {/* {attachments && attachments?.length > 0 && (
-                        <div className="mt-4">
-                            <div className="text-sm font-medium mb-2 text-neutral-600 dark:text-neutral-400">
-                                Current images:
-                            </div>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-                                {attachments?.map((f) => {
-                                    const isMarkedForRemoval = removedAttachments.some(
-                                        (a) => a.url === f.url
-                                    );
-                                    return (
-                                        <div key={f.url} className="relative group">
-                                            <AttachmentPreview
-                                                url={f?.url}
-                                                format={f?.fileType}
-                                            />
-                                            {isMarkedForRemoval ? (
-                                                <>
-                                                    <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center rounded-md">
-                                                        <span className="text-white text-xs w-max">
-                                                            Removing
-                                                        </span>
-                                                    </div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() =>
-                                                            handleCancelRemoveExistingAttachment(f)
-                                                        }
-                                                        className="absolute -top-2 -right-2 p-1 bg-blue-500 rounded-full opacity-100"
-                                                        aria-label={`Cancel removal of ${f.fileType}`}
-                                                        title="Cancel Removal"
-                                                    >
-                                                        <MinusCircle className="h-3 w-3 text-white" />
-                                                    </button>
-                                                </>
-                                            ) : (
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        handleRemoveExistingAttachment(f)
-                                                    }
-                                                    className="absolute -top-2 -right-2 p-1 bg-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                                    aria-label={`Remove ${f.fileType}`}
-                                                    title="Remove Attachment"
-                                                >
-                                                    <X className="h-3 w-3 text-white" />
-                                                </button>
-                                            )}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    )} */}
 
                     <FormMessage />
                 </FormItem>

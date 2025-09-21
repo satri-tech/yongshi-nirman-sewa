@@ -9,10 +9,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import CreatePortfolio from '../CreatePortfolio'
 import ProjectCard from './ProjectCard'
 import { IProject } from '@/app/actions/fetchProjects'
-
+import AddProject from './AddProject'
 
 interface SearchFilterComponentProps {
     projects: IProject[]
@@ -61,7 +60,7 @@ const SearchFilterComponent = ({ projects }: SearchFilterComponentProps) => {
                                 <SelectItem value="OnHold">On Hold</SelectItem>
                             </SelectContent>
                         </Select>
-                        <CreatePortfolio />
+                        <AddProject />
                     </div>
                 </div>
             </div>

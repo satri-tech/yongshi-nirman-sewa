@@ -17,10 +17,10 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
-import SelectStartDate from "./components/StartDate"
-import SelectEndDate from "./components/SelectEndDate"
+import SelectStartDate from "./StartDate"
+import SelectEndDate from "./SelectEndDate"
 import { useState } from "react"
-import SelectImages from "./components/SelectImages"
+import SelectImages from "./SelectImages"
 import { useRouter } from "next/navigation"
 
 export interface IFiles {
@@ -45,22 +45,13 @@ export const formSchema = z.object({
     }),
     attachments: z
         .array(z.instanceof(File))
-        .optional()
-        .nullable()
+        .min(1, "At least one image must be selected") // 👈 Require at least one file
         .refine(
-            (files) => {
-                if (!files) return true;
-                return files.every((file) => {
-                    return file.size <= 5 * 1024 * 1024; // 5MB limit
-                });
-            },
-            {
-                message: "Each file must be under 5MB",
-            }
+            (files) => files.every((file) => file.size <= 5 * 1024 * 1024),
+            { message: "Each file must be under 5MB" }
         )
         .refine(
             (files) => {
-                if (!files) return true;
                 const allowedTypes = [
                     'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif',
                     'application/pdf',
@@ -73,10 +64,9 @@ export const formSchema = z.object({
                 ];
                 return files.every((file) => allowedTypes.includes(file.type));
             },
-            {
-                message: "Only images, PDFs, and Office documents are allowed",
-            }
-        ),
+            { message: "Only images, PDFs, and Office documents are allowed" }
+        )
+
 })
 
 // API service function
@@ -94,7 +84,7 @@ async function createProjectAPI(formData: FormData) {
     return response.json();
 }
 
-export default function CreatePortfolio() {
+export default function AddProject() {
     const router = useRouter();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -411,6 +401,7 @@ export default function CreatePortfolio() {
                                 )}
                             </div>
                             <SelectImages
+                                mode="create"
                                 form={form}
                                 selectedAttachments={form.watch("attachments") || []}
                             />

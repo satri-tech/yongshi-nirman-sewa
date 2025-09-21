@@ -1,4 +1,4 @@
-import { Calendar, Grid, MapPin } from "lucide-react";
+import { Calendar, CalendarDays, MapPin, Ruler, User } from "lucide-react";
 import ImageGallery from "./ImageGallery";
 import StatusBadge from "./StatusBadge";
 import DeleteProject from "./DeleteProject";
@@ -43,19 +43,19 @@ export default function ProjectCard({ project }: IProjectCard) {
                     <span>{project.location}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
+                    <User className="w-4 h-4" />
+                    <span>{project.client}</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
                     <Calendar className="w-4 h-4" />
                     <span>{project.location}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="w-4 h-4" />
-                    <span>{project.client}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                    <Grid className="w-4 h-4" />
+                    <Ruler className="w-4 h-4" />
                     <span>{project.area} Sq Ft.</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="w-4 h-4" />
+                    <CalendarDays className="w-4 h-4" />
                     <span>{formatDate(project.startDate)} - {formatDate(project.endDate)}  </span>
                 </div>
             </div>

@@ -39,12 +39,49 @@ import Image from "next/image";
 import SelectStartDate from "./StartDate";
 import SelectEndDate from "./SelectEndDate";
 import SelectImages from "./SelectImages";
-import { formSchema as baseSchema } from "../CreatePortfolio";
 import { IProject } from "@/app/actions/fetchProjects";
 
 // Reuse the create form schema for consistency
-const formSchema = baseSchema;
 
+export const formSchema = z.object({
+  title: z.string().min(2, "Title must be at least 2 characters").max(50, "Title must be less than 50 characters"),
+  description: z.string().min(2, "Description must be at least 2 characters").max(400, "Description must be less than 400 characters"),
+  location: z.string().min(2, "Location must be at least 2 characters").max(100, "Location must be less than 100 characters"),
+  clientname: z.string().min(2, "Client name must be at least 2 characters").max(100, "Client name must be less than 100 characters"),
+  area: z.string().min(2, "Area must be at least 2 characters").max(100, "Area must be less than 100 characters"),
+  status: z.enum(["completed", "inprogress", "pending", "onhold"], {
+    required_error: "Please select a status",
+  }),
+  startDate: z.date({
+    required_error: "Start Date is required.",
+  }),
+  endDate: z.date({
+    required_error: "End Date is required.",
+  }),
+  attachments: z
+    .array(z.instanceof(File))
+    .refine(
+      (files) => files.every((file) => file.size <= 5 * 1024 * 1024),
+      { message: "Each file must be under 5MB" }
+    )
+    .refine(
+      (files) => {
+        const allowedTypes = [
+          'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif',
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'application/vnd.ms-powerpoint',
+          'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        ];
+        return files.every((file) => allowedTypes.includes(file.type));
+      },
+      { message: "Only images, PDFs, and Office documents are allowed" }
+    )
+
+})
 // API service function for update
 async function updateProjectAPI(formData: FormData) {
   const response = await fetch('/api/admin/projects', {
@@ -394,7 +431,10 @@ export default function EditProject({ project }: EditProjectProps) {
                   </span>
                 )}
               </div>
-              <SelectImages form={form} selectedAttachments={form.watch('attachments') || []} />
+              <SelectImages
+                mode="edit"
+                form={form}
+                selectedAttachments={form.watch('attachments') || []} />
               <p className="text-sm text-muted-foreground">
                 Supported formats: Images (JPEG, PNG, WebP, GIF). Max 5MB per file.
               </p>
