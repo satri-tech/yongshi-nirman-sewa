@@ -24,15 +24,26 @@ jobs:
       - name: Deploy to VPS
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          
+
           echo "🚀 Starting deployment on VPS..."
 
-          # Ensure NVM/Node is available
-          export NVM_DIR="\$HOME/.nvm"
-          [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
-          [ -s "\$NVM_DIR/bash_completion" ] && . "\$NVM_DIR/bash_completion"
+          # ==============================
+          # Ensure Node.js, npm & pm2 exist
+          # ==============================
+          if ! command -v node &> /dev/null; then
+            echo "📦 Installing Node.js & npm..."
+            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+            sudo apt-get install -y nodejs build-essential
+          fi
 
-          # Navigate to project folder (clone if missing)
+          if ! command -v pm2 &> /dev/null; then
+            echo "⚡ Installing PM2 globally..."
+            sudo npm install -g pm2
+          fi
+
+          # ==============================
+          # Clone or update repo
+          # ==============================
           if [ ! -d ~/web/yongshi-nirman-sewa ]; then
             mkdir -p ~/web && cd ~/web
             git clone git@github.com:satri-tech/yongshi-nirman-sewa.git
@@ -44,6 +55,9 @@ jobs:
           git fetch --all
           git reset --hard origin/master
 
+          # ==============================
+          # Install dependencies & build
+          # ==============================
           echo "📦 Installing dependencies..."
           npm ci --legacy-peer-deps
 
@@ -56,8 +70,13 @@ jobs:
           echo "🏗️ Building Next.js app..."
           npm run build
 
+          # ==============================
+          # Restart PM2
+          # ==============================
           echo "🔄 Restarting PM2 process..."
-          pm2 describe yongshi-app > /dev/null 2>&1 && pm2 restart yongshi-app || pm2 start npm --name "yongshi-app" -- start
+          pm2 describe yongshi-app > /dev/null 2>&1 && \
+            pm2 restart yongshi-app || \
+            pm2 start npm --name "yongshi-app" -- start
 
           echo "✅ Deployment complete!"
           EOF
