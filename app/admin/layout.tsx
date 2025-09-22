@@ -59,11 +59,6 @@ export default function AdminLayout({
                 icon: FolderKanban,
             },
             {
-                title: "Contact Us",
-                url: "/admin/contact",
-                icon: MessageSquare,
-            },
-            {
                 title: "Testimonials",
                 url: "/admin/testimonials",
                 icon: Star,
@@ -72,6 +67,11 @@ export default function AdminLayout({
                 title: "Team",
                 url: "/admin/team",
                 icon: Users,
+            },
+            {
+                title: "Contact Us",
+                url: "/admin/contact",
+                icon: MessageSquare,
             },
             {
                 title: "Settings",
