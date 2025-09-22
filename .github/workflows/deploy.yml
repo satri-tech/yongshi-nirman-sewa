@@ -10,45 +10,62 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout the latest code
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # 2️⃣ Setup SSH access to VPS
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
 
+      # 3️⃣ Deploy to VPS
       - name: Deploy to VPS
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          ssh -t -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          
           echo "🚀 Starting deployment on VPS..."
 
-          cd ~/web/yongshi-nirman-sewa || {
-            mkdir -p ~/web && cd ~/web
-            git clone git@github.com:satri-tech/yongshi-nirman-sewa.git
-            cd yongshi-nirman-sewa
-          }
+          # Load Node.js (if using NVM)
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
+          # Go to project folder
+          mkdir -p ~/web
+          cd ~/web
+          if [ ! -d yongshi-nirman-sewa ]; then
+            git clone git@github.com:satri-tech/yongshi-nirman-sewa.git
+          fi
+          cd yongshi-nirman-sewa
+
+          # Pull latest code
           echo "📥 Pulling latest code..."
           git fetch --all
           git reset --hard origin/master
 
+          # Install dependencies
           echo "📦 Installing dependencies..."
           npm ci --legacy-peer-deps
 
-          echo "🗄️ Applying Prisma migrations..."
-          npx prisma migrate deploy || echo "⚠️ Migration failed, skipping!"
+          # Apply Prisma migrations
+          echo "🗄️ Applying database migrations..."
+          npx prisma migrate deploy
 
+          # Generate Prisma client
           echo "⚡ Generating Prisma client..."
           npx prisma generate
 
+          # Build Next.js app
           echo "🏗️ Building Next.js app..."
           npm run build
 
-          echo "🔄 Restarting PM2..."
+          # Restart PM2 process
+          echo "🔄 Restarting PM2 process..."
           pm2 describe yongshi-app > /dev/null 2>&1 && \
             pm2 restart yongshi-app || \
             pm2 start npm --name "yongshi-app" -- start
 
-          echo "✅ Deployment finished!"
+          echo "✅ Deployment complete!"
           EOF
