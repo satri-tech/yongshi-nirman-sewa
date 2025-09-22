@@ -6,7 +6,7 @@ import { RefreshCw } from "lucide-react";
 import { useState } from "react";
 
 export default function AdminPage() {
-    const [loading, setLoading] = useState(true)
+    const [loading] = useState(true)
 
     return <div className="space-y-6">
         <div className="flex flex-col w-full  gap-8 justify-between">
