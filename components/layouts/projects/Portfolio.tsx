@@ -26,13 +26,13 @@ const PortfolioComponent = ({
     return (
         <div
             id="projects"
-            className={`flex lg:flex-row flex-col justify-center items-center w-full h-max font-Poppins ${showTopBorder ? "border-t border-border mt-24 sm:pt-16 pt-8" : "mt-0 sm:pt-4 mb-20"
+            className={`flex lg:flex-row   flex-col justify-center items-center w-full h-max font-Poppins ${showTopBorder ? "border-t border-border sm:mt-24 mt-10 sm:pt-16 pt-8" : "mt-0 sm:pt-2 mb-20"
                 }`}
         >
             <div className="font-Poppins flex flex-col lg:w-[92%] w-[90%] ">
                 <div className="flex w-full sm:gap-6 gap-4 flex-col">
                     {pathname === "/projects" ?
-                        <Breadcrumb className="mr-auto font-medium">
+                        <Breadcrumb className="mr-auto font-medium ">
                             <BreadcrumbList>
                                 <BreadcrumbItem className="dark:text-white text-neutral-800 hover:underline">
                                     <Link href="/">Home</Link>
@@ -52,7 +52,9 @@ const PortfolioComponent = ({
                             </AnimatedButton>
                             <AnimatedButton variants={fadeInLeft}>
                                 <div className="w-full flex">
-                                    <div className="w-full sm:text-5xl text-3xl font-medium leading-[4.4rem] tracking-tight text-foreground">
+                                    {/* className="  sm:text-[3rem] text-3xl sm:font-medium font-medium sm:leading-[4.4rem] leading-10 tracking-tight" */}
+
+                                    <div className="w-full sm:text-5xl text-3xl sm:font-medium font-medium  sm:leading-[4.4rem] leading-10 tracking-tight text-foreground">
                                         {isEmpty ? "Portfolio Coming Soon!" : "Let's dive into our Journey!"}
                                     </div>
                                 </div>

@@ -11,7 +11,7 @@ interface ITeamProps {
 export default function Team({ teamMembers }: ITeamProps) {
     return (
         <div id="team"
-            className={`flex lg:flex-row flex-col justify-center items-center w-full mt-24 h-max border-t-[0.1px] font-Poppins sm:pt-16 pt-8`}
+            className={`flex lg:flex-row flex-col justify-center items-center w-full sm:mt-24 mt-10 h-max border-t-[0.1px] font-Poppins sm:pt-16 pt-8`}
         >
             <div className="font-Poppins flex flex-col  lg:w-[92%] w-[90%] ">
                 <div className="flex w-full sm:gap-6 gap-4 flex-col ">
@@ -20,7 +20,7 @@ export default function Team({ teamMembers }: ITeamProps) {
                     </AnimatedButton>
                     <AnimatedTitle variants={fadeInDown}>
                         <div className="w-full flex">
-                            <div className="w-full sm:text-5xl text-3xl font-medium leading-[4.4rem] tracking-tight">
+                            <div className="w-full sm:text-5xl text-3xl sm:font-medium font-medium  sm:leading-[4.4rem] leading-10 tracking-tight text-foreground">
                                 Bringing passion and Expertise together!
                             </div>
                         </div>

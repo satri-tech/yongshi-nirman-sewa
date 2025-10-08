@@ -24,10 +24,10 @@ export const StatsSection = () => {
             className="flex flex-col sm:gap-4"
             key={data.label}
           >
-            <motion.div className={`sm:text-5xl font-medium `}>
+            <motion.div className={`sm:text-5xl text-3xl font-medium `}>
               {data.value}
             </motion.div>
-            <motion.div className="text-[#656565] sm:text-base text-sm ">
+            <motion.div className="text-[#656565] sm:text-base text-xs ">
               {data.label}
             </motion.div>
           </motion.div>

@@ -15,7 +15,7 @@ export default function AboutUs() {
 
     return (
         <div
-            className="flex lg:flex-row flex-col justify-center items-center mt-24 h-max border-t-[0.1px]  font-Poppins py-16 "
+            className="flex lg:flex-row flex-col justify-center items-center sm:mt-24 mt-10 h-max border-t-[0.1px]   font-Poppins sm:py-16 py-8 "
             id="about"
         >
             <div
@@ -25,11 +25,11 @@ export default function AboutUs() {
                     <HeaderTitle header={'About Us'} />
                 </AnimatedButton>
                 <div
-                    className="w-full flex sm:flex-row flex-col  sm:gap-5  gap-6"
+                    className="w-full flex sm:flex-row flex-col  sm:gap-5  gap-4"
                 >
                     <AnimatedTitle
                         variants={fadeInLeft}
-                        className=" sm:w-6/12 sm:text-[2.8rem] text-3xl font-medium sm:leading-[4.4rem] tracking-tight"
+                        className=" sm:w-6/12 sm:text-[2.8rem] text-3xl sm:font-medium font-medium sm:leading-[4.4rem] leading-10 tracking-tight"
                     >
                         {data.title1} <br />
                         {data.title2}
@@ -39,7 +39,7 @@ export default function AboutUs() {
                         className=" sm:w-6/12 flex flex-col  sm:gap-14 gap-6 "
                     >
                         <AnimatedDescription
-                            className="text-[#212121] text-lg tracking-wide text-justify leading-6 sm:pt-4"
+                            className="text-[#212121] sm:text-lg text-base tracking-wide text-justify sm:leading-7 leading-7 sm:pt-4"
                         >
                             {data.description}
                         </AnimatedDescription>

@@ -19,9 +19,9 @@ export default async function EachPortfolioDetails({ params }: { params: Promise
     }
 
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex  flex-col items-center">
 
-            <div className="w-[90%] text-secondary-text font-medium text-sm flex items-center ">
+            <div className="w-[92%]  text-secondary-text font-medium text-sm flex items-center ">
                 <Breadcrumb className="mr-auto">
                     <BreadcrumbList>
                         <BreadcrumbItem className="dark:text-white text-neutral-800 hover:underline">

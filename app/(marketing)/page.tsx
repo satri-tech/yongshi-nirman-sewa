@@ -4,7 +4,7 @@ import Services from "@/components/layouts/services/Services";
 import Team from "@/components/layouts/team/Team";
 import Contact from "@/components/layouts/contact/contact";
 import Testimonials from "@/components/layouts/testimonials/Testimonials";
-import PortfolioComponent from "@/components/layouts/portfolio/Portfolio";
+import PortfolioComponent from "@/components/layouts/projects/Portfolio";
 import { fetchProjects } from "../actions/fetchProjects";
 import { fetchTestimonials } from "../actions/testimonials";
 import { fetchTeamMembers } from "../actions/teamMembers";
@@ -19,7 +19,7 @@ export default async function Home() {
     ])
 
     return (
-        <div className=" flex flex-col gap-2 items-center">
+        <div className=" flex flex-col sm:gap-2  items-center">
             <HeroSection />
             <AboutUs />
             <Services />

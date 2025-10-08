@@ -112,7 +112,7 @@ export default function Contact() {
     };
     return (
         <div id="contact"
-            className={`flex lg:flex-row flex-col justify-center items-center w-full mt-24 h-max border-t-[0.1px] font-Poppins sm:pt-16 pt-8`}
+            className={`flex lg:flex-row flex-col justify-center items-center w-full sm:mt-24 mt-10 h-max border-t-[0.1px] font-Poppins sm:pt-16 pt-8`}
         >
             <div className="font-Poppins flex flex-col  lg:w-[92%] w-[90%] ">
                 <div className="flex w-full sm:gap-6 gap-4 flex-col ">
@@ -121,15 +121,15 @@ export default function Contact() {
                     </AnimatedButton>
                     <AnimatedTitle variants={fadeInLeft}>
                         <div className="w-full flex">
-                            <div className="w-full sm:text-5xl text-3xl font-medium leading-[4.4rem] tracking-tight">
+                            <div className="w-full sm:text-5xl text-3xl sm:font-medium font-medium  sm:leading-[4.4rem] leading-10 tracking-tight text-foreground">
                                 Any question? We would be happy to help you!
                             </div>
                         </div>
                     </AnimatedTitle>
 
-                    <div className='flex pt-10 flex-col lg:flex-col gap-8'>
+                    <div className='flex sm:pt-10 pt-5 flex-col lg:flex-col sm:gap-8 gap-4'>
                         {/* Contact Form */}
-                        <div className='flex gap-8'>
+                        <div className='flex sm:flex-row flex-col gap-8'>
                             <AnimationWrapper className='w-full lg:w-8/12' variants={staggerItem}>
                                 <Card className="flex flex-col p-6  rounded-lg gap-2 w-full  font-Poppins">
                                     <h3 className="text-xl  font-semibold mb-4 border-b pb-4">Get in Touch</h3>
