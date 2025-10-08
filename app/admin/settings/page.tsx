@@ -181,10 +181,9 @@ export default function SettingsComponent() {
                 {[
                   "Notifications",
                   "Language",
-                  "Accessibility",
-                  "Privacy",
-                  "Data",
-                  "Account",
+                  "Booking",
+                  "Maps",
+                  "Services",
                 ].map((setting) => (
                   <div
                     key={setting}

@@ -22,11 +22,14 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --chart-1: #22c55e; /* Success Green - for completed/positive metrics */
+  --chart-2: #3b82f6; /* Blue - for in-progress/information */
+  --chart-3: #f59e0b; /* Amber - for pending/warnings */
+  --chart-4: #ef4444; /* Red - for on-hold/errors */
+  --chart-5: #8b5cf6; /* Purple - for additional categories */
+  --chart-6: #06b6d4; /* Cyan - for secondary metrics */
+  --chart-7: #ec4899; /* Pink - for highlights */
+  --chart-8: #10b981; /* Emerald - for growth indicators */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -76,11 +79,14 @@
   --border: oklch(0.2809 0 0);
   --input: oklch(0.2603 0 0);
   --ring: oklch(0.8003 0.1821 151.711);
-  --chart-1: oklch(0.8003 0.1821 151.711);
-  --chart-2: oklch(0.7137 0.1434 254.624);
-  --chart-3: oklch(0.709 0.1592 293.5412);
-  --chart-4: oklch(0.8369 0.1644 84.4286);
-  --chart-5: oklch(0.7845 0.1325 181.912);
+  --chart-1: #16a34a; /* Success Green - darker for dark mode */
+  --chart-2: #2563eb; /* Blue - darker for dark mode */
+  --chart-3: #d97706; /* Amber - darker for dark mode */
+  --chart-4: #dc2626; /* Red - darker for dark mode */
+  --chart-5: #7c3aed; /* Purple - darker for dark mode */
+  --chart-6: #0891b2; /* Cyan - darker for dark mode */
+  --chart-7: #db2777; /* Pink - darker for dark mode */
+  --chart-8: #059669; /* Emerald - darker for dark mode */
   --sidebar: oklch(0.1822 0 0);
   --sidebar-foreground: oklch(0.6301 0 0);
   --sidebar-primary: oklch(0.4365 0.1044 156.7556);
@@ -121,6 +127,9 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+  --color-chart-8: var(--chart-8);
+  --color-chart-7: var(--chart-7);
+  --color-chart-6: var(--chart-6);
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
