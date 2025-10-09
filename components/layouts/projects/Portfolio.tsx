@@ -4,7 +4,7 @@ import HeaderTitle from "@/components/ui/HeaderTitle";
 import { AnimatedArrow, AnimatedButton } from "@/components/animations/animated-component";
 import { ArrowRight, FolderOpen } from "lucide-react";
 import Link from "next/link";
-import { fadeInDown, fadeInLeft } from "@/hooks/use-scroll-animation";
+import { fadeInDown } from "@/hooks/use-scroll-animation";
 import { IProject } from "@/app/actions/fetchProjects";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
@@ -50,7 +50,7 @@ const PortfolioComponent = ({
                             <AnimatedButton variants={fadeInDown}>
                                 <HeaderTitle header={"Projects"} />
                             </AnimatedButton>
-                            <AnimatedButton variants={fadeInLeft}>
+                            <AnimatedButton variants={fadeInDown}>
                                 <div className="w-full flex">
                                     {/* className="  sm:text-[3rem] text-3xl sm:font-medium font-medium sm:leading-[4.4rem] leading-10 tracking-tight" */}
 

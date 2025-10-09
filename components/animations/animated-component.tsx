@@ -4,7 +4,6 @@ import { motion, Variants } from 'framer-motion';
 import { ReactNode } from 'react';
 import {
     useScrollAnimation,
-    fadeInLeft,
     scaleIn,
     staggerContainer,
     staggerItem
@@ -45,7 +44,7 @@ export function AnimatedTitle({ children, className, variants }: AnimatedWrapper
             animate={animation.controls}
             className={className}
         >
-            <motion.div variants={variants || fadeInLeft}>
+            <motion.div variants={variants || staggerItem}>
                 {children}
             </motion.div>
         </motion.div>

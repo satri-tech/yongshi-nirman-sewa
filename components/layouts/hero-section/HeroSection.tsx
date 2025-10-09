@@ -8,18 +8,20 @@ import {
     AnimatedImageContainer
 } from '@/components/animations/animated-component';
 import InteractiveButton from "./InteractiveButton";
+import { fadeInDown } from "@/hooks/use-scroll-animation";
 
 export default function HeroSection() {
 
     return (
         <section className="h-max l:w-[92%] w-[90%] flex flex-col sm:gap-10 gap-6 z-49 ">
             <div className="flex md:flex-row flex-col md:justify-between w-full md:gap-2 gap-4">
-                <AnimatedTitle className="md:w-6/12 md:text-6xl sm:text-5xl text-4xl sm:font-semibold font-semibold font-Poppins md:leading-[4.9rem] ">
+                <AnimatedTitle variants={fadeInDown}
+                    className="md:w-6/12 md:text-5xl sm:text-5xl text-4xl sm:font-medium font-semibold font-Poppins md:leading-[4.9rem] ">
                     {data.title}
                 </AnimatedTitle>
 
                 <div className="md:w-5/12 md:p-6 font-Poppins  flex flex-col gap-6 text-justify">
-                    <AnimatedDescription className="md:text-lg text-base z-49">
+                    <AnimatedDescription variants={fadeInDown} className="md:text-lg text-base z-49">
                         {data.description}
                     </AnimatedDescription>
 

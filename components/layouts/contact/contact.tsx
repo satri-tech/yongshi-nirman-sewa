@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card';
 import HeaderTitle from '@/components/ui/HeaderTitle'
 import Map from '@/components/ui/Map'
-import { fadeInDown, fadeInLeft, staggerItem } from '@/hooks/use-scroll-animation';
+import { fadeInDown, staggerItem } from '@/hooks/use-scroll-animation';
 import { SendHorizontal, MapPin, Phone, Mail, Loader2 } from 'lucide-react'
 import { BsGithub, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
 import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
@@ -119,7 +119,7 @@ export default function Contact() {
                     <AnimatedButton variants={fadeInDown}>
                         <HeaderTitle header={"Contact"} />
                     </AnimatedButton>
-                    <AnimatedTitle variants={fadeInLeft}>
+                    <AnimatedTitle variants={fadeInDown}>
                         <div className="w-full flex">
                             <div className="w-full sm:text-5xl text-3xl sm:font-medium font-medium  sm:leading-[4.4rem] leading-10 tracking-tight text-foreground">
                                 Any question? We would be happy to help you!

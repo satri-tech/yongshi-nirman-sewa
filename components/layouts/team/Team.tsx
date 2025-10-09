@@ -21,6 +21,7 @@ export default function Team({ teamMembers }: ITeamProps) {
                     <AnimatedTitle variants={fadeInDown}>
                         <div className="w-full flex">
                             <div className="w-full sm:text-5xl text-3xl sm:font-medium font-medium  sm:leading-[4.4rem] leading-10 tracking-tight text-foreground">
+
                                 Bringing passion and Expertise together!
                             </div>
                         </div>
@@ -36,17 +37,9 @@ export default function Team({ teamMembers }: ITeamProps) {
                                         <div className="px-2 pt-2 sm:pb-0 sm:pt-4">
                                             <div className="flex justify-between">
                                                 <h3 className="text-title text-base font-medium transition-all duration-500 group-hover:tracking-wider">{teamMember.name}</h3>
-                                                <span className="text-xs">_0{index + 1}</span>
-                                            </div>
-                                            <div className="mt-1 flex items-center justify-between">
-                                                <span className="text-muted-foreground inline-block  text-sm opacity- transition duration-300 group-hover:translate-y-0 ">{teamMember.position}</span>
-                                                <a
-                                                    href={teamMember.facebookurl ?? "#"}
+                                                <a href={teamMember.facebookurl ?? "#"}
                                                     target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="group-hover:text-primary-600 dark:group-hover:text-primary-400 inline-block translate-y-8 text-sm tracking-wide opacity-0 transition-all duration-500 hover:underline group-hover:translate-y-0 group-hover:opacity-100">
-                                                    Facebook
-                                                </a>
+                                                    rel="noopener noreferrer" className="text-xs hover:underline">Facebook</a>
                                             </div>
                                         </div>
                                     </div>

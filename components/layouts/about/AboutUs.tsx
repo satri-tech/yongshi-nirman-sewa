@@ -3,8 +3,7 @@ import HeaderTitle from "@/components/ui/HeaderTitle";
 import { StatsSection } from "../stats";
 import { data } from "./constants"
 import {
-    fadeInLeft,
-    staggerItem
+    fadeInDown,
 } from '@/hooks/use-scroll-animation';
 import {
     AnimatedTitle,
@@ -21,14 +20,14 @@ export default function AboutUs() {
             <div
                 className="flex l:w-[92%] w-[90%]  sm:gap-10  gap-4 flex-col"
             >
-                <AnimatedButton variants={staggerItem}>
+                <AnimatedButton variants={fadeInDown}>
                     <HeaderTitle header={'About Us'} />
                 </AnimatedButton>
                 <div
                     className="w-full flex sm:flex-row flex-col  sm:gap-5  gap-4"
                 >
                     <AnimatedTitle
-                        variants={fadeInLeft}
+                        variants={fadeInDown}
                         className=" sm:w-6/12 sm:text-[2.8rem] text-3xl sm:font-medium font-medium sm:leading-[4.4rem] leading-10 tracking-tight"
                     >
                         {data.title1} <br />

@@ -8,8 +8,6 @@ import { useServices } from "./useServices";
 import { AnimatedButton, AnimatedDescription, AnimatedImageContainer, AnimatedTitle } from "@/components/animations/animated-component";
 import { fadeInDown } from "@/hooks/use-scroll-animation";
 
-import AnimatedCursor from "@/components/animations/cursor/AnimatedCursor";
-
 const Services = () => {
     const { activeImage, activeService, handleServiceClick } = useServices();
 
@@ -22,6 +20,7 @@ const Services = () => {
                 <div className="w-full flex sm:flex-row flex-col sm:gap-10 gap-4">
                     <div className="sm:w-6/12 sm:text-5xl  text-3xl font-medium sm:leading-[4.4rem] flex flex-col tracking-tight sm:gap-20 gap-6">
                         <AnimatedTitle
+                            variants={fadeInDown}
                             className="  sm:text-[3rem] text-3xl sm:font-medium font-medium sm:leading-[4.4rem] leading-10 tracking-tight"
                         >Explore the variety of services we provide.</AnimatedTitle>
                         <div className="sm:h-96 w-full">

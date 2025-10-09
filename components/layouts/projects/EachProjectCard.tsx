@@ -15,7 +15,7 @@ const EachProjectCard = ({ project }: { project: IProject }) => {
                     alt="team member" width="826" height="1239" />
                 <div className="px-2 pt-2 sm:pb-0 sm:pt-4">
                     <div className="flex justify-between ">
-                        <h3 className="text-title text-base font-medium transition-all duration-500   group-hover:tracking-wider">{project.title}</h3>
+                        <h3 className="text-title text-lg font-medium transition-all duration-500   group-hover:tracking-wider">{project.title}</h3>
                     </div>
                     <div className=" flex items-center justify-between ">
                         <span className="text-muted-foreground  text-sm transition-all duration-500 group-hover:tracking-tight ">{project.location}</span>
