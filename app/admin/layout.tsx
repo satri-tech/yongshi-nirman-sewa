@@ -14,7 +14,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Building, LayoutDashboard, Settings, FolderKanban, MessageSquare, Star, Users } from "lucide-react";
+import { Building, LayoutDashboard, Settings, FolderKanban, MessageSquare, Star, Users, Info } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Outfit } from "next/font/google";
@@ -67,6 +67,11 @@ export default function AdminLayout({
                 title: "Team",
                 url: "/admin/team",
                 icon: Users,
+            },
+            {
+                title: "About Us",
+                url: "/admin/aboutus",
+                icon: Info,
             },
             {
                 title: "Contact Us",

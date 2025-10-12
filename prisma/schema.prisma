@@ -65,6 +65,18 @@ model Team {
   updatedAt    DateTime @updatedAt
 }
 
+model AboutUs {
+  id          String @id @default("singleton") // fixed ID
+  mainHeading String
+  description String
+  stat1Number String
+  stat1Label  String
+  stat2Number String
+  stat2Label  String
+  stat3Number String
+  stat3Label  String
+}
+
 enum Status {
   Completed
   InProgress

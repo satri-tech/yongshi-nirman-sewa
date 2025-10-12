@@ -1,7 +1,5 @@
 'use client'
 import HeaderTitle from "@/components/ui/HeaderTitle";
-import { StatsSection } from "../stats";
-import { data } from "./constants"
 import {
     fadeInDown,
 } from '@/hooks/use-scroll-animation';
@@ -10,7 +8,20 @@ import {
     AnimatedDescription,
     AnimatedButton,
 } from '@/components/animations/animated-component';
-export default function AboutUs() {
+import { IAboutUs } from "@/app/actions/about";
+import { motion } from 'framer-motion';
+import {
+    useScrollAnimation,
+    staggerContainer,
+    staggerItem
+} from '@/hooks/use-scroll-animation';
+
+interface IAboutUsProps {
+    aboutUsData: IAboutUs | null
+}
+export default function AboutUs({ aboutUsData }: IAboutUsProps) {
+    const statsAnimation = useScrollAnimation(0.2, true);
+
 
     return (
         <div
@@ -30,8 +41,7 @@ export default function AboutUs() {
                         variants={fadeInDown}
                         className=" sm:w-6/12 sm:text-[2.8rem] text-3xl sm:font-medium font-medium sm:leading-[4.4rem] leading-10 tracking-tight"
                     >
-                        {data.title1} <br />
-                        {data.title2}
+                        {aboutUsData?.mainHeading}
                     </AnimatedTitle>
                     <div
 
@@ -40,11 +50,51 @@ export default function AboutUs() {
                         <AnimatedDescription
                             className="text-[#212121] sm:text-lg text-base tracking-wide text-justify sm:leading-7 leading-7 sm:pt-4"
                         >
-                            {data.description}
+                            {aboutUsData?.description}
                         </AnimatedDescription>
                         <div
                         >
-                            <StatsSection />
+                            <motion.div
+                                ref={statsAnimation.ref}
+                                variants={staggerContainer}
+                                initial="hidden"
+                                animate={statsAnimation.controls}
+                                className="flex justify-between gap-16 font-Poppins "
+                            >
+                                <motion.div
+                                    variants={staggerItem}
+                                    className="flex flex-col sm:gap-4"
+                                >
+                                    <motion.div className={`sm:text-5xl text-3xl font-medium `}>
+                                        {aboutUsData?.stat1Number}
+                                    </motion.div>
+                                    <motion.div className="text-[#656565] sm:text-base text-xs ">
+                                        {aboutUsData?.stat1Label}
+                                    </motion.div>
+                                </motion.div>
+                                <motion.div
+                                    variants={staggerItem}
+                                    className="flex flex-col sm:gap-4"
+                                >
+                                    <motion.div className={`sm:text-5xl text-3xl font-medium `}>
+                                        {aboutUsData?.stat2Number}
+                                    </motion.div>
+                                    <motion.div className="text-[#656565] sm:text-base text-xs ">
+                                        {aboutUsData?.stat2Label}
+                                    </motion.div>
+                                </motion.div>
+                                <motion.div
+                                    variants={staggerItem}
+                                    className="flex flex-col sm:gap-4"
+                                >
+                                    <motion.div className={`sm:text-5xl text-3xl font-medium `}>
+                                        {aboutUsData?.stat3Number}
+                                    </motion.div>
+                                    <motion.div className="text-[#656565] sm:text-base text-xs ">
+                                        {aboutUsData?.stat3Label}
+                                    </motion.div>
+                                </motion.div>
+                            </motion.div>
                             <div>
                             </div>
                         </div>

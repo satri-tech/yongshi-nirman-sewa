@@ -8,20 +8,22 @@ import PortfolioComponent from "@/components/layouts/projects/Portfolio";
 import { fetchProjects } from "../actions/fetchProjects";
 import { fetchTestimonials } from "../actions/testimonials";
 import { fetchTeamMembers } from "../actions/teamMembers";
+import { fetchAboutUs } from "../actions/about";
 
 export const revalidate = 3600;
 
 export default async function Home() {
-    const [projectResponse, testimonialsResponse, teamMembersResponse] = await Promise.all([
+    const [projectResponse, testimonialsResponse, teamMembersResponse, aboutUsResponse] = await Promise.all([
         fetchProjects(),
         fetchTestimonials(),
-        fetchTeamMembers()
+        fetchTeamMembers(),
+        fetchAboutUs()
     ])
-
+    console.log(aboutUsResponse)
     return (
         <div className=" flex flex-col sm:gap-2  items-center">
             <HeroSection />
-            <AboutUs />
+            <AboutUs aboutUsData={aboutUsResponse.data} />
             <Services />
             <PortfolioComponent projectsdata={projectResponse.data} />
             <Testimonials testimonials={testimonialsResponse.data} />
