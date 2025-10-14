@@ -11,38 +11,23 @@ import {
 } from "@/components/ui/dialog";
 import { Camera, Trash2, Upload, User } from "lucide-react";
 import { useRef, useState } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { UseFormReturn, FieldValues, Path } from "react-hook-form";
 import Image from "next/image";
 
-// Define the exact types that can be accepted
-type AddFormType = {
-    name: string;
-    role: string;
-    facebookUrl: string;
-    image: File;
-};
-
-type EditFormType = {
-    name: string;
-    role: string;
-    facebookUrl: string;
-    image?: File | null | undefined;
-};
-
-// Create overloaded interface definitions
-interface ProfileImageUploaderProps {
-    form: UseFormReturn<AddFormType> | UseFormReturn<EditFormType>;
+// Generic interface that works with any form containing an image field
+interface ProfileImageUploaderProps<T extends FieldValues> {
+    form: UseFormReturn<T>;
     selectedImage: File | null;
     existingImageUrl?: string | null;
     disabled?: boolean;
 }
 
-export default function ProfileImageUploader({
+export default function ProfileImageUploader<T extends FieldValues>({
     form,
     selectedImage,
     existingImageUrl,
     disabled = false
-}: ProfileImageUploaderProps) {
+}: ProfileImageUploaderProps<T>) {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [imageToRemove, setImageToRemove] = useState<boolean>(false);
@@ -55,9 +40,8 @@ export default function ProfileImageUploader({
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            // Type assertion to handle both AddFormType and EditFormType
-            (form as UseFormReturn<EditFormType>).setValue("image", file);
-            setImageToRemove(false); // Reset removal flag when new image is selected
+            form.setValue("image" as Path<T>, file as T["image"]);
+            setImageToRemove(false);
             setIsDialogOpen(false);
         }
     };
@@ -67,9 +51,8 @@ export default function ProfileImageUploader({
     };
 
     const handleRemoveImage = () => {
-        // Type assertion to handle both AddFormType and EditFormType  
-        (form as UseFormReturn<EditFormType>).setValue("image", null);
-        setImageToRemove(true); // Mark for removal
+        form.setValue("image" as Path<T>, null as T["image"]);
+        setImageToRemove(true);
         setIsDialogOpen(false);
 
         // Reset file input

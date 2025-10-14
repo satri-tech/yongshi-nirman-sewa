@@ -19,17 +19,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import ImageSelector from "./ImageSelector"
+import ProfileImageUploader from "../team/ProfileImageUploader"
 
 export const testimonialFormSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
     role: z.string().min(2, "Role must be at least 2 characters").max(100, "Role must be less than 100 characters"),
-    content: z.string().min(10, "Testimonial content must be at least 10 characters").max(1000, "Content must be less than 1000 characters"),
+    content: z.string().min(10, "Testimonial content must be at least 10 characters").max(500, "Content must be less than 500 characters"),
     rating: z.enum(["1", "2", "3", "4", "5"], {
         required_error: "Please select a rating",
     }),
     image: z
-        .instanceof(File)
+        .instanceof(File, { message: "Profile image is required" })
+        .refine(
+            (file) => file.size > 0, // This ensures a file is selected
+            {
+                message: "Profile image is required",
+            }
+        )
         .refine(
             (file) => {
                 return file.size <= 5 * 1024 * 1024; // 5MB limit
@@ -220,6 +226,27 @@ export default function CreateTestimonial() {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
                         {/* Client Information Section */}
+                        <div className="flex flex-col space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="image"
+                                render={() => (
+                                    <FormItem>
+                                        <FormLabel className="text-base font-medium">
+                                            Profile Image
+                                        </FormLabel>
+                                        <FormControl>
+                                            <ProfileImageUploader
+                                                form={form}
+                                                selectedImage={selectedImage || null}
+                                                disabled={isSubmitting}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                         <div className="flex flex-col space-y-4 border-b pb-6">
                             <div className="flex gap-4">
                                 <FormField
@@ -324,32 +351,6 @@ export default function CreateTestimonial() {
                                                 <RatingDisplay rating={selectedRating} />
                                             </div>
                                         )}
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-
-                        {/* Profile Image Section */}
-                        <div className="flex flex-col space-y-4">
-
-                            <FormField
-                                control={form.control}
-                                name="image"
-                                render={() => (
-                                    <FormItem>
-                                        <FormLabel className="text-base font-medium">
-                                            Profile Image <span className="text-red-500">*</span>
-                                        </FormLabel>
-                                        <FormControl>
-                                            <ImageSelector
-                                                form={form}
-                                                selectedImage={selectedImage || null}
-                                            />
-                                        </FormControl>
-                                        <p className="text-sm text-muted-foreground">
-                                            Supported formats: JPEG, PNG, WebP. Max 5MB.
-                                        </p>
                                         <FormMessage />
                                     </FormItem>
                                 )}
