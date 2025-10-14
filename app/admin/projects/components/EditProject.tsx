@@ -44,11 +44,11 @@ import { IProject } from "@/app/actions/fetchProjects";
 // Reuse the create form schema for consistency
 
 export const formSchema = z.object({
-  title: z.string().min(2, "Title must be at least 2 characters").max(50, "Title must be less than 50 characters"),
-  description: z.string().min(2, "Description must be at least 2 characters").max(400, "Description must be less than 400 characters"),
-  location: z.string().min(2, "Location must be at least 2 characters").max(100, "Location must be less than 100 characters"),
+  title: z.string().min(2, "Title must be at least 2 characters").max(100, "Title must be less than 100 characters"),
+  description: z.string().min(20, "Description must be at least 20 characters").max(1000, "Description must be less than 1000 characters"),
+  location: z.string().min(3, "Location must be at least 3 characters").max(100, "Location must be less than 100 characters"),
   clientname: z.string().min(2, "Client name must be at least 2 characters").max(100, "Client name must be less than 100 characters"),
-  area: z.string().min(2, "Area must be at least 2 characters").max(100, "Area must be less than 100 characters"),
+  area: z.string().min(1, "Area must be at least 1 characters").max(100, "Area must be less than 100 characters"),
   status: z.enum(["completed", "inprogress", "pending", "onhold"], {
     required_error: "Please select a status",
   }),
