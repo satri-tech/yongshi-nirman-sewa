@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
-import StatsCard from "./components/StatsCard";
-import Projects from "./Projects";
+import StatsCard from "@/features/projects/admin/components/StatsCard";
+import Projects from "../../../features/projects/admin/components/Projects";
 
 export default function PortfolioPage() {
     return (

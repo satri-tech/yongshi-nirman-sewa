@@ -1,11 +1,11 @@
 export const dynamic = "force-dynamic";
 
 import { fetchContacts } from "@/app/actions/contact";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/features/shared/components/table"
 import { Mail, Phone, User, Calendar } from "lucide-react"
-import { truncateMessage } from "./utils";
-import { formatDate } from "@/lib/utils/formatDate";
-import DeleteContact from "./DeleteContact";
+import { truncateMessage } from "../../../features/shared/utils/truncateMessage";
+import { formatDate } from "@/features/shared/utils/formatDate";
+import DeleteContact from "../../../features/contact/admin/components/DeleteContact";
 
 export default async function ContactUs() {
     const response = await fetchContacts()

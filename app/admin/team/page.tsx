@@ -1,10 +1,10 @@
 export const dynamic = 'force-dynamic'
 
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import AddTeamMember from "./AddTeamMember";
-import TeamMembersTable from "./TeamMembersTable";
+import { Badge } from "@/features/shared/components/badge";
+import { Card, CardContent } from "@/features/shared/components/card";
 import { fetchTeamMembers } from "@/app/actions/teamMembers";
+import AddTeamMember from "@/features/team/admin/components/AddTeamMember";
+import TeamMembersTable from "@/features/team/admin/components/TeamMembersTable";
 
 export default async function TeamPage() {
     const response = await fetchTeamMembers();

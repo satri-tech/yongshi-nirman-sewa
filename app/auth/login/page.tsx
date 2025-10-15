@@ -11,17 +11,17 @@ import {
     CardContent,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+} from "@/features/shared/components/card";
+import { Input } from "@/features/shared/components/input";
+import { Button } from "@/features/shared/components/button";
+import { Label } from "@/features/shared/components/label";
 import {
     Form,
     FormField,
     FormItem,
     FormControl,
     FormMessage,
-} from "@/components/ui/form";
+} from "@/features/shared/components/form";
 import { toast } from "sonner";
 
 const loginSchema = z.object({

@@ -8,7 +8,7 @@ import {
   extractFilesFromFormData,
   TESTIMONIALS_CONFIG,
   UploadResult,
-} from "@/lib/upload/fileUpload";
+} from "@/features/shared/hooks/fileUpload";
 
 // POST API route handler for creating testimonials
 export async function POST(request: NextRequest) {

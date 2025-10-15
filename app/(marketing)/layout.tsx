@@ -1,5 +1,5 @@
 // app/layout.tsx
-import ClientLayout from "@/components/layouts/client-layout/ClientLayout";
+import ClientLayout from "@/features/sidebar/components/ClientLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
