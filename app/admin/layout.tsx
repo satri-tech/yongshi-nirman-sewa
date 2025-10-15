@@ -1,19 +1,19 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { AppSidebar } from "@/features/sidebar/components/app-sidebar";
 import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
     BreadcrumbList,
     BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
+} from "@/features/shared/components/breadcrumb";
+import { Separator } from "@/features/shared/components/separator";
 import {
     SidebarInset,
     SidebarProvider,
     SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@/features/shared/components/sidebar";
 import { Building, LayoutDashboard, Settings, FolderKanban, MessageSquare, Star, Users, Info } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";

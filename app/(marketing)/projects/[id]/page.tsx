@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { fetchProjectById } from "@/app/actions/fetchProjects";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/features/shared/components/breadcrumb";
 import EachProductDetails from "./EachProductDetails";
 
 export const revalidate = 3600;
@@ -29,7 +29,7 @@ export default async function EachPortfolioDetails({ params }: { params: Promise
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbLink className="dark:text-white text-neutral-800 hover:underline">
+                            <BreadcrumbLink className="dark:text-white text-neutral-800 hover:underline" asChild>
                                 <Link href={'/projects'}>Projects</Link>
                             </BreadcrumbLink>
                         </BreadcrumbItem>

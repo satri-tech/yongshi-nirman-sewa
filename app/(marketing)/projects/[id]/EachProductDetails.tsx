@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 import { IProject } from "@/app/actions/fetchProjects"
-import { formatDate } from "@/lib/utils/formatDate"
+import { formatDate } from "@/features/shared/utils/formatDate"
 import Image from "next/image"
 
 interface IEachProductDetailsProps {

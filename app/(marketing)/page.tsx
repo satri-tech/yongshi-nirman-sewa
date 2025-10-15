@@ -1,14 +1,14 @@
-import HeroSection from "@/components/layouts/hero-section/HeroSection";
-import AboutUs from "@/components/layouts/about/AboutUs";
-import Services from "@/components/layouts/services/Services";
-import Team from "@/components/layouts/team/Team";
-import Contact from "@/components/layouts/contact/contact";
-import Testimonials from "@/components/layouts/testimonials/Testimonials";
-import PortfolioComponent from "@/components/layouts/projects/Portfolio";
+import AboutUs from "@/features/about-us/client/components/AboutUs";
+import Team from "@/features/team/client/components/Team";
+import Contact from "@/features/contact/client/components/contact";
+import Testimonials from "@/features/testimonials/client/components/Testimonials";
+import PortfolioComponent from "@/features/projects/client/components/Portfolio";
 import { fetchProjects } from "../actions/fetchProjects";
 import { fetchTestimonials } from "../actions/testimonials";
 import { fetchTeamMembers } from "../actions/teamMembers";
 import { fetchAboutUs } from "../actions/about";
+import HeroSection from "@/features/hero-section/client/components/HeroSection";
+import Services from "@/features/services/components/Services";
 
 export const revalidate = 3600;
 

@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { fetchAboutUs } from "@/app/actions/about";
-import UpdateAboutUsComponent from "./UpdateAboutUs";
+import UpdateAboutUsComponent from "@/features/about-us/admin/components/UpdateAboutUs";
 
 export default async function AboutUsAdmin() {
     const result = await fetchAboutUs();

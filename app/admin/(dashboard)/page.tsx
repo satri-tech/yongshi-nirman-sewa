@@ -1,10 +1,10 @@
 export const dynamic = 'force-dynamic'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/features/shared/components/card";
+import { Badge } from "@/features/shared/components/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/features/shared/components/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/features/shared/components/tabs";
+import { Alert, AlertDescription } from "@/features/shared/components/alert";
 import {
     FolderKanban,
     MessageSquare,

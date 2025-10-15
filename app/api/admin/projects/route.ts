@@ -8,7 +8,7 @@ import {
   extractFilesFromFormData,
   PROJECTS_CONFIG,
   UploadResult,
-} from "@/lib/upload/fileUpload";
+} from "@/features/shared/hooks/fileUpload";
 
 // POST API route handler
 export async function POST(request: NextRequest) {

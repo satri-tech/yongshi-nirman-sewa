@@ -1,5 +1,5 @@
 import { fetchProjects } from "@/app/actions/fetchProjects";
-import PortfolioComponent from "@/components/layouts/projects/Portfolio";
+import PortfolioComponent from "@/features/projects/client/components/Portfolio";
 export const revalidate = 3600;
 
 export default async function Portfolios() {

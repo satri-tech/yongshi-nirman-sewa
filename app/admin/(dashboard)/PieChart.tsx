@@ -8,7 +8,7 @@ import {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/features/shared/components/chart"
 
 export const description = "A donut chart"
 

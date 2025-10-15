@@ -1,8 +1,8 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import TestimonalsTable from "./TestimonialsTable";
-import CreateTestimonial from "./CreateTestimonial";
+import { Badge } from "@/features/shared/components/badge";
+import { Card, CardContent } from "@/features/shared/components/card";
+import TestimonalsTable from "../../../features/testimonials/admin/components/TestimonialsTable";
 import { fetchTestimonials } from "@/app/actions/testimonials";
+import CreateTestimonial from "@/features/testimonials/admin/components/CreateTestimonial";
 
 export const dynamic = 'force-dynamic'
 

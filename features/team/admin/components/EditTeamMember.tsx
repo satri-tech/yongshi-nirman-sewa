@@ -1,0 +1,300 @@
+'use client'
+import { Button } from "@/features/shared/components/button"
+import { Plus, Loader2, Edit } from "lucide-react"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/features/shared/components/form"
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/features/shared/components/sheet"
+import { Input } from "@/features/shared/components/input"
+import { toast } from "sonner"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import ProfileImageUploader from "./ProfileImageUploader"
+import { ITeamMember } from "@/app/actions/teamMembers";
+
+
+// Define the form schema for editing a team member
+export const teamMemberFormSchema = z.object({
+    name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
+    role: z.string().min(2, "Role must be at least 2 characters").max(100, "Role must be less than 100 characters"),
+    facebookUrl: z.string(),
+    image: z
+        .union([
+            z.instanceof(File).refine(
+                (file) => file.size <= 5 * 1024 * 1024, // 5MB limit
+                { message: "Image must be under 5MB" }
+            ),
+            z.null(), // Allow null for image removal
+            z.undefined() // Allow undefined for no change
+        ])
+        .optional(), // Make image optional for editing
+});
+
+// API service function to edit a team member
+async function editTeamMember(id: string, formData: FormData) {
+    const response = await fetch(`/api/admin/team?id=${id}`, {
+        method: 'PUT',
+        body: formData,
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Network error occurred' }));
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+}
+
+interface EditTeamMemberProps {
+    teamMember: ITeamMember;
+}
+
+export default function EditTeamMember({ teamMember }: EditTeamMemberProps) {
+    const router = useRouter();
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+    // Define form with default values from the team member
+    const form = useForm<z.infer<typeof teamMemberFormSchema>>({
+        resolver: zodResolver(teamMemberFormSchema),
+        defaultValues: {
+            name: teamMember.name,
+            role: teamMember.position,
+            facebookUrl: teamMember.facebookurl || ''
+        },
+    });
+
+    // Submit handler with API integration - FIXED VERSION
+    async function onSubmit(values: z.infer<typeof teamMemberFormSchema>) {
+        if (isSubmitting) return;
+
+        setIsSubmitting(true);
+
+        try {
+            const formData = new FormData();
+
+            // Append all form fields
+            formData.append("name", values.name);
+            formData.append("role", values.role);
+            formData.append("facebookUrl", values.facebookUrl);
+
+            // Handle image upload/removal/no-change
+            if (values.image instanceof File) {
+                // New image file being uploaded
+                formData.append("image", values.image);
+            } else if (values.image === null) {
+                // Image is being explicitly removed
+                formData.append("removeImage", "true"); // Signal to API to remove image
+            }
+
+            // Call API endpoint
+            const result = await editTeamMember(teamMember.id, formData);
+
+            if (result.success) {
+                toast.success("Team Member Updated Successfully! 🎉", {
+                    description: result.message || `Team Member "${values.name}" has been updated.`,
+                    duration: 5000,
+                });
+
+                // Close the sheet and refresh
+                setIsSheetOpen(false);
+                router.refresh();
+            } else {
+                console.error("API error:", result.error);
+                toast.error("Failed to Update Team Member ❌", {
+                    description: result.error || "Something went wrong. Please try again.",
+                    duration: 5000,
+                });
+            }
+        } catch (error) {
+            console.error("Submission error:", error);
+
+            let errorMessage = "An unexpected error occurred. Please try again.";
+            if (error instanceof Error) {
+                errorMessage = error.message;
+            }
+
+            toast.error("Submission Error ❌", {
+                description: errorMessage,
+                duration: 5000,
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+    // Handle form cancellation
+    function handleCancel() {
+        form.reset({
+            name: teamMember.name,
+            role: teamMember.position,
+            facebookUrl: teamMember.facebookurl || ''
+        });
+        setIsSheetOpen(false);
+    }
+
+    // Watch selected image for preview
+    const selectedImage = form.watch("image");
+
+    return (
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetTrigger asChild>
+                <Button onClick={() => setIsSheetOpen(true)} size={'icon'} variant={'default'}><Edit /></Button>
+            </SheetTrigger>
+            <SheetContent className="sm:max-w-xl gap-0 pb-2 p-6 md:max-w-2xl font-medium dark:bg-neutral-950 text-black dark:text-white overflow-y-auto">
+                <SheetHeader className="mb-2 p-0 border-b pb-4 gap-0.5">
+                    <SheetTitle className="text-xl">Edit Team Member</SheetTitle>
+                    <SheetDescription className="text-sm font-normal">
+                        Edit the details of the team member. All fields marked with * are required.
+                    </SheetDescription>
+                </SheetHeader>
+
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
+
+                        {/* Profile Image Section */}
+                        <div className="flex flex-col space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="image"
+                                render={() => (
+                                    <FormItem>
+                                        <FormLabel className="text-base font-medium">
+                                            Profile Image
+                                        </FormLabel>
+                                        <FormControl>
+                                            <ProfileImageUploader
+                                                form={form}
+                                                selectedImage={selectedImage || null}
+                                                existingImageUrl={teamMember.image ? `/api/images/teamMembers/${teamMember.image}` : null}
+                                                disabled={isSubmitting}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
+                        {/* Client Information Section */}
+                        <div className="flex flex-col space-y-4 border-b pb-6">
+                            <div className="flex gap-4">
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel className="text-sm font-medium">
+                                                Full Name <span className="text-red-500">*</span>
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="Enter member's full name..."
+                                                    {...field}
+                                                    className="resize-none text-sm py-5"
+                                                    disabled={isSubmitting}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="role"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel className="text-sm font-medium">
+                                                Role/Position <span className="text-red-500">*</span>
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="e.g., CEO, Manager, etc."
+                                                    {...field}
+                                                    className="resize-none text-sm py-5"
+                                                    disabled={isSubmitting}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Testimonial Content Section */}
+                        <div className="flex flex-col space-y-4  pb-6">
+                            <FormField
+                                control={form.control}
+                                name="facebookUrl"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-sm font-medium">
+                                            Facebook Url <span className="text-red-500">*</span>
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Enter the facebook url..."
+                                                {...field}
+                                                className=" text-sm py-5"
+                                                disabled={isSubmitting}
+                                            />
+                                        </FormControl>
+                                        <div className="flex justify-between">
+                                            <FormMessage />
+                                        </div>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
+
+                        {/* Action Buttons */}
+                        <div className="flex justify-end gap-4 pt-6">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                className="py-5 px-5"
+                                onClick={handleCancel}
+                                disabled={isSubmitting}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                className="py-5"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? (
+                                    <>
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        Saving...
+                                    </>
+                                ) : (
+                                    <>
+                                        Save Changes <Plus />
+                                    </>
+                                )}
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+            </SheetContent>
+        </Sheet>
+    )
+}

@@ -5,7 +5,7 @@ import {
   TEAM_NEW_MEMBER_CONFIG,
   UploadResult,
   uploadSingleFile,
-} from "@/lib/upload/fileUpload";
+} from "@/features/shared/hooks/fileUpload";
 import { NextRequest, NextResponse } from "next/server";
 
 // PUT handler for updating a team member

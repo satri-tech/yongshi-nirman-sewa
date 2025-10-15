@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { ApiResponse } from "@/utils/auth-utils";
-import { deleteFiles, TESTIMONIALS_CONFIG } from "@/lib/upload/fileUpload";
+import { deleteFiles, TESTIMONIALS_CONFIG } from "@/features/shared/hooks/fileUpload";
 
 export interface ITestimonial {
   id: string;
