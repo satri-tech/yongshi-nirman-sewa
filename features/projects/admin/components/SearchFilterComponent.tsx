@@ -39,7 +39,7 @@ const SearchFilterComponent = ({ projects }: SearchFilterComponentProps) => {
     return (
         <>
             <div className="rounded-lg shadow-sm border p-3 mb-6">
-                <div className="flex gap-4 justify-between">
+                <div className="flex sm:flex-row flex-col sm:gap-4 gap-2 justify-between">
                     <Input
                         type="text"
                         placeholder="Search projects..."
@@ -47,7 +47,7 @@ const SearchFilterComponent = ({ projects }: SearchFilterComponentProps) => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <div className='flex gap-4'>
+                    <div className='flex sm:gap-4 gap-2'>
                         <Select value={statusFilter} onValueChange={setStatusFilter} defaultValue='All'>
                             <SelectTrigger className="w-[180px] py-5">
                                 <SelectValue placeholder="Status" />
