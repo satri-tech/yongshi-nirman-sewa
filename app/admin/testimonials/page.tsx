@@ -10,13 +10,13 @@ export default async function TestimonialsPage() {
     const response = await fetchTestimonials();
     const testimonials = response.data
     return <div className="min-h-screen py-2">
-        <div className="w-full px-2">
+        <div className="w-full sm:px-2">
             <div className=" mb-4">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold">Testimonials Management</h1>
-                        <p className="mt-2">
+                        <h1 className="sm:text-3xl text-2xl font-bold">Testimonials Management</h1>
+                        <p className="sm:mt-2 mt-1">
                             Create and manage your construction projects portfolio
                         </p>
                     </div>
@@ -24,8 +24,7 @@ export default async function TestimonialsPage() {
                 {/* Stats */}
             </div>
             <Card>
-
-                <CardContent>
+                <CardContent >
                     <div className="mb-4 flex items-center justify-between">
                         <Badge variant="outline" className="text-sm">
                             Total Testimonials: {testimonials?.length}

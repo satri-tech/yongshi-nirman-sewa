@@ -63,7 +63,7 @@ export default function SettingsComponent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="w-full  mx-auto p-6">
+      <div className="w-full  mx-auto sm:px-3">
         <div className="space-y-8">
           {/* Header */}
           <div className="space-y-2">

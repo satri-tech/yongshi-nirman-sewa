@@ -50,7 +50,7 @@ export default function SelectStartDate({ form }: SelectDeadlineProps) {
                                     <Button
                                         variant={"outline"}
                                         className={cn(
-                                            "w-full justify-start text-left py-5 font-normal dark:bg-neutral-950",
+                                            "w-full justify-start text-left py-5 font-normal",
                                             !field.value && "text-muted-foreground"
                                         )}
                                     >

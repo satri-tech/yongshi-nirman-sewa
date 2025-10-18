@@ -11,11 +11,11 @@ export default async function AboutUsAdmin() {
 
     return (
         <div className="min-h-screen py-2">
-            <div className="w-full px-2">
+            <div className="w-full sm:px-2">
                 <div className="mb-4">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h1 className="text-3xl font-bold">About Us Management</h1>
+                            <h1 className="sm:text-3xl text-2xl font-bold">About Us Management</h1>
                             <p className="mt-2">
                                 Edit your company&apos;s about section content. Changes will be reflected on the website after saving.
                             </p>

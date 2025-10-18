@@ -12,13 +12,13 @@ export default async function ContactUs() {
     const contacts = response?.data;
     return <div>
         <div className="min-h-screen py-2">
-            <div className="w-full px-2">
+            <div className="w-full sm:px-2">
                 <div className=" mb-4">
                     {/* Header */}
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h1 className="text-3xl font-bold">Contact Management</h1>
-                            <p className="mt-2">
+                            <h1 className="sm:text-3xl text-2xl font-bold">Contact Management</h1>
+                            <p className="sm:mt-2">
                                 All of the messages from the site will be displayed here
                             </p>
                         </div>

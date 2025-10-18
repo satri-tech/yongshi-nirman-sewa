@@ -217,12 +217,12 @@ export default function AddProject() {
     return (
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
-                <Button onClick={() => setIsSheetOpen(true)}>
+                <Button onClick={() => setIsSheetOpen(true)} className="py-5">
                     <Plus className="w-5 h-5" />
                     Add New Project
                 </Button>
             </SheetTrigger>
-            <SheetContent className={`sm:max-w-xl gap-0 pb-2 p-6 md:max-w-2xl lg:max-w-3xl font-medium dark:bg-neutral-950 text-black dark:text-white overflow-y-auto`}>
+            <SheetContent className={`w-full sm:max-w-xl gap-0 pb-2 p-6 md:max-w-2xl lg:max-w-3xl h-full font-medium dark:bg-neutral-950 text-black dark:text-white overflow-y-auto`}>
                 <SheetHeader className="mb-2 p-0 border-b pb-4">
                     <SheetTitle className="text-2xl">Add New Project</SheetTitle>
                     <SheetDescription className="text-base font-normal">
@@ -278,7 +278,7 @@ export default function AddProject() {
 
                         {/* Project Details Section */}
                         <div className="flex flex-col gap-4 border-b pb-4">
-                            <div className="flex gap-4">
+                            <div className="flex sm:flex-row flex-col gap-4">
                                 <FormField
                                     control={form.control}
                                     name="clientname"
@@ -321,7 +321,7 @@ export default function AddProject() {
                                 />
                             </div>
 
-                            <div className="flex gap-4">
+                            <div className="flex sm:flex-row flex-col  gap-4">
                                 <FormField
                                     control={form.control}
                                     name="area"
@@ -335,7 +335,7 @@ export default function AddProject() {
                                                     <Input
                                                         placeholder="Enter area..."
                                                         {...field}
-                                                        className="resize-none text-base py-5 pr-16"
+                                                        className="resize-none text-base py-5 pr-16 w-full"
                                                         disabled={isSubmitting}
                                                         type="number"
                                                         min="0"

@@ -239,7 +239,7 @@ export default function EditProject({ project }: EditProjectProps) {
           Edit
         </Button>
       </SheetTrigger>
-      <SheetContent className="sm:max-w-xl gap-0 pb-2 p-6 md:max-w-2xl lg:max-w-3xl font-medium dark:bg-neutral-950 text-black dark:text-white overflow-y-auto">
+      <SheetContent className={`w-full sm:max-w-xl gap-0 pb-2 p-6 md:max-w-2xl lg:max-w-3xl h-full font-medium dark:bg-neutral-950 text-black dark:text-white overflow-y-auto`}>
         <SheetHeader className="mb-2 p-0 border-b pb-4">
           <SheetTitle className="text-2xl">Edit Project</SheetTitle>
           <SheetDescription className="text-base font-normal">
@@ -285,7 +285,7 @@ export default function EditProject({ project }: EditProjectProps) {
 
             {/* Project Details Section */}
             <div className="flex flex-col gap-4 border-b pb-4">
-              <div className="flex gap-4">
+              <div className="flex sm:flex-row flex-col gap-4">
                 <FormField
                   control={form.control}
                   name="clientname"
@@ -318,7 +318,7 @@ export default function EditProject({ project }: EditProjectProps) {
                 />
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex sm:flex-row flex-col gap-4">
                 <FormField
                   control={form.control}
                   name="area"
@@ -374,7 +374,7 @@ export default function EditProject({ project }: EditProjectProps) {
                 />
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex sm:flex-row flex-col gap-4">
                 <SelectStartDate form={form} />
                 <SelectEndDate form={form} />
               </div>

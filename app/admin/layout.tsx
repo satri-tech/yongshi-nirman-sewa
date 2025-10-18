@@ -115,7 +115,7 @@ export default function AdminLayout({
                     navMainData={navMainData}
                 />
                 <SidebarInset>
-                    <header className="flex h-16 shrink-0 sticky top-0 bg-background items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+                    <header className="flex h-16 shrink-0 sticky top-0 z-50 bg-background items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
                         <div className="flex items-center gap-2 px-4">
                             <SidebarTrigger className="-ml-1" variant="secondary" />
                             <Separator
@@ -124,11 +124,11 @@ export default function AdminLayout({
                             />
                             <Breadcrumb>
                                 <BreadcrumbList>
-                                    <BreadcrumbItem className="hidden md:block">
+                                    <BreadcrumbItem >
                                         <Link href="/admin">Home</Link>
                                     </BreadcrumbItem>
                                     <>
-                                        <BreadcrumbSeparator className="hidden md:block" />
+                                        <BreadcrumbSeparator />
                                         <BreadcrumbItem>
                                             <BreadcrumbLink className="dark:text-white text-black">
                                                 {pathname === "/admin"

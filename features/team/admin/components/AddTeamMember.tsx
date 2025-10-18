@@ -182,7 +182,7 @@ export default function AddTeamMember() {
                     Add New Member
                 </Button>
             </SheetTrigger>
-            <SheetContent className="sm:max-w-xl gap-0 pb-2 p-6 md:max-w-2xl font-medium dark:bg-neutral-950 text-black dark:text-white overflow-y-auto">
+            <SheetContent className={`w-full sm:max-w-xl gap-0 pb-2 p-6 md:max-w-2xl lg:max-w-3xl h-full font-medium dark:bg-neutral-950 text-black dark:text-white overflow-y-auto`}>
                 <SheetHeader className="mb-2 p-0 border-b pb-4 gap-0.5">
                     <SheetTitle className="text-xl">Add New Member</SheetTitle>
                     <SheetDescription className="text-sm font-normal">
