@@ -1,20 +1,20 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { AppSidebar } from "@/features/sidebar/components/app-sidebar";
 import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
     BreadcrumbList,
     BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
+} from "@/features/shared/components/breadcrumb";
+import { Separator } from "@/features/shared/components/separator";
 import {
     SidebarInset,
     SidebarProvider,
     SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { Building, LayoutDashboard, Settings, FolderKanban, MessageSquare, Star, Users } from "lucide-react";
+} from "@/features/shared/components/sidebar";
+import { Building, LayoutDashboard, Settings, FolderKanban, MessageSquare, Star, Users, Info } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Outfit } from "next/font/google";
@@ -69,6 +69,11 @@ export default function AdminLayout({
                 icon: Users,
             },
             {
+                title: "About Us",
+                url: "/admin/aboutus",
+                icon: Info,
+            },
+            {
                 title: "Contact Us",
                 url: "/admin/contact",
                 icon: MessageSquare,
@@ -110,7 +115,7 @@ export default function AdminLayout({
                     navMainData={navMainData}
                 />
                 <SidebarInset>
-                    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+                    <header className="flex h-16 shrink-0 sticky top-0 z-50 bg-background items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
                         <div className="flex items-center gap-2 px-4">
                             <SidebarTrigger className="-ml-1" variant="secondary" />
                             <Separator
@@ -119,11 +124,11 @@ export default function AdminLayout({
                             />
                             <Breadcrumb>
                                 <BreadcrumbList>
-                                    <BreadcrumbItem className="hidden md:block">
+                                    <BreadcrumbItem >
                                         <Link href="/admin">Home</Link>
                                     </BreadcrumbItem>
                                     <>
-                                        <BreadcrumbSeparator className="hidden md:block" />
+                                        <BreadcrumbSeparator />
                                         <BreadcrumbItem>
                                             <BreadcrumbLink className="dark:text-white text-black">
                                                 {pathname === "/admin"

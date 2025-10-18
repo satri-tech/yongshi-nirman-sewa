@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/features/shared/components/label";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/features/shared/components/card";
 import { Monitor, Moon, Sun, Smartphone, Check } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -63,7 +63,7 @@ export default function SettingsComponent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="w-full  mx-auto p-6">
+      <div className="w-full  mx-auto sm:px-3">
         <div className="space-y-8">
           {/* Header */}
           <div className="space-y-2">
@@ -181,10 +181,9 @@ export default function SettingsComponent() {
                 {[
                   "Notifications",
                   "Language",
-                  "Accessibility",
-                  "Privacy",
-                  "Data",
-                  "Account",
+                  "Booking",
+                  "Maps",
+                  "Services",
                 ].map((setting) => (
                   <div
                     key={setting}

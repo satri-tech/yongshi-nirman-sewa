@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 import { IProject } from "@/app/actions/fetchProjects"
-import { formatDate } from "@/lib/utils/formatDate"
+import { formatDate } from "@/features/shared/utils/formatDate"
 import Image from "next/image"
 
 interface IEachProductDetailsProps {
@@ -16,7 +16,7 @@ export default function EachProductDetails({ data }: IEachProductDetailsProps) {
     };
 
     return (
-        <div className="w-[90%] h-full flex flex-col md:flex-row gap-5 mt-3">
+        <div className="w-[90%]  h-full flex flex-col md:flex-row gap-5 mt-3">
             {/* Left Section */}
             <div className="w-full h-auto flex flex-col gap-2">
                 <div className="text-2xl font-Mono font-medium tracking-wide block sm:hidden">

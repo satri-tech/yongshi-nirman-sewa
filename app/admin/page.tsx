@@ -1,7 +1,7 @@
 'use client'
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/features/shared/components/button";
+import { Card, CardContent, CardHeader } from "@/features/shared/components/card";
+import { Skeleton } from "@/features/shared/components/skeleton";
 import { RefreshCw } from "lucide-react";
 import { useState } from "react";
 

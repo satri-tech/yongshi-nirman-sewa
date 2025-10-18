@@ -1,14 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/features/shared/components/button";
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+} from "@/features/shared/components/card";
+import { Alert, AlertDescription } from "@/features/shared/components/alert";
 import { signOut } from "next-auth/react";
 import { Clock, LogOut, Shield } from "lucide-react";
 
