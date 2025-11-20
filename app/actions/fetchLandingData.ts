@@ -16,6 +16,13 @@ export async function fetchLandingData() {
   try {
     const landingData = await prisma.landingPage.findUnique({
       where: { id: SINGLETON_ID },
+      include: {
+        sliderImages: {
+          orderBy: {
+            position: "asc",
+          },
+        },
+      },
     });
 
     if (!landingData) {
@@ -26,9 +33,23 @@ export async function fetchLandingData() {
       };
     }
 
+    // Map to expected format if needed, or return as is.
+    // For backward compatibility with some components, we might want to return URLs.
+    // But for the admin panel, we might want objects.
+    // Let's return the full object with mapped images for now to match the interface roughly,
+    // but the interface says images: string[].
+    // Let's map it to string[] for the consumer, but the admin API might need more.
+    // Actually, the admin page uses the API route, not this action (mostly).
+    // The home page uses this action.
+    // Home page expects { title, description, sliderImages: string[] } (from schema.prisma before).
+    // Now landingData has sliderImages as objects.
+    
     return {
       success: true,
-      data: landingData,
+      data: {
+        ...landingData,
+        sliderImages: landingData.sliderImages.map(img => img.url),
+      },
     };
   } catch (error) {
     console.error("Error fetching landing page Data:", error);
@@ -52,27 +73,47 @@ export async function updateAboutUs(data: ILandingPage) {
       };
     }
 
-    // Upsert AboutUs record using fixed singleton ID
-    const updatedAboutUs = await prisma.landingPage.upsert({
-      where: { id: SINGLETON_ID },
-      update: {
-        title,
-        description,
-        sliderImages: images,
-      },
-      create: {
-        title,
-        id: SINGLETON_ID,
-        sliderImages: images,
-        description,
-      },
+    // Transaction to update landing page and images
+    const updatedLandingPage = await prisma.$transaction(async (tx) => {
+      // 1. Update Landing Page details
+      const landing = await tx.landingPage.upsert({
+        where: { id: SINGLETON_ID },
+        update: {
+          title,
+          description,
+        },
+        create: {
+          id: SINGLETON_ID,
+          title,
+          description,
+        },
+      });
+
+      // 2. Handle Images
+      // Delete existing images
+      await tx.sliderImage.deleteMany({
+        where: { landingPageId: SINGLETON_ID },
+      });
+
+      // Create new images with positions
+      if (images && images.length > 0) {
+        await tx.sliderImage.createMany({
+          data: images.map((url, index) => ({
+            url,
+            position: index,
+            landingPageId: SINGLETON_ID,
+          })),
+        });
+      }
+
+      return landing;
     });
 
     revalidatePath("/");
     return {
       success: true,
       message: "Landing page section updated successfully.",
-      data: updatedAboutUs,
+      data: updatedLandingPage,
     };
   } catch (error) {
     console.error("Error updating About Us:", error);

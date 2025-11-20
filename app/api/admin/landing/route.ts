@@ -12,10 +12,18 @@ const SINGLETON_ID = "singleton";
 const LANDING_PAGE_TAG = "landing-page";
 
 // GET - Fetch landing page data
+// GET - Fetch landing page data
 export async function GET() {
   try {
     const landingData = await prisma.landingPage.findUnique({
       where: { id: SINGLETON_ID },
+      include: {
+        sliderImages: {
+          orderBy: {
+            position: "asc",
+          },
+        },
+      },
     });
 
     if (!landingData) {
@@ -27,7 +35,10 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      data: landingData,
+      data: {
+        ...landingData,
+        sliderImages: landingData.sliderImages.map((img) => img.url),
+      },
     });
   } catch (error) {
     console.error("Error fetching landing page:", error);
@@ -38,6 +49,7 @@ export async function GET() {
   }
 }
 
+// PUT - Update landing page
 // PUT - Update landing page
 export async function PUT(request: NextRequest) {
   try {
@@ -71,32 +83,67 @@ export async function PUT(request: NextRequest) {
     }
 
     // Combine existing images to keep with new uploads
+    // Note: This assumes new images are appended.
+    // If the frontend supports mixed reordering of new/old images,
+    // we would need a more complex way to reconstruct the order.
+    // For now, we append new images to the end.
     const allImages = [...existingImages, ...newImageFilenames];
 
     // Update landing page
-    const updatedLanding = await prisma.landingPage.upsert({
-      where: { id: SINGLETON_ID },
-      update: {
-        title,
-        description,
-        sliderImages: allImages,
-      },
-      create: {
-        id: SINGLETON_ID,
-        title,
-        description,
-        sliderImages: allImages,
-      },
+    await prisma.$transaction(async (tx) => {
+      await tx.landingPage.upsert({
+        where: { id: SINGLETON_ID },
+        update: {
+          title,
+          description,
+        },
+        create: {
+          id: SINGLETON_ID,
+          title,
+          description,
+        },
+      });
+
+      // Delete existing images
+      await tx.sliderImage.deleteMany({
+        where: { landingPageId: SINGLETON_ID },
+      });
+
+      // Create new images with positions
+      if (allImages.length > 0) {
+        await tx.sliderImage.createMany({
+          data: allImages.map((url: string, index: number) => ({
+            url,
+            position: index,
+            landingPageId: SINGLETON_ID,
+          })),
+        });
+      }
     });
 
     revalidatePath("/admin/landing");
     revalidatePath("/");
     revalidateTag(LANDING_PAGE_TAG);
 
+    // Fetch updated data to return
+    const finalData = await prisma.landingPage.findUnique({
+      where: { id: SINGLETON_ID },
+      include: {
+        sliderImages: {
+          orderBy: {
+            position: "asc",
+          },
+        },
+      },
+    });
+
     return NextResponse.json({
       success: true,
       message: "Landing page updated successfully",
-      data: updatedLanding,
+      data: {
+        ...finalData,
+        sliderImages: finalData?.sliderImages.map((img) => img.url) || [],
+      },
     });
   } catch (error) {
     console.error("Error updating landing page:", error);
@@ -107,6 +154,7 @@ export async function PUT(request: NextRequest) {
   }
 }
 
+// DELETE - Remove specific images
 // DELETE - Remove specific images
 export async function DELETE(request: NextRequest) {
   try {
@@ -123,20 +171,13 @@ export async function DELETE(request: NextRequest) {
     const deleteResult = await deleteFiles(images, "public/projects");
 
     // Update landing page to remove deleted images
-    const landingData = await prisma.landingPage.findUnique({
-      where: { id: SINGLETON_ID },
+    // We need to delete SliderImage records where url is in the list
+    await prisma.sliderImage.deleteMany({
+      where: {
+        landingPageId: SINGLETON_ID,
+        url: { in: images },
+      },
     });
-
-    if (landingData) {
-      const updatedImages = landingData.sliderImages.filter(
-        (img) => !deleteResult.deleted.includes(img)
-      );
-
-      await prisma.landingPage.update({
-        where: { id: SINGLETON_ID },
-        data: { sliderImages: updatedImages },
-      });
-    }
 
     revalidatePath("/admin/landing");
     revalidatePath("/");

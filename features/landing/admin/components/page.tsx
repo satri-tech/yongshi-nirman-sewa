@@ -6,6 +6,23 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 import { Button } from "@/features/shared/components/button";
 import {
@@ -61,12 +78,83 @@ interface LandingPageData {
   updatedAt: string;
 }
 
+// Sortable Image Item Component
+function SortableImageItem({
+  url,
+  marked,
+  onRemove,
+}: {
+  url: string;
+  marked: boolean;
+  onRemove: () => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: url });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="relative group touch-none"
+    >
+      <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 cursor-move">
+        <Image
+          src={`/api/images/projects/${url}`}
+          alt="slider image"
+          width={150}
+          height={150}
+          className="w-full h-full object-cover pointer-events-none"
+        />
+      </div>
+      {marked && (
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg pointer-events-none">
+          <span className="text-white text-xs">Removing</span>
+        </div>
+      )}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation(); // Prevent drag start
+          onRemove();
+        }}
+        onPointerDown={(e) => e.stopPropagation()} // Prevent drag start on button
+        className={`absolute top-1 right-1 p-1.5 rounded-full text-white shadow-sm cursor-pointer ${marked ? 'bg-blue-500 hover:bg-blue-600' : 'bg-red-500 hover:bg-red-600'
+          }`}
+        aria-label={marked ? 'Cancel remove' : 'Remove'}
+      >
+        <X size={14} />
+      </button>
+    </div>
+  );
+}
+
 export default function Landing() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [removedExisting, setRemovedExisting] = useState<Set<string>>(new Set());
   const [landingData, setLandingData] = useState<LandingPageData | null>(null);
+  const [orderedImages, setOrderedImages] = useState<string[]>([]);
+  const [hasChanges, setHasChanges] = useState(false);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,6 +174,7 @@ export default function Landing() {
           const data = await response.json();
           if (data.success && data.data) {
             setLandingData(data.data);
+            setOrderedImages(data.data.sliderImages || []);
             form.reset({
               title: data.data.title,
               description: data.data.description,
@@ -103,8 +192,22 @@ export default function Landing() {
   }, [form]);
 
   const existingImagesToKeep = useMemo(() => {
-    return landingData?.sliderImages.filter((url) => !removedExisting.has(url)) || [];
-  }, [landingData?.sliderImages, removedExisting]);
+    return orderedImages.filter((url) => !removedExisting.has(url));
+  }, [orderedImages, removedExisting]);
+
+  // Track changes
+  useEffect(() => {
+    if (!landingData) return;
+
+    const titleChanged = form.watch('title') !== landingData.title;
+    const descriptionChanged = form.watch('description') !== landingData.description;
+    const imagesReordered = JSON.stringify(orderedImages) !== JSON.stringify(landingData.sliderImages);
+    const imagesRemoved = removedExisting.size > 0;
+    const newImagesAdded = (form.watch('attachments')?.length || 0) > 0;
+
+    const changed = titleChanged || descriptionChanged || imagesReordered || imagesRemoved || newImagesAdded;
+    setHasChanges(changed);
+  }, [form.watch('title'), form.watch('description'), orderedImages, removedExisting, form.watch('attachments'), landingData]);
 
   function toggleRemoveExisting(url: string) {
     setRemovedExisting((prev) => {
@@ -113,6 +216,18 @@ export default function Landing() {
       else next.add(url);
       return next;
     });
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      setOrderedImages((items) => {
+        const oldIndex = items.indexOf(active.id as string);
+        const newIndex = items.indexOf(over.id as string);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -135,12 +250,14 @@ export default function Landing() {
           duration: 5000,
         });
         setLandingData(result.data);
+        setOrderedImages(result.data.sliderImages || []);
         form.reset({
           title: result.data.title,
           description: result.data.description,
           attachments: [],
         });
         setRemovedExisting(new Set());
+        setHasChanges(false);
         router.refresh();
       } else {
         toast.error('Failed to Update Landing Page ❌', {
@@ -223,42 +340,32 @@ export default function Landing() {
             <div className="flex items-center gap-2">
               <ImageIcon size={20} />
               <h2 className="text-xl font-semibold">Slider Images</h2>
+              <span className="text-sm text-muted-foreground ml-2">(Drag to reorder)</span>
             </div>
 
-            {landingData?.sliderImages && landingData.sliderImages.length > 0 ? (
+            {orderedImages.length > 0 ? (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  {landingData.sliderImages.map((url) => {
-                    const marked = removedExisting.has(url);
-                    return (
-                      <div key={url} className="relative group">
-                        <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700">
-                          <Image
-                            src={`/api/images/projects/${url}`}
-                            alt="slider image"
-                            width={150}
-                            height={150}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        {marked && (
-                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
-                            <span className="text-white text-xs">Removing</span>
-                          </div>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => toggleRemoveExisting(url)}
-                          className={`absolute top-1 right-1 p-1.5 rounded-full text-white shadow-sm cursor-pointer ${marked ? 'bg-blue-500 hover:bg-blue-600' : 'bg-red-500 hover:bg-red-600'
-                            }`}
-                          aria-label={marked ? 'Cancel remove' : 'Remove'}
-                        >
-                          <X size={14} />
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
+                >
+                  <SortableContext
+                    items={orderedImages}
+                    strategy={rectSortingStrategy}
+                  >
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                      {orderedImages.map((url) => (
+                        <SortableImageItem
+                          key={url}
+                          url={url}
+                          marked={removedExisting.has(url)}
+                          onRemove={() => toggleRemoveExisting(url)}
+                        />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
                 {removedExisting.size > 0 && (
                   <p className="text-sm text-muted-foreground">{removedExisting.size} image(s) will be removed when you save.</p>
                 )}
@@ -305,16 +412,18 @@ export default function Landing() {
                   description: landingData?.description || '',
                   attachments: [],
                 });
+                setOrderedImages(landingData?.sliderImages || []);
                 setRemovedExisting(new Set());
+                setHasChanges(false);
               }}
-              disabled={isSubmitting}
+              disabled={isSubmitting || !hasChanges}
             >
               Reset
             </Button>
             <Button
               type="submit"
               className="py-5 px-6"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !hasChanges}
             >
               {isSubmitting ? (
                 <>
