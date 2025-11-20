@@ -109,6 +109,7 @@ export async function POST(request: NextRequest) {
     // Revalidate any cached pages that might show this data
     revalidatePath("/projects");
     revalidatePath("/portfolio");
+    revalidatePath("/");
 
     return NextResponse.json({
       success: true,
@@ -280,6 +281,7 @@ export async function PUT(request: NextRequest) {
     revalidatePath("/projects");
     revalidatePath("/portfolio");
     revalidatePath("/admin/portfolio");
+    revalidatePath("/");
 
     return NextResponse.json({
       success: true,
@@ -397,6 +399,7 @@ export async function DELETE(request: NextRequest) {
     revalidatePath("/projects");
     revalidatePath("/portfolio");
     revalidatePath("/admin/portfolio");
+    revalidatePath("/");
 
     return NextResponse.json({
       success: true,

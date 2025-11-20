@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 import {
   deleteFiles,
   extractFilesFromFormData,
@@ -95,6 +96,8 @@ export async function PUT(request: NextRequest) {
     });
 
     console.log(`Team member updated successfully: ${updatedTeamMember.id}`);
+
+    revalidatePath("/");
 
     return NextResponse.json({
       success: true,
@@ -227,6 +230,8 @@ export async function POST(request: NextRequest) {
         `Team member created successfully with ID: ${teamMember.id} and display order: ${teamMember.displayOrder}`
       );
 
+      revalidatePath("/");
+
       return NextResponse.json({
         success: true,
         data: {
@@ -354,6 +359,8 @@ export async function DELETE(request: NextRequest) {
     });
 
     console.log(`Team member deleted successfully: ${deletedImage.name}`);
+
+    revalidatePath("/");
 
     return NextResponse.json({
       success: true,

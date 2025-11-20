@@ -20,7 +20,7 @@ import { toast } from "sonner"
 import SelectStartDate from "./StartDate"
 import SelectEndDate from "./SelectEndDate"
 import { useState } from "react"
-import SelectImages from "./SelectImages"
+import ProjectSelectImages from "./SelectImages"
 import { useRouter } from "next/navigation"
 
 export interface IFiles {
@@ -400,7 +400,7 @@ export default function AddProject() {
                                     </span>
                                 )}
                             </div>
-                            <SelectImages
+                            <ProjectSelectImages
                                 mode="create"
                                 form={form}
                                 selectedAttachments={form.watch("attachments") || []}
