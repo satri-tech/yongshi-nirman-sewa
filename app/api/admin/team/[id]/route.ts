@@ -1,5 +1,6 @@
 // app/api/admin/teamMembers/[id]/route.ts
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 
@@ -48,6 +49,8 @@ export async function PUT(
         updatedAt: new Date(),
       },
     });
+
+    revalidatePath("/");
 
     return NextResponse.json({
       message: "Team member updated successfully",

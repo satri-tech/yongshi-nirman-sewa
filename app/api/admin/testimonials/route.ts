@@ -108,6 +108,7 @@ export async function POST(request: NextRequest) {
     // Revalidate any cached pages that might show this data
     revalidatePath("/testimonials");
     revalidatePath("/admin/testimonials");
+    revalidatePath("/");
 
     return NextResponse.json({
       success: true,
@@ -289,6 +290,7 @@ export async function PUT(request: NextRequest) {
     // Revalidate any cached pages that might show this data
     revalidatePath("/testimonials");
     revalidatePath("/admin/testimonials");
+    revalidatePath("/");
 
     return NextResponse.json({
       success: true,
@@ -402,6 +404,7 @@ export async function DELETE(request: NextRequest) {
     // Revalidate any cached pages that might show this data
     revalidatePath("/testimonials");
     revalidatePath("/admin/testimonials");
+    revalidatePath("/");
 
     return NextResponse.json({
       success: true,

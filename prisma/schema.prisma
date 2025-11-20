@@ -77,6 +77,15 @@ model AboutUs {
   stat3Label  String
 }
 
+model LandingPage {
+  id           String   @id @default("singleton")
+  title        String
+  description  String
+  sliderImages String[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 enum Status {
   Completed
   InProgress
