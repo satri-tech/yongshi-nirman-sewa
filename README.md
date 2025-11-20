@@ -13,7 +13,7 @@ Welcome to the official repository for **Yonghsi Construction**, a modern and el
 - 📊 Construction stats and achievements
 - 📸 Project gallery (villas, homes, interiors)
 - 📞 Contact form and location map
-- ⚙️ SEO-friendly and optimized performance
+- ⚙️ SEO-friendly and optimized performance.
 
 ## 🛠️ Tech Stack
 
