@@ -197,7 +197,17 @@ export default function Landing() {
 
   // Track changes
   useEffect(() => {
-    if (!landingData) return;
+    if (!landingData) {
+      // When starting from empty, check if user has entered valid data
+      const title = form.watch('title');
+      const description = form.watch('description');
+      const hasNewImages = (form.watch('attachments')?.length || 0) > 0;
+
+      // Enable save if title and description meet minimum requirements
+      const hasValidContent = title.length >= 2 && description.length >= 20;
+      setHasChanges(hasValidContent || hasNewImages);
+      return;
+    }
 
     const titleChanged = form.watch('title') !== landingData.title;
     const descriptionChanged = form.watch('description') !== landingData.description;
