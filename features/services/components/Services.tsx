@@ -7,16 +7,39 @@ import { AnimatedButton, AnimatedDescription, AnimatedImageContainer, AnimatedTi
 import { fadeInDown } from "@/features/shared/hooks/use-scroll-animation";
 import { useServices } from "../hooks/useServices";
 import { servicesData } from "../constants/constants";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/features/shared/components/breadcrumb";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
-const Services = () => {
+interface ServicesProps {
+    showExploreMoreButton?: boolean;
+    showTopBorder?: boolean;
+}
+
+const Services = ({ showExploreMoreButton = true, showTopBorder = true }: ServicesProps) => {
     const { activeImage, activeService, handleServiceClick } = useServices();
+    const pathname = usePathname()
 
     return (
-        <div id="services" className="flex lg:flex-row flex-col justify-center items-center sm:mt-24 mt-9 h-max border-t-[0.1px] font-Poppins sm:pt-16 pt-8">
+        <div id="services" className={`flex lg:flex-row flex-col justify-center items-center w-full h-max font-Poppins ${showTopBorder ? "border-t border-border sm:mt-24 mt-9 sm:pt-16 pt-8" : "mt-0 sm:pt-2 mb-20"}`}>
             <div className="flex lg:w-[92%] w-[90%] sm:gap-10 gap-4 flex-col">
-                <AnimatedButton variants={fadeInDown}>
-                    <HeaderTitle header={"Services"} />
-                </AnimatedButton>
+                {pathname === "/services" ?
+                    <Breadcrumb className="mr-auto font-medium ">
+                        <BreadcrumbList>
+                            <BreadcrumbItem className="dark:text-white text-neutral-800 hover:underline">
+                                <Link href="/">Home</Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbLink>Services</BreadcrumbLink>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
+                    :
+                    <AnimatedButton variants={fadeInDown}>
+                        <HeaderTitle header={"Services"} />
+                    </AnimatedButton>
+                }
                 <div className="w-full flex sm:flex-row flex-col sm:gap-10 gap-4">
                     <div className="sm:w-6/12 sm:text-5xl  text-3xl font-medium sm:leading-[4.4rem] flex flex-col tracking-tight sm:gap-20 gap-6">
                         <AnimatedTitle

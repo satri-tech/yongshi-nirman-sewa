@@ -10,6 +10,20 @@ export const useNavbar = (onMenuToggle: (state: boolean) => void) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleMenuClick = (id: string) => {
+    const multiPageRoutes: { [key: string]: string } = {
+      about: "/about",
+      projects: "/projects",
+      team: "/team",
+      services: "/services",
+      contact: "/contact",
+    };
+
+    if (multiPageRoutes[id]) {
+      router.push(multiPageRoutes[id]);
+      onMenuToggle(false);
+      return;
+    }
+
     if (pathname !== "/") {
       router.push("/");
 
@@ -19,11 +33,6 @@ export const useNavbar = (onMenuToggle: (state: boolean) => void) => {
       }, 500); // 500ms to 800ms usually works fine
 
       onMenuToggle(false);
-      return;
-    }
-
-    if (id === "projects") {
-      router.push("/projects");
       return;
     }
 

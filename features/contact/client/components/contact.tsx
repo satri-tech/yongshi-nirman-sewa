@@ -12,6 +12,9 @@ import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import { useState } from 'react';
 import { createContact } from '@/app/actions/contact';
 import { toast } from 'sonner';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/features/shared/components/breadcrumb";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 interface FormData {
     fullName: string;
@@ -28,7 +31,13 @@ interface FormErrors {
     general?: string;
 }
 
-export default function Contact() {
+interface ContactProps {
+    showExploreMoreButton?: boolean;
+    showTopBorder?: boolean;
+}
+
+export default function Contact({ showExploreMoreButton = true, showTopBorder = true }: ContactProps) {
+    const pathname = usePathname()
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
         email: '',
@@ -112,20 +121,36 @@ export default function Contact() {
     };
     return (
         <div id="contact"
-            className={`flex lg:flex-row flex-col justify-center items-center w-full sm:mt-24 mt-10 h-max border-t-[0.1px] font-Poppins sm:pt-16 pt-8`}
+            className={`flex lg:flex-row flex-col justify-center items-center w-full h-max font-Poppins ${showTopBorder ? "border-t border-border sm:mt-24 mt-10 sm:pt-16 pt-8" : "mt-0 sm:pt-2 mb-20"}`}
         >
-            <div className="font-Poppins flex flex-col  lg:w-[92%] w-[90%] ">
-                <div className="flex w-full sm:gap-6 gap-4 flex-col ">
-                    <AnimatedButton variants={fadeInDown}>
-                        <HeaderTitle header={"Contact"} />
-                    </AnimatedButton>
-                    <AnimatedTitle variants={fadeInDown}>
-                        <div className="w-full flex">
-                            <div className="w-full sm:text-5xl text-3xl sm:font-medium font-medium  sm:leading-[4.4rem] leading-10 tracking-tight text-foreground">
-                                Any question? We would be happy to help you!
-                            </div>
-                        </div>
-                    </AnimatedTitle>
+            <div className="font-Poppins flex flex-col lg:w-[92%] w-[90%] ">
+                <div className="flex w-full sm:gap-6 gap-4 flex-col">
+                    {pathname === "/contact" ?
+                        <Breadcrumb className="mr-auto font-medium ">
+                            <BreadcrumbList>
+                                <BreadcrumbItem className="dark:text-white text-neutral-800 hover:underline">
+                                    <Link href="/">Home</Link>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator />
+                                <BreadcrumbItem>
+                                    <BreadcrumbLink>Contact</BreadcrumbLink>
+                                </BreadcrumbItem>
+                            </BreadcrumbList>
+                        </Breadcrumb>
+                        :
+                        <>
+                            <AnimatedButton variants={fadeInDown}>
+                                <HeaderTitle header={"Contact"} />
+                            </AnimatedButton>
+                            <AnimatedTitle variants={fadeInDown}>
+                                <div className="w-full flex">
+                                    <div className="w-full sm:text-5xl text-3xl sm:font-medium font-medium  sm:leading-[4.4rem] leading-10 tracking-tight text-foreground">
+                                        Any question? We would be happy to help you!
+                                    </div>
+                                </div>
+                            </AnimatedTitle>
+                        </>
+                    }
 
                     <div className='flex sm:pt-10 pt-5 flex-col lg:flex-col sm:gap-8 gap-4'>
                         {/* Contact Form */}
