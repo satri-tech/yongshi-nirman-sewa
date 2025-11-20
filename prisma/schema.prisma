@@ -77,6 +77,25 @@ model AboutUs {
   stat3Label  String
 }
 
+model LandingPage {
+  id           String        @id @default("singleton")
+  title        String
+  description  String
+  sliderImages SliderImage[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model SliderImage {
+  id            String      @id @default(uuid())
+  url           String
+  position      Int
+  landingPageId String
+  landingPage   LandingPage @relation(fields: [landingPageId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
 enum Status {
   Completed
   InProgress

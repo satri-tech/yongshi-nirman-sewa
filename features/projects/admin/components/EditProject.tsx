@@ -38,7 +38,7 @@ import Image from "next/image";
 
 import SelectStartDate from "./StartDate";
 import SelectEndDate from "./SelectEndDate";
-import SelectImages from "./SelectImages";
+import ProjectSelectImages from "./SelectImages";
 import { IProject } from "@/app/actions/fetchProjects";
 
 // Reuse the create form schema for consistency
@@ -431,7 +431,7 @@ export default function EditProject({ project }: EditProjectProps) {
                   </span>
                 )}
               </div>
-              <SelectImages
+              <ProjectSelectImages
                 mode="edit"
                 form={form}
                 selectedAttachments={form.watch('attachments') || []} />

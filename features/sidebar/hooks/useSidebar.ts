@@ -19,6 +19,20 @@ export const useSidebar = ({ sidebar, handleToggleMenu }: ISidebarProps) => {
   }, [sidebar]);
 
   const navigateToLink = (id: string) => {
+    const multiPageRoutes: { [key: string]: string } = {
+      about: "/about",
+      projects: "/projects",
+      team: "/team",
+      services: "/services",
+      contact: "/contact",
+    };
+
+    if (multiPageRoutes[id]) {
+      handleToggleMenu(false);
+      router.push(multiPageRoutes[id]);
+      return;
+    }
+
     if (pathname !== "/") {
       handleToggleMenu(false);
 
@@ -28,12 +42,6 @@ export const useSidebar = ({ sidebar, handleToggleMenu }: ISidebarProps) => {
         scrollToElement(id);
       }, 500);
 
-      return;
-    }
-
-    if (id === "portfolio") {
-      handleToggleMenu(false);
-      router.push("/portfolio");
       return;
     }
 

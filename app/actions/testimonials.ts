@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { ApiResponse } from "@/utils/auth-utils";
 import { deleteFiles, TESTIMONIALS_CONFIG } from "@/features/shared/hooks/fileUpload";
 
@@ -91,6 +92,8 @@ export async function deleteTestimonial(id: string): Promise<
     const deletedTestimonial = await prisma.testimonial.delete({
       where: { id },
     });
+
+    revalidatePath("/");
 
     return {
       success: true,
