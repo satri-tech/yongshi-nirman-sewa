@@ -8,28 +8,36 @@ import { fetchTestimonials } from "../actions/testimonials";
 import { fetchTeamMembers } from "../actions/teamMembers";
 import { fetchAboutUs } from "../actions/about";
 import { fetchLandingData } from "../actions/fetchLandingData";
+import { fetchContactInfo } from "../actions/contact-info";
+import { fetchProjectsSection } from "../actions/projects-section";
 import HeroSectionWrapper from "@/features/hero-section/client/components/HeroSectionWrapper";
 import Services from "@/features/services/components/Services";
 
 export const revalidate = 40;
 
 export default async function Home() {
-    const [projectResponse, testimonialsResponse, teamMembersResponse, aboutUsResponse, landingResponse] = await Promise.all([
+    const [projectResponse, testimonialsResponse, teamMembersResponse, aboutUsResponse, landingResponse, contactInfoResponse, projectsSectionResponse] = await Promise.all([
         fetchProjects(),
         fetchTestimonials(),
         fetchTeamMembers(),
         fetchAboutUs(),
-        fetchLandingData()
+        fetchLandingData(),
+        fetchContactInfo(),
+        fetchProjectsSection()
     ])
     return (
         <div className=" flex flex-col sm:gap-2  items-center">
             <HeroSectionWrapper landingData={landingResponse.data} />
             <AboutUs aboutUsData={aboutUsResponse.data} />
             <Services />
-            <PortfolioComponent projectsdata={projectResponse.data} />
+            <PortfolioComponent 
+                projectsdata={projectResponse.data} 
+                sectionTitle={projectsSectionResponse.data?.title}
+                sectionSubtitle={projectsSectionResponse.data?.subtitle}
+            />
             <Testimonials testimonials={testimonialsResponse.data} />
             <Team teamMembers={teamMembersResponse.data} />
-            <Contact />
+            <Contact contactInfo={contactInfoResponse.data} />
         </div>
     );
 }

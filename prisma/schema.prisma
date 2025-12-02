@@ -77,6 +77,26 @@ model AboutUs {
   stat3Label  String
 }
 
+model ContactInfo {
+  id           String       @id @default("singleton") // fixed ID
+  address      String
+  phone        String
+  email        String
+  socialLinks  SocialLink[]
+}
+
+model SocialLink {
+  id            String      @id @default(uuid())
+  platform      String      // e.g., "Facebook", "Instagram", "TikTok"
+  icon          String      // Lucide icon name
+  url           String
+  displayOrder  Int         @default(0)
+  contactInfoId String
+  contactInfo   ContactInfo @relation(fields: [contactInfoId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
 model LandingPage {
   id           String        @id @default("singleton")
   title        String
@@ -84,6 +104,14 @@ model LandingPage {
   sliderImages SliderImage[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+}
+
+model ProjectsSection {
+  id          String @id @default("singleton") // fixed ID
+  title       String
+  subtitle    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model SliderImage {
