@@ -21,7 +21,7 @@ Welcome to the official repository for **Yonghsi Construction**, a modern and el
 - **Tailwind CSS** – Utility-first CSS framework
 - **TypeScript** – For type-safe development
 - **Framer Motion** – Smooth animations and transitions
-- **Lucide Icons** – Iconography for UI
+- **Lucide Icons** – Iconography for UI.
 
 ## 📂 Folder Structure
 
