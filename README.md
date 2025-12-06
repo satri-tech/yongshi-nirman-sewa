@@ -1,6 +1,6 @@
 # 🏗️ Yonghsi Construction
 
-Welcome to the official repository for **Yonghsi Construction**, a modern and elegant website built to showcase our expertise in crafting beautiful villas, custom homes, and residential spaces in **Pokhara, Nepal**.
+Welcome to the official repository for **Yonghsi Construction**, a modern and elegant website built to showcase our expertise in crafting beautiful villas, custom homes, and residential spaces in **Pokhara, Nepal**..
 
 ## 🚀 About Us
 
