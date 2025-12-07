@@ -5,9 +5,6 @@ import UpdateAboutUsComponent from "@/features/about-us/admin/components/UpdateA
 
 export default async function AboutUsAdmin() {
     const result = await fetchAboutUs();
-    if (!result.success) {
-        return <div>Error fetching Data</div>
-    }
 
     return (
         <div className="min-h-screen py-2">

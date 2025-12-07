@@ -7,14 +7,14 @@ import HeaderTitle from '@/features/shared/components/HeaderTitle'
 import Map from '@/features/shared/components/Map'
 import { fadeInDown, staggerItem } from '@/features/shared/hooks/use-scroll-animation';
 import { SendHorizontal, MapPin, Phone, Mail, Loader2 } from 'lucide-react'
-import { BsGithub, BsInstagram, BsTwitter, BsYoutube } from 'react-icons/bs';
-import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import { useState } from 'react';
 import { createContact } from '@/app/actions/contact';
 import { toast } from 'sonner';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/features/shared/components/breadcrumb";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { IContactInfo } from '@/app/actions/contact-info';
+import { SOCIAL_ICONS } from '@/features/shared/components/IconPicker';
 
 interface FormData {
     fullName: string;
@@ -34,9 +34,10 @@ interface FormErrors {
 interface ContactProps {
     showExploreMoreButton?: boolean;
     showTopBorder?: boolean;
+    contactInfo?: IContactInfo | null;
 }
 
-export default function Contact({ showExploreMoreButton = true, showTopBorder = true }: ContactProps) {
+export default function Contact({ showExploreMoreButton = true, showTopBorder = true, contactInfo }: ContactProps) {
     const pathname = usePathname()
     const [formData, setFormData] = useState<FormData>({
         fullName: '',
@@ -259,81 +260,58 @@ export default function Contact({ showExploreMoreButton = true, showTopBorder = 
                                                 <MapPin className="text-gray-600 w-5 h-5" />
                                                 <div>
                                                     <p className="font-medium">Address</p>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-300">Shishuwa, Pokhara, Nepal</p>
+                                                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                                                        {contactInfo?.address || "Shishuwa, Pokhara, Nepal"}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-3">
                                                 <Phone className="text-gray-600 w-5 h-5" />
                                                 <div>
                                                     <p className="font-medium">Phone</p>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-300">+977 123 456 7890</p>
+                                                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                                                        {contactInfo?.phone || "+977 123 456 7890"}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-3">
                                                 <Mail className="text-gray-600 w-5 h-5" />
                                                 <div>
                                                     <p className="font-medium">Email</p>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-300">info@yongshi-nirman.com</p>
+                                                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                                                        {contactInfo?.email || "info@yongshi-nirman.com"}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </AnimationWrapper>
 
-                                <AnimationWrapper >
-                                    <div className="dark:bg-gray-800 rounded-lg p-4 border">
-                                        <h3 className="text-xl font-semibold mb-6 border-b pb-2">Follow Us</h3>
+                                {contactInfo?.socialLinks && contactInfo.socialLinks.length > 0 && (
+                                    <AnimationWrapper >
+                                        <div className="dark:bg-gray-800 rounded-lg p-4 border">
+                                            <h3 className="text-xl font-semibold mb-6 border-b pb-2">Follow Us</h3>
 
-                                        <div className="flex flex-wrap gap-4">
-                                            {/* Facebook */}
-                                            <Button
-                                                size={'icon'}
-                                                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
-                                            >
-                                                <FaFacebookF size={20} />
-                                            </Button>
-
-                                            {/* Twitter/X */}
-                                            <Button
-                                                size={'icon'}
-                                                className="flex items-center gap-2 px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-lg transition-colors duration-200"
-                                            >
-                                                <BsTwitter size={20} />
-                                            </Button>
-
-                                            {/* Instagram */}
-                                            <Button
-                                                size={'icon'}
-                                                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg transition-all duration-200"
-                                            >
-                                                <BsInstagram size={20} />
-                                            </Button>
-
-                                            {/* YouTube */}
-                                            <Button
-                                                size={'icon'}
-                                                className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white transition-colors duration-200"
-                                            >
-                                                <BsYoutube size={20} />
-                                            </Button>
-
-                                            {/* LinkedIn */}
-                                            <Button
-                                                size={'icon'}
-                                                className="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white transition-colors duration-200"
-                                            >
-                                                <FaLinkedinIn size={20} />
-                                            </Button>
-
-                                            {/* GitHub */}
-                                            <Button
-                                                size={'icon'}
-                                            >
-                                                <BsGithub size={20} />
-                                            </Button>
+                                            <div className="flex flex-wrap gap-4">
+                                                {contactInfo.socialLinks.map((link) => {
+                                                    const IconComponent = SOCIAL_ICONS[link.icon as keyof typeof SOCIAL_ICONS];
+                                                    return (
+                                                        <Button
+                                                            key={link.id}
+                                                            size={'icon'}
+                                                            asChild
+                                                            title={link.platform}
+                                                        >
+                                                            <a href={link.url} target="_blank" rel="noopener noreferrer">
+                                                                {IconComponent && <IconComponent size={20} />}
+                                                            </a>
+                                                        </Button>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-                                    </div>
-                                </AnimationWrapper>
+                                    </AnimationWrapper>
+                                )}
                             </div>
                         </div>
 

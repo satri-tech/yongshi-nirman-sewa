@@ -13,12 +13,16 @@ interface PortfolioComponentProps {
     projectsdata?: IProject[]
     showExploreMoreButton?: boolean;
     showTopBorder?: boolean;
+    sectionTitle?: string;
+    sectionSubtitle?: string;
 }
 
 const PortfolioComponent = ({
     projectsdata,
     showExploreMoreButton = true,
     showTopBorder = true,
+    sectionTitle = "Projects",
+    sectionSubtitle = "Let's dive into our Journey!",
 }: PortfolioComponentProps) => {
     const pathname = usePathname()
     const isEmpty = !projectsdata || projectsdata.length === 0;
@@ -48,14 +52,12 @@ const PortfolioComponent = ({
                         :
                         <>
                             <AnimatedButton variants={fadeInDown}>
-                                <HeaderTitle header={"Projects"} />
+                                <HeaderTitle header={sectionTitle} />
                             </AnimatedButton>
                             <AnimatedButton variants={fadeInDown}>
                                 <div className="w-full flex">
-                                    {/* className="  sm:text-[3rem] text-3xl sm:font-medium font-medium sm:leading-[4.4rem] leading-10 tracking-tight" */}
-
                                     <div className="w-full sm:text-5xl text-3xl sm:font-medium font-medium  sm:leading-[4.4rem] leading-10 tracking-tight text-foreground">
-                                        {isEmpty ? "Portfolio Coming Soon!" : "Let's dive into our Journey!"}
+                                        {isEmpty ? `${sectionTitle} Coming Soon!` : sectionSubtitle}
                                     </div>
                                 </div>
                             </AnimatedButton>

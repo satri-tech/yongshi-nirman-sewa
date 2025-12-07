@@ -2,8 +2,12 @@ export const dynamic = 'force-dynamic'
 
 import StatsCard from "@/features/projects/admin/components/StatsCard";
 import Projects from "../../../features/projects/admin/components/Projects";
+import UpdateProjectsSectionComponent from "@/features/projects/admin/components/UpdateProjectsSection";
+import { fetchProjectsSection } from "@/app/actions/projects-section";
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+    const sectionData = await fetchProjectsSection();
+
     return (
         <div className="min-h-screen py-2">
             <div className="w-full sm:px-2 px-0">
@@ -20,6 +24,12 @@ export default function PortfolioPage() {
                     {/* Stats */}
                     <StatsCard />
                 </div>
+
+                {/* Section Header Editor */}
+                <div className="mb-6">
+                    <UpdateProjectsSectionComponent data={sectionData.data} />
+                </div>
+
                 {/* Projects showcase with search and filtering */}
                 <Projects />
             </div>

@@ -54,14 +54,14 @@ export default function UpdateAboutUsComponent({ data }: { data: IAboutUs | null
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            mainHeading: data?.mainHeading,
-            description: data?.description,
-            stat1Number: data?.stat1Number,
-            stat1Label: data?.stat1Label,
-            stat2Number: data?.stat2Number,
-            stat2Label: data?.stat2Label,
-            stat3Number: data?.stat3Number,
-            stat3Label: data?.stat3Label,
+            mainHeading: data?.mainHeading || "",
+            description: data?.description || "",
+            stat1Number: data?.stat1Number || "",
+            stat1Label: data?.stat1Label || "",
+            stat2Number: data?.stat2Number || "",
+            stat2Label: data?.stat2Label || "",
+            stat3Number: data?.stat3Number || "",
+            stat3Label: data?.stat3Label || "",
         },
     })
     const isDirty = form.formState.isDirty;
@@ -132,7 +132,7 @@ export default function UpdateAboutUsComponent({ data }: { data: IAboutUs | null
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        {field.value.length} characters
+                                        {field.value?.length || 0} characters
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>

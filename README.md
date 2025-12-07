@@ -1,6 +1,6 @@
 # 🏗️ Yonghsi Construction
 
-Welcome to the official repository for **Yonghsi Construction**, a modern and elegant website built to showcase our expertise in crafting beautiful villas, custom homes, and residential spaces in **Pokhara, Nepal**.
+Welcome to the official repository for **Yonghsi Construction**, a modern and elegant website built to showcase our expertise in crafting beautiful villas, custom homes, and residential spaces in **Pokhara, Nepal**..
 
 ## 🚀 About Us
 
@@ -21,7 +21,7 @@ Welcome to the official repository for **Yonghsi Construction**, a modern and el
 - **Tailwind CSS** – Utility-first CSS framework
 - **TypeScript** – For type-safe development
 - **Framer Motion** – Smooth animations and transitions
-- **Lucide Icons** – Iconography for UI
+- **Lucide Icons** – Iconography for UI.
 
 ## 📂 Folder Structure
 
