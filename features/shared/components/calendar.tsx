@@ -17,6 +17,7 @@ function Calendar({
   showOutsideDays = true,
   captionLayout = "label",
   buttonVariant = "ghost",
+  endMonth,
   formatters,
   components,
   ...props
@@ -27,7 +28,9 @@ function Calendar({
 
   return (
     <DayPicker
+      endMonth={endMonth}
       showOutsideDays={showOutsideDays}
+      fixedWeeks={true}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,

@@ -64,6 +64,8 @@ export default function SelectStartDate({ form }: SelectDeadlineProps) {
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0" align="start">
                                     <Calendar
+                                        captionLayout="dropdown"
+                                        endMonth={new Date(2030, 11)}   // December 2030
                                         mode="single"
                                         selected={field.value ?? undefined}
                                         onSelect={(date) => {
