@@ -11,6 +11,14 @@ export interface UploadConfig {
   maxFiles?: number;
 }
 
+// File-like interface that works on both client and server
+interface FileData {
+  name: string;
+  size: number;
+  type: string;
+  arrayBuffer(): Promise<ArrayBuffer>;
+}
+
 // Default configurations
 export const DEFAULT_CONFIG: UploadConfig = {
   maxFileSize: 5 * 1024 * 1024, // 5MB
@@ -42,6 +50,18 @@ export const DEFAULT_CONFIG: UploadConfig = {
 export const PROJECTS_CONFIG: UploadConfig = {
   ...DEFAULT_CONFIG,
   uploadPath: "public/projects",
+  maxFiles: 20,
+};
+
+export const SLIDER_CONFIG: UploadConfig = {
+  ...DEFAULT_CONFIG,
+  uploadPath: "public/slider",
+  allowedTypes: {
+    "image/jpeg": [".jpg", ".jpeg"],
+    "image/png": [".png"],
+    "image/webp": [".webp"],
+    "image/gif": [".gif"],
+  },
   maxFiles: 20,
 };
 
@@ -83,7 +103,7 @@ export interface ValidationError {
 
 // Helper function to validate file type
 function isValidFileType(
-  file: File,
+  file: FileData,
   allowedTypes: Record<string, string[]>
 ): boolean {
   const allowedMimeTypes = Object.keys(allowedTypes);
@@ -92,7 +112,7 @@ function isValidFileType(
 
 // Helper function to get file extension from MIME type
 function getFileExtension(
-  file: File,
+  file: FileData,
   allowedTypes: Record<string, string[]>
 ): string {
   const extensions = allowedTypes[file.type as keyof typeof allowedTypes];
@@ -121,7 +141,7 @@ function sanitizeFileName(filename: string): string {
 
 // Validate files before upload
 export function validateFiles(
-  files: File[],
+  files: FileData[],
   config: UploadConfig
 ): ValidationError[] {
   const errors: ValidationError[] = [];
@@ -164,9 +184,9 @@ export function validateFiles(
   return errors;
 }
 
-// Main upload function
+// Main upload function - accepts File-like objects
 export async function uploadFiles(
-  files: File[],
+  files: FileData[],
   config: UploadConfig = DEFAULT_CONFIG
 ): Promise<UploadResult> {
   try {
@@ -300,8 +320,8 @@ export async function deleteFiles(
 export function extractFilesFromFormData(
   formData: FormData,
   fieldName: string = "attachments"
-): File[] {
-  const files = formData.getAll(fieldName) as File[];
+): FileData[] {
+  const files = formData.getAll(fieldName) as FileData[];
 
   // Filter out empty files and invalid entries
   return files.filter((file) => {
@@ -313,7 +333,7 @@ export function extractFilesFromFormData(
 
 // Utility function for single file upload (for testimonials)
 export async function uploadSingleFile(
-  file: File,
+  file: FileData,
   config: UploadConfig = DEFAULT_CONFIG
 ): Promise<UploadResult> {
   const singleFileConfig = { ...config, maxFiles: 1 };

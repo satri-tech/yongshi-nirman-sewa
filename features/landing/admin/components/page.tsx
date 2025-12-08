@@ -111,7 +111,7 @@ function SortableImageItem({
     >
       <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 cursor-move">
         <Image
-          src={`/api/images/projects/${url}`}
+          src={`/api/images/slider/${url}`}
           alt="slider image"
           width={150}
           height={150}
@@ -248,6 +248,7 @@ export default function Landing() {
       formData.append('title', values.title);
       formData.append('description', values.description);
       formData.append('existingImages', JSON.stringify(existingImagesToKeep));
+      formData.append('removedImages', JSON.stringify(Array.from(removedExisting)));
 
       if (values.attachments && values.attachments.length > 0) {
         values.attachments.forEach((file) => formData.append('attachments', file));

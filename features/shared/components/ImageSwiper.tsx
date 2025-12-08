@@ -16,9 +16,10 @@ import Image, { StaticImageData } from "next/image";
 interface IImageSwiper {
     swiperImages: (string | StaticImageData)[]; // Accept both string URLs and StaticImageData
     imageClass: string;
+    imagePath?: string; // Optional path prefix, defaults to 'projects'
 }
 
-const ImageSwiper = ({ swiperImages, imageClass }: IImageSwiper) => {
+const ImageSwiper = ({ swiperImages, imageClass, imagePath = 'projects' }: IImageSwiper) => {
     return (
         <>
             <Swiper
@@ -37,7 +38,7 @@ const ImageSwiper = ({ swiperImages, imageClass }: IImageSwiper) => {
 
                     return (
                         <SwiperSlide key={index}>
-                            <Image width={1600} height={900} src={imageSrc} alt="sliderImages" className={imageClass} />
+                            <Image width={1600} height={900} src={`/api/images/${imagePath}/${imageSrc}`} alt="sliderImages" className={imageClass} />
                         </SwiperSlide>
                     );
                 })}

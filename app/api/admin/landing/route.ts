@@ -5,7 +5,7 @@ import {
   uploadFiles,
   extractFilesFromFormData,
   deleteFiles,
-  PROJECTS_CONFIG,
+  SLIDER_CONFIG,
 } from "@/features/shared/hooks/fileUpload";
 
 const SINGLETON_ID = "singleton";
@@ -50,14 +50,15 @@ export async function GET() {
 }
 
 // PUT - Update landing page
-// PUT - Update landing page
 export async function PUT(request: NextRequest) {
   try {
     const formData = await request.formData();
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const existingImagesJson = formData.get("existingImages") as string;
+    const removedImagesJson = formData.get("removedImages") as string;
     const existingImages = JSON.parse(existingImagesJson || "[]");
+    const removedImages = JSON.parse(removedImagesJson || "[]");
 
     if (!title || !description) {
       return NextResponse.json(
@@ -66,13 +67,18 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Delete removed images from disk
+    if (removedImages.length > 0) {
+      await deleteFiles(removedImages, SLIDER_CONFIG.uploadPath!);
+    }
+
     // Extract new files
     const newFiles = extractFilesFromFormData(formData, "attachments");
 
     // Upload new files if any
     let newImageFilenames: string[] = [];
     if (newFiles.length > 0) {
-      const uploadResult = await uploadFiles(newFiles, PROJECTS_CONFIG);
+      const uploadResult = await uploadFiles(newFiles, SLIDER_CONFIG);
       if (!uploadResult.success) {
         return NextResponse.json(
           { success: false, error: uploadResult.errors.join(", ") },
@@ -83,10 +89,6 @@ export async function PUT(request: NextRequest) {
     }
 
     // Combine existing images to keep with new uploads
-    // Note: This assumes new images are appended.
-    // If the frontend supports mixed reordering of new/old images,
-    // we would need a more complex way to reconstruct the order.
-    // For now, we append new images to the end.
     const allImages = [...existingImages, ...newImageFilenames];
 
     // Update landing page
@@ -168,7 +170,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Delete files from disk
-    const deleteResult = await deleteFiles(images, "public/projects");
+    const deleteResult = await deleteFiles(images, "public/slider");
 
     // Update landing page to remove deleted images
     // We need to delete SliderImage records where url is in the list

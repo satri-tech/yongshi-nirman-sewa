@@ -2,6 +2,14 @@ import { writeFile, mkdir, access } from "fs/promises";
 import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
 
+// File-like interface that works on both client and server
+interface FileData {
+  name: string;
+  size: number;
+  type: string;
+  arrayBuffer(): Promise<ArrayBuffer>;
+}
+
 const ALLOWED_FILE_TYPES = {
   "image/jpeg": [".jpg", ".jpeg"],
   "image/png": [".png"],
@@ -11,11 +19,11 @@ const ALLOWED_FILE_TYPES = {
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-function isValidFileType(file: File): boolean {
+function isValidFileType(file: FileData): boolean {
   return Object.keys(ALLOWED_FILE_TYPES).includes(file.type);
 }
 
-function getFileExtension(file: File): string {
+function getFileExtension(file: FileData): string {
   const extensions =
     ALLOWED_FILE_TYPES[file.type as keyof typeof ALLOWED_FILE_TYPES];
   if (extensions?.length) return extensions[0];
@@ -34,12 +42,12 @@ async function ensureDirectoryExists(dirPath: string) {
 
 /**
  * Save files to a given folder under /public
- * @param files File[] - the uploaded files
+ * @param files FileData[] - the uploaded files
  * @param folder string - e.g. "projects" or "testimonials"
  * @param multiple boolean - allow multiple or enforce single
  */
 export async function saveUploadedFiles(
-  files: File[] | File,
+  files: FileData[] | FileData,
   folder: string,
   multiple = true
 ): Promise<string[] | string> {

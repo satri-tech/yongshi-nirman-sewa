@@ -184,6 +184,9 @@ export default function EditProject({ project }: EditProjectProps) {
 
       // Existing images to keep
       formData.append('existingImages', JSON.stringify(existingImagesToKeep));
+      
+      // Images to remove
+      formData.append('removedImages', JSON.stringify(Array.from(removedExisting)));
 
       // New attachments
       if (values.attachments && values.attachments.length > 0) {

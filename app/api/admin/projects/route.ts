@@ -188,6 +188,7 @@ export async function PUT(request: NextRequest) {
     const startDate = formData.get("startDate") as string;
     const endDate = formData.get("endDate") as string;
     const existingImages = formData.get("existingImages") as string;
+    const removedImages = formData.get("removedImages") as string;
 
     // Validate required fields
     const requiredFields = [
@@ -226,6 +227,20 @@ export async function PUT(request: NextRequest) {
         keepImages = JSON.parse(existingImages);
       } catch (e) {
         console.error("Error parsing existing images:", e);
+      }
+    }
+
+    // Parse and delete removed images
+    let removedImagesList: string[] = [];
+    if (removedImages) {
+      try {
+        removedImagesList = JSON.parse(removedImages);
+        if (removedImagesList.length > 0) {
+          console.log(`Deleting ${removedImagesList.length} removed images...`);
+          await deleteFiles(removedImagesList, PROJECTS_CONFIG.uploadPath);
+        }
+      } catch (e) {
+        console.error("Error parsing removed images:", e);
       }
     }
 

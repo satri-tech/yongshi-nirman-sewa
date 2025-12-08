@@ -5,7 +5,7 @@ import { Input } from "@/features/shared/components/input";
 import { ImageIcon, X } from "lucide-react";
 import { UseFormReturn, FieldValues, Path } from "react-hook-form";
 import { toast } from "sonner";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 
 interface SelectImagesProps<T extends FieldValues> {
@@ -25,6 +25,15 @@ export default function SelectImages<T extends FieldValues>({
 }: SelectImagesProps<T>) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>(selectedAttachments);
+  const [isDragActive, setIsDragActive] = useState(false);
+
+  // Sync selectedFiles with form value
+  useEffect(() => {
+    const formValue = form.watch(fieldName);
+    if (Array.isArray(formValue)) {
+      setSelectedFiles(formValue);
+    }
+  }, [form.watch(fieldName), fieldName, form]);
 
   const allowedImageTypes = [
     "image/png",
@@ -34,9 +43,7 @@ export default function SelectImages<T extends FieldValues>({
     "image/webp",
   ];
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || []);
-
+  const validateFiles = (files: File[]) => {
     const invalidFiles = files.filter((file) => {
       const isValidImage = allowedImageTypes.includes(file.type);
       const isSizeValid = file.size <= 5 * 1024 * 1024;
@@ -68,23 +75,60 @@ export default function SelectImages<T extends FieldValues>({
         );
       }
 
-      const validFiles = files.filter(
+      return files.filter(
         (file) =>
           allowedImageTypes.includes(file.type) &&
           file.size <= 5 * 1024 * 1024
       );
+    }
 
+    return files;
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    const validFiles = validateFiles(files);
+
+    if (validFiles.length > 0) {
       const newFiles = [...selectedFiles, ...validFiles];
-      form.setValue(fieldName, newFiles as any);
-      setSelectedFiles(newFiles);
-    } else {
-      const newFiles = [...selectedFiles, ...files];
       form.setValue(fieldName, newFiles as any);
       setSelectedFiles(newFiles);
     }
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
+    }
+  };
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+
+    const files = Array.from(e.dataTransfer.files || []);
+    const validFiles = validateFiles(files);
+
+    if (validFiles.length > 0) {
+      const newFiles = [...selectedFiles, ...validFiles];
+      form.setValue(fieldName, newFiles as any);
+      setSelectedFiles(newFiles);
     }
   };
 
@@ -113,7 +157,15 @@ export default function SelectImages<T extends FieldValues>({
               />
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="flex cursor-pointer flex-col w-full rounded-lg border border-dashed border-gray-300 bg-white p-6 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-950 transition-colors"
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                className={`flex cursor-pointer flex-col w-full rounded-lg border-2 border-dashed p-6 shadow-sm transition-all ${
+                  isDragActive
+                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30'
+                    : 'border-gray-300 bg-white hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-950 dark:hover:bg-neutral-900'
+                }`}
               >
                 <div className="flex items-center gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-purple-500 dark:bg-purple-900 dark:text-purple-300">
@@ -125,7 +177,9 @@ export default function SelectImages<T extends FieldValues>({
                     </div>
                     {selectedFiles.length === 0 && (
                       <div className="text-sm text-gray-500 dark:text-neutral-400">
-                        {mode === 'create'
+                        {isDragActive
+                          ? "Drop images here"
+                          : mode === 'create'
                           ? "Drag and drop images here or click to browse"
                           : "Add more images or click to browse"}
                         <br />
@@ -140,8 +194,10 @@ export default function SelectImages<T extends FieldValues>({
 
                 {selectedFiles.length > 0 && (
                   <div className="mt-4 space-y-2 border-t pt-4 dark:border-neutral-700">
-                    <div className="text-sm font-medium mb-2">
-                      {mode === 'create' ? 'Selected' : 'Adding'} images ({selectedFiles.length}):
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="text-sm font-medium">
+                        {mode === 'create' ? 'Selected' : 'Adding'} images ({selectedFiles.length}):
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
@@ -180,7 +236,6 @@ export default function SelectImages<T extends FieldValues>({
                         </div>
                       ))}
                     </div>
-
                     {form.formState.errors[fieldName] && (
                       <div className="text-sm text-red-500 dark:text-red-400 mt-2">
                         {(form.formState.errors[fieldName]?.message as string) || 'Invalid files'}
