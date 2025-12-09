@@ -24,15 +24,15 @@ export const teamMemberFormSchema = z.object({
     role: z.string().min(2, "Role must be at least 2 characters").max(100, "Role must be less than 100 characters"),
     facebookUrl: z.string(),
     image: z
-        .instanceof(File, { message: "Profile image is required" })
+        .any()
         .refine(
-            (file) => file.size > 0, // This ensures a file is selected
+            (file: any) => file && typeof file === 'object' && file.size > 0, // This ensures a file is selected
             {
                 message: "Profile image is required",
             }
         )
         .refine(
-            (file) => {
+            (file: any) => {
                 return file.size <= 5 * 1024 * 1024; // 5MB limit
             },
             {
@@ -40,7 +40,7 @@ export const teamMemberFormSchema = z.object({
             }
         )
         .refine(
-            (file) => {
+            (file: any) => {
                 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
                 return allowedTypes.includes(file.type);
             },

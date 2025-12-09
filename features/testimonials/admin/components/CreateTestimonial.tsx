@@ -29,15 +29,15 @@ export const testimonialFormSchema = z.object({
         required_error: "Please select a rating",
     }),
     image: z
-        .instanceof(File, { message: "Profile image is required" })
+        .any()
         .refine(
-            (file) => file.size > 0, // This ensures a file is selected
+            (file: any) => file && typeof file === 'object' && file.size > 0, // This ensures a file is selected
             {
                 message: "Profile image is required",
             }
         )
         .refine(
-            (file) => {
+            (file: any) => {
                 return file.size <= 5 * 1024 * 1024; // 5MB limit
             },
             {
@@ -45,7 +45,7 @@ export const testimonialFormSchema = z.object({
             }
         )
         .refine(
-            (file) => {
+            (file: any) => {
                 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
                 return allowedTypes.includes(file.type);
             },

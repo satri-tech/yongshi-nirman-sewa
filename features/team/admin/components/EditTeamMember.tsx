@@ -35,8 +35,8 @@ export const teamMemberFormSchema = z.object({
     facebookUrl: z.string(),
     image: z
         .union([
-            z.instanceof(File).refine(
-                (file) => file.size <= 5 * 1024 * 1024, // 5MB limit
+            z.any().refine(
+                (file: any) => !file || (typeof file === 'object' && file.size <= 5 * 1024 * 1024), // 5MB limit
                 { message: "Image must be under 5MB" }
             ),
             z.null(), // Allow null for image removal

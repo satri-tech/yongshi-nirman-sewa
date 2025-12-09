@@ -44,10 +44,10 @@ export const formSchema = z.object({
         required_error: "End Date is required.",
     }),
     attachments: z
-        .array(z.instanceof(File))
-        .min(1, "At least one image must be selected") // 👈 Require at least one file
+        .array(z.any())
+        .min(1, "At least one image must be selected")
         .refine(
-            (files) => files.every((file) => file.size <= 5 * 1024 * 1024),
+            (files) => files.every((file: any) => file && typeof file === 'object' && file.size <= 5 * 1024 * 1024),
             { message: "Each file must be under 5MB" }
         )
         .refine(
@@ -62,7 +62,7 @@ export const formSchema = z.object({
                     'application/vnd.ms-powerpoint',
                     'application/vnd.openxmlformats-officedocument.presentationml.presentation'
                 ];
-                return files.every((file) => allowedTypes.includes(file.type));
+                return files.every((file: any) => file && allowedTypes.includes(file.type));
             },
             { message: "Only images, PDFs, and Office documents are allowed" }
         )

@@ -43,15 +43,15 @@ const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters").max(100, "Title must be less than 100 characters"),
   description: z.string().min(20, "Description must be at least 20 characters").max(500, "Description must be less than 500 characters"),
   attachments: z
-    .array(z.instanceof(File))
+    .array(z.any())
     .refine(
-      (files) => files.every((file) => file.size <= 5 * 1024 * 1024),
+      (files) => files.every((file: any) => file && typeof file === 'object' && file.size <= 5 * 1024 * 1024),
       { message: "Each file must be under 5MB" }
     )
     .refine(
       (files) => {
         const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
-        return files.every((file) => allowedTypes.includes(file.type));
+        return files.every((file: any) => file && allowedTypes.includes(file.type));
       },
       { message: "Only images are allowed" }
     )
